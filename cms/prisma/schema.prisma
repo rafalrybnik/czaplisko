@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model GlobalSettings {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String   @db.Text
+  updatedAt DateTime @updatedAt
+}
+
+model Apartment {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String    @db.Text
+  amenities   Json      // ["WiFi", "Dog friendly", ...]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  pricing     Pricing[]
+  media       Media[]
+}
+
+model SeasonRange {
+  id        String   @id @default(cuid())
+  label     String   // "Sylwester", "Majówka", "Wakacje"
+  startDate DateTime @db.Date
+  endDate   DateTime @db.Date
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Pricing {
+  id            String    @id @default(cuid())
+  apartmentId   String
+  apartment     Apartment @relation(fields: [apartmentId], references: [id], onDelete: Cascade)
+  seasonType    String    // "high" | "low"
+  pricePerNight Decimal   @db.Decimal(10, 2)
+  extraBedPrice Decimal   @db.Decimal(10, 2)
+  minStayNights Int
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@unique([apartmentId, seasonType])
+}
+
+model News {
+  id           String    @id @default(cuid())
+  title        String
+  slug         String    @unique
+  content      String    @db.Text
+  excerpt      String?   @db.Text
+  featureImage String?
+  status       String    @default("draft") // "draft" | "published"
+  publishedAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Page {
+  id           String   @id @default(cuid())
+  title        String
+  slug         String   @unique
+  content      String   @db.Text
+  status       String   @default("draft") // "draft" | "published"
+  showInFooter Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Media {
+  id            String     @id @default(cuid())
+  urlOriginal   String
+  urlCompressed String
+  alt           String?
+  order         Int        @default(0)
+  category      String     // "gallery" | "apartment" | "news"
+  apartmentId   String?
+  apartment     Apartment? @relation(fields: [apartmentId], references: [id], onDelete: SetNull)
+  createdAt     DateTime   @default(now())
+}
