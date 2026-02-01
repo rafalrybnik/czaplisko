@@ -8,11 +8,11 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare && prisma generate",
-    "db:push": "prisma db push",
-    "db:seed": "tsx prisma/seed.ts",
-    "db:studio": "prisma studio",
-    "db:migrate": "prisma migrate dev",
-    "db:reset": "prisma migrate reset"
+    "db:push": "dotenv -- prisma db push",
+    "db:seed": "dotenv -- tsx prisma/seed.ts",
+    "db:studio": "dotenv -- prisma studio",
+    "db:migrate": "dotenv -- prisma migrate dev",
+    "db:reset": "dotenv -- prisma migrate reset"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -38,6 +38,7 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/pg": "^8.16.0",
+    "dotenv-cli": "^11.0.0",
     "tsx": "^4.21.0"
   }
 }
