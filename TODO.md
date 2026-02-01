@@ -13,12 +13,12 @@ Transformacja statycznego szablonu HTML/Tailwind w dynamiczny CMS oparty o Nuxt 
 
 ---
 
-## Faza 0: Inicjalizacja Projektu
+## Faza 0: Inicjalizacja Projektu ✅ DONE
 
 ### 0.1 Utworzenie projektu Nuxt 3
-- [ ] `npx nuxi@latest init czaplisko-cms`
-- [ ] Konfiguracja `nuxt.config.ts` (SSR enabled, Tailwind, runtime config)
-- [ ] Instalacja zależności:
+- [x] `npx nuxi@latest init czaplisko-cms`
+- [x] Konfiguracja `nuxt.config.ts` (SSR enabled, Tailwind, runtime config)
+- [x] Instalacja zależności:
   ```
   @nuxtjs/tailwindcss
   @prisma/client prisma
@@ -61,7 +61,7 @@ czaplisko-cms/
 ```
 
 ### 0.3 Zmienne środowiskowe (.env)
-- [ ] Utworzyć `.env.example` z wymaganymi zmiennymi:
+- [x] Utworzyć `.env.example` z wymaganymi zmiennymi:
   ```
   DATABASE_URL=
   JWT_SECRET=
@@ -77,10 +77,10 @@ czaplisko-cms/
 
 ---
 
-## Faza 1: Fundament i Infrastruktura Chmurowa
+## Faza 1: Fundament i Infrastruktura Chmurowa ✅ DONE
 
 ### 1.1 Schema Prisma [B-1.1]
-- [ ] Utworzyć `prisma/schema.prisma`:
+- [x] Utworzyć `prisma/schema.prisma`:
 
 ```prisma
 model GlobalSettings {
@@ -162,42 +162,42 @@ model Media {
 }
 ```
 
-- [ ] `npx prisma generate`
-- [ ] `npx prisma db push` (development)
-- [ ] Utworzyć seed script `prisma/seed.ts` z danymi inicjalnymi:
+- [x] `npx prisma generate`
+- [x] `npx prisma db push` (development)
+- [x] Utworzyć seed script `prisma/seed.ts` z danymi inicjalnymi:
   - 2 apartamenty: "Czapla Polna", "Czapla Wodna"
   - Domyślne zakresy sezonów (High Season dates)
   - Przykładowe ceny
 
 ### 1.2 Konfiguracja Cloudflare R2 [B-1.2]
-- [ ] Utworzyć `server/utils/r2.ts`:
-  - S3Client z konfiguracją R2
+- [x] Utworzyć `server/utils/r2.ts`:
+  - S3Client z konfiguracją R2 (EU endpoint)
   - Funkcje: `uploadToR2()`, `deleteFromR2()`, `getSignedUrl()`
-- [ ] Konfiguracja bucketów w Cloudflare Dashboard:
+- [x] Konfiguracja bucketów w Cloudflare Dashboard:
   - Public bucket: `czaplisko-assets` (public access enabled)
   - Private bucket: `czaplisko-backups` (API-only access)
 
 ### 1.3 System Autentykacji [B-1.3]
-- [ ] Utworzyć `server/utils/auth.ts`:
+- [x] Utworzyć `server/utils/auth.ts`:
   - `generateToken(userId)` - JWT z 7-dniowym expiry
   - `verifyToken(token)` - walidacja JWT
   - `hashPassword()`, `comparePassword()` - bcrypt
-- [ ] Utworzyć `server/api/auth/login.post.ts`:
+- [x] Utworzyć `server/api/auth/login.post.ts`:
   - Walidacja email/password przez Zod
   - Zwrot JWT token + httpOnly cookie
-- [ ] Utworzyć `server/api/auth/logout.post.ts`:
+- [x] Utworzyć `server/api/auth/logout.post.ts`:
   - Usunięcie cookie
-- [ ] Utworzyć `server/api/auth/me.get.ts`:
+- [x] Utworzyć `server/api/auth/me.get.ts`:
   - Zwrot danych zalogowanego użytkownika
 
 ### 1.4 Middleware Autoryzacji [B-1.4]
-- [ ] Utworzyć `server/middleware/auth.ts`:
+- [x] Utworzyć `server/middleware/auth.ts`:
   - Sprawdzenie JWT z cookie/header
   - Ochrona routes `/api/admin/*`
   - Zwrot 401 dla nieautoryzowanych
 
 ### 1.5 Skrypt Backupu [B-1.5]
-- [ ] Utworzyć `scripts/backup.ts`:
+- [ ] Utworzyć `scripts/backup.ts`: (Deferred to post-MVP)
   - Export PostgreSQL via `pg_dump`
   - Kompresja gzip
   - Upload do prywatnego bucketu R2
@@ -206,10 +206,10 @@ model Media {
 
 ---
 
-## Faza 2: Logika Biznesowa Pensjonatu
+## Faza 2: Logika Biznesowa Pensjonatu ✅ DONE (API + Admin UI)
 
 ### 2.1 Silnik Cennika Sezonowego [B-2.1]
-- [ ] Utworzyć `server/utils/pricing.ts`:
+- [ ] Utworzyć `server/utils/pricing.ts`: (Optional for MVP - public API returns raw data)
   ```typescript
   function getSeasonType(date: Date): 'high' | 'low'
   function getPriceForDate(apartmentId: string, date: Date): PricingInfo
@@ -221,19 +221,19 @@ model Media {
   - Jeśli nie - Low Season (domyślny)
 
 ### 2.2 API Zarządzania Apartamentami [B-2.2]
-- [ ] `server/api/admin/apartments/index.get.ts` - lista apartamentów
-- [ ] `server/api/admin/apartments/[id].get.ts` - szczegóły apartamentu
-- [ ] `server/api/admin/apartments/[id].put.ts` - aktualizacja apartamentu
-- [ ] Walidacja Zod dla każdego endpointu
+- [x] `server/api/admin/apartments/index.get.ts` - lista apartamentów
+- [x] `server/api/admin/apartments/[id].get.ts` - szczegóły apartamentu
+- [x] `server/api/admin/apartments/[id].put.ts` - aktualizacja apartamentu
+- [x] Walidacja Zod dla każdego endpointu
 
 ### 2.3 API Zarządzania Cennikiem [B-2.3]
-- [ ] `server/api/admin/seasons/index.get.ts` - lista zakresów sezonów
-- [ ] `server/api/admin/seasons/index.post.ts` - dodanie zakresu
-- [ ] `server/api/admin/seasons/[id].put.ts` - edycja zakresu
-- [ ] `server/api/admin/seasons/[id].delete.ts` - usunięcie zakresu
-- [ ] `server/api/admin/pricing/index.get.ts` - lista cen
-- [ ] `server/api/admin/pricing/[id].put.ts` - aktualizacja ceny
-- [ ] Walidacja nakładania się dat (overlap validation)
+- [x] `server/api/admin/seasons/index.get.ts` - lista zakresów sezonów
+- [x] `server/api/admin/seasons/index.post.ts` - dodanie zakresu
+- [x] `server/api/admin/seasons/[id].put.ts` - edycja zakresu
+- [x] `server/api/admin/seasons/[id].delete.ts` - usunięcie zakresu
+- [x] `server/api/admin/pricing/index.get.ts` - lista cen
+- [x] `server/api/admin/pricing/[id].put.ts` - aktualizacja ceny
+- [ ] Walidacja nakładania się dat (overlap validation) - Deferred
 
 ### 2.4 SSR Strona Cennika [B-2.4]
 - [ ] Utworzyć `pages/cennik.vue`:
@@ -242,76 +242,69 @@ model Media {
   - Zachowanie stylów z obecnego `template/price-list.html`
 
 ### 2.5 Admin UI - Apartamenty
-- [ ] `pages/admin/apartments/index.vue` - lista apartamentów
-- [ ] `pages/admin/apartments/[id].vue` - formularz edycji:
+- [x] `pages/admin/apartments/index.vue` - lista apartamentów
+- [x] `pages/admin/apartments/[id].vue` - formularz edycji:
   - Nazwa, opis (Rich Text), udogodnienia (multi-select/tags)
   - Galeria apartamentu (drag & drop reorder)
 
 ### 2.6 Admin UI - Cennik
-- [ ] `pages/admin/pricing/index.vue`:
+- [x] `pages/admin/pricing/index.vue`:
   - Tabela z cenami per apartament per sezon
   - Inline editing lub modalne formularze
-- [ ] `pages/admin/pricing/seasons.vue`:
-  - Lista zakresów High Season
-  - Dodawanie/edycja/usuwanie z walidacją overlap
+- [x] Zarządzanie zakresami High Season (w tym samym widoku)
 
 ---
 
-## Faza 3: Treści i Media z Integracją R2
+## Faza 3: Treści i Media z Integracją R2 ✅ DONE (API + Admin UI)
 
 ### 3.1 Pipeline Przetwarzania Obrazów [B-3.1]
-- [ ] Utworzyć `server/utils/image.ts`:
+- [x] Utworzyć `server/utils/image.ts`:
   ```typescript
   async function processImage(buffer: Buffer): Promise<{original: Buffer, compressed: Buffer}>
   // Sharp: resize max 1920px, WebP quality 80
   ```
-- [ ] Utworzyć `server/api/admin/media/upload.post.ts`:
+- [x] Utworzyć `server/api/admin/media/upload.post.ts`:
   - Accept multipart/form-data
   - Wywołanie `processImage()`
   - Upload obu wersji do R2
   - Zapis w tabeli Media (urlOriginal, urlCompressed)
   - Zwrot URLs
-- [ ] Utworzyć `server/api/admin/media/[id].delete.ts`:
+- [x] Utworzyć `server/api/admin/media/[id].delete.ts`:
   - Usunięcie z R2 (obie wersje)
   - Usunięcie z bazy
 
 ### 3.2 Moduł Aktualności [B-3.2]
-- [ ] API CRUD:
+- [x] API CRUD:
   - `server/api/admin/news/index.get.ts`
   - `server/api/admin/news/index.post.ts`
   - `server/api/admin/news/[id].get.ts`
   - `server/api/admin/news/[id].put.ts`
   - `server/api/admin/news/[id].delete.ts`
-- [ ] Public API:
+- [x] Public API:
   - `server/api/public/news/index.get.ts` - lista opublikowanych
   - `server/api/public/news/[slug].get.ts` - szczegóły po slug
 
 ### 3.3 Admin UI - Aktualności
-- [ ] `pages/admin/news/index.vue`:
+- [x] `pages/admin/news/index.vue`:
   - Lista aktualności z filtrem status
   - Przycisk publikuj/ukryj
-- [ ] `pages/admin/news/create.vue`:
-  - Formularz z Rich Text editor (Tiptap lub similar)
+- [x] `pages/admin/news/create.vue`:
+  - Formularz (Rich Text editor deferred - using textarea for MVP)
   - Upload obrazu głównego
-- [ ] `pages/admin/news/[id].vue`:
+- [x] `pages/admin/news/[id].vue`:
   - Edycja istniejącej aktualności
 
 ### 3.4 Moduł Stron Dynamicznych [B-3.3]
-- [ ] API CRUD dla Page (analogicznie do News)
-- [ ] Utworzyć `pages/[...slug].vue`:
-  - Catch-all route
-  - `useAsyncData` do pobrania Page po slug
-  - 404 jeśli nie znaleziono lub status != published
+- [ ] API CRUD dla Page (analogicznie do News) - Deferred post-MVP
+- [ ] Utworzyć `pages/[...slug].vue` - Deferred post-MVP
 
 ### 3.5 Zarządzanie Galerią [B-3.4]
-- [ ] `pages/admin/media/index.vue`:
+- [x] `pages/admin/media/index.vue`:
   - Grid wszystkich obrazów
   - Filtrowanie po kategorii
   - Drag & drop reorder (update `order` field)
   - Usuwanie z potwierdzeniem
-- [ ] Komponent `components/admin/MediaPicker.vue`:
-  - Modal do wyboru istniejących obrazów
-  - Upload nowych
+- [ ] Komponent `components/admin/MediaPicker.vue` - Deferred
 
 ---
 
@@ -385,26 +378,22 @@ model Media {
 
 ---
 
-## Deployment
+## Deployment ✅ DONE
 
 ### Railway / Docker
-- [ ] Utworzyć `Dockerfile`:
-  ```dockerfile
-  FROM node:20-alpine
-  WORKDIR /app
-  COPY package*.json ./
-  RUN npm ci
-  COPY . .
-  RUN npx prisma generate
-  RUN npm run build
-  CMD ["node", ".output/server/index.mjs"]
-  ```
-- [ ] Konfiguracja `railway.json` lub docker-compose
-- [ ] Zmienne środowiskowe w production
+- [x] Utworzyć `Dockerfile` (multi-stage build)
+- [x] Railway project created with PostgreSQL
+- [x] CMS service deployed
+- [x] Environment variables configured
+- [x] Domain generated: **https://cms-production-5efa.up.railway.app**
+
+### Production URLs:
+- **CMS Admin**: https://cms-production-5efa.up.railway.app/admin/login
+- **Public API**: https://cms-production-5efa.up.railway.app/api/public/apartments
 
 ### DNS i Certyfikat
-- [ ] Konfiguracja domeny
-- [ ] SSL przez Cloudflare lub Railway
+- [x] SSL przez Railway (auto-provisioned)
+- [ ] Custom domain (optional)
 
 ---
 
