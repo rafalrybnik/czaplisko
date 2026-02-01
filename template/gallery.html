@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <title>Gallery | Czaplisko Siedlisko - Views & Moments</title>
+    <meta name="description"
+        content="Explore the beauty of Czaplisko Siedlisko. View photos of our eco-guesthouse, apartments, surrounding nature, and amenities.">
+    <meta name="keywords" content="gallery, photos, guesthouse images, Western Masuria, eco cabin, interiors">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts - Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-white text-gray-800 antialiased">
+
+    <!-- ========== HEADER SECTION - START ========== -->
+    <!-- This is identical to index.html header - copy-paste ready -->
+    <header class="w-full bg-white font-['Montserrat'] sticky top-0 z-[100] shadow-sm md:relative md:shadow-none">
+        <div
+            class="bg-[#4a6b8a] text-white py-2 px-4 md:px-24 flex justify-between items-center text-[11px] font-medium tracking-wider">
+            <div class="flex items-center space-x-4 md:space-x-8">
+                <div class="flex items-center space-x-3">
+                    <span class="cursor-pointer hover:opacity-70 transition-opacity">PL</span>
+                    <span class="font-bold border-b border-white">EN</span>
+                </div>
+                <div class="flex items-center space-x-5 border-l border-white/20 pl-4 md:pl-6">
+                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
+                        class="hover:text-[#78b3ce] transition-colors duration-300" aria-label="Follow us on Facebook">
+                        <i class="fab fa-facebook-f text-[13px]"></i>
+                    </a>
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
+                        class="hover:text-[#78b3ce] transition-colors duration-300" aria-label="Follow us on Instagram">
+                        <i class="fab fa-instagram text-[13px]"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="apartments.html" class="flex items-center space-x-2 hover:opacity-70 transition-opacity group">
+                    <i class="far fa-star"></i>
+                    <span class="uppercase text-[10px] font-bold tracking-[0.1em]">OUR ROOMS</span>
+                </a>
+                <a href="contact.html" class="flex items-center space-x-2 hover:opacity-70 transition-opacity group">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span class="uppercase text-[10px] font-bold tracking-[0.1em]">CONTACT</span>
+                </a>
+            </div>
+
+            <div class="md:hidden flex items-center">
+                <a href="tel:+48123456789" class="text-white hover:text-[#78b3ce] transition-colors p-1"
+                    aria-label="Call us">
+                    <i class="fas fa-phone-alt"></i>
+                </a>
+            </div>
+        </div>
+
+        <div
+            class="px-6 py-4 md:py-10 flex flex-row md:flex-col items-center justify-between md:justify-center relative bg-white border-b border-gray-50 md:border-none">
+            <a href="index.html" class="flex flex-col items-center group">
+                <img src="https://i.ibb.co/q4Yf33P/logotyp-czaplisko-df-kolor-4x-kopia.png"
+                    alt="Czaplisko Siedlisko Logo"
+                    class="h-14 sm:h-16 md:h-56 lg:h-64 w-auto object-contain transition-transform duration-500 group-hover:scale-[1.03]">
+            </a>
+
+            <button id="mobile-menu-toggle"
+                class="md:hidden relative z-[150] w-12 h-12 flex items-center justify-center bg-gray-50 rounded-full text-[#4a6b8a] shadow-sm active:scale-90 transition-all"
+                aria-label="Toggle Menu">
+                <div class="w-6 h-5 flex flex-col justify-between items-center">
+                    <span class="block w-full h-0.5 bg-current transition-all duration-300"></span>
+                    <span class="block w-full h-0.5 bg-current transition-all duration-300"></span>
+                    <span class="block w-full h-0.5 bg-current transition-all duration-300"></span>
+                </div>
+            </button>
+        </div>
+
+        <nav class="hidden md:block border-t border-b border-gray-100 bg-white">
+            <div class="max-w-7xl mx-auto px-6 py-4 flex justify-center">
+                <ul
+                    class="flex flex-wrap justify-center items-center gap-x-10 gap-y-4 text-[13px] font-normal text-gray-500">
+                    <li>
+                        <a href="index.html"
+                            class="hover:text-gray-900 transition-colors uppercase tracking-wider relative group py-2">
+                            Start
+                            <span
+                                class="absolute bottom-0 left-0 w-full h-0.5 bg-[#78b3ce] transition-transform duration-300 origin-left scale-x-0 group-hover:scale-x-100"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="apartments.html"
+                            class="hover:text-gray-900 transition-colors uppercase tracking-wider relative group py-2">
+                            Apartments
+                            <span
+                                class="absolute bottom-0 left-0 w-full h-0.5 bg-[#78b3ce] transition-transform duration-300 origin-left scale-x-0 group-hover:scale-x-100"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="price-list.html"
+                            class="hover:text-gray-900 transition-colors uppercase tracking-wider relative group py-2">
+                            Price-list
+                            <span
+                                class="absolute bottom-0 left-0 w-full h-0.5 bg-[#78b3ce] transition-transform duration-300 origin-left scale-x-0 group-hover:scale-x-100"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="gallery.html"
+                            class="hover:text-gray-900 transition-colors uppercase tracking-wider relative group py-2 text-gray-900 font-medium">
+                            Gallery
+                            <span
+                                class="absolute bottom-0 left-0 w-full h-0.5 bg-[#78b3ce] transition-transform duration-300 origin-left scale-x-100"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="faq.html"
+                            class="hover:text-gray-900 transition-colors uppercase tracking-wider relative group py-2">
+                            Questions and Answers
+                            <span
+                                class="absolute bottom-0 left-0 w-full h-0.5 bg-[#78b3ce] transition-transform duration-300 origin-left scale-x-0 group-hover:scale-x-100"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="contact.html"
+                            class="hover:text-gray-900 transition-colors uppercase tracking-wider relative group py-2">
+                            Contact
+                            <span
+                                class="absolute bottom-0 left-0 w-full h-0.5 bg-[#78b3ce] transition-transform duration-300 origin-left scale-x-0 group-hover:scale-x-100"></span>
+                        </a>
+                    </li>
+                    <li class="ml-4">
+                        <button
+                            class="bg-[#78b3ce] text-white px-7 py-2 text-[12px] font-bold uppercase tracking-[0.1em] hover:bg-[#1a2b3c] transition-all shadow-md">
+                            BOOK NOW
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div id="mobile-menu"
+            class="md:hidden fixed inset-0 z-[140] bg-white transition-all duration-500 ease-in-out transform translate-x-full">
+            <div class="flex flex-col h-full">
+                <div class="h-[80px] flex items-center px-6 border-b border-gray-100">
+                    <span class="text-[#4a6b8a] font-bold text-[14px] tracking-[0.2em] uppercase">Siedlisko Menu</span>
+                </div>
+
+                <div class="flex-1 overflow-y-auto px-10 py-12 flex flex-col">
+                    <ul class="space-y-8">
+                        <li><a href="index.html"
+                                class="text-[22px] uppercase tracking-[0.2em] block w-full text-left transition-all duration-300 text-gray-500 font-light">Start</a>
+                        </li>
+                        <li><a href="apartments.html"
+                                class="text-[22px] uppercase tracking-[0.2em] block w-full text-left transition-all duration-300 text-gray-500 font-light">Apartments</a>
+                        </li>
+                        <li><a href="gallery.html"
+                                class="text-[22px] uppercase tracking-[0.2em] block w-full text-left transition-all duration-300 text-[#78b3ce] font-bold">Gallery</a>
+                        </li>
+                        <li><a href="faq.html"
+                                class="text-[22px] uppercase tracking-[0.2em] block w-full text-left transition-all duration-300 text-gray-500 font-light">Questions
+                                and Answers</a></li>
+                        <li><a href="contact.html"
+                                class="text-[22px] uppercase tracking-[0.2em] block w-full text-left transition-all duration-300 text-gray-500 font-light">Contact</a>
+                        </li>
+                    </ul>
+
+                    <div class="mt-16 space-y-10">
+                        <button
+                            class="w-full bg-[#78b3ce] text-white py-5 font-bold uppercase tracking-[0.4em] text-[12px] shadow-lg">
+                            BOOK ONLINE
+                        </button>
+
+                        <div class="flex justify-center space-x-12 pb-6">
+                            <a href="https://facebook.com"
+                                class="text-3xl text-gray-300 hover:text-[#4a6b8a] transition-colors"><i
+                                    class="fab fa-facebook-f"></i></a>
+                            <a href="https://instagram.com"
+                                class="text-3xl text-gray-300 hover:text-[#78b3ce] transition-colors"><i
+                                    class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-10 bg-gray-50 text-center border-t border-gray-100">
+                    <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Western Masuria, Poland</p>
+                    <p class="text-[12px] text-[#4a6b8a] uppercase tracking-[0.2em] mt-2 font-bold">+48 123 456 789</p>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ========== HEADER SECTION - END ========== -->
+
+    <!-- Main Content -->
+    <main class="flex-grow bg-white overflow-hidden font-['Montserrat']">
+        <!-- Gallery Hero -->
+        <section class="relative h-[300px] md:h-[500px] w-full overflow-hidden">
+            <div class="absolute inset-0 bg-cover bg-center"
+                style="background-image: url('https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=80&w=1920');">
+                <div class="absolute inset-0 bg-black/20"></div>
+            </div>
+            <div class="relative z-10 h-full flex items-center justify-center">
+                <h1
+                    class="text-5xl md:text-8xl font-light text-white tracking-[0.1em] md:tracking-[0.2em] uppercase opacity-90">
+                    Gallery
+                </h1>
+            </div>
+        </section>
+
+        <!-- Intro Section -->
+        <section class="py-16 md:py-24 px-6 max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12 items-center">
+                <div class="lg:col-span-5 text-center lg:text-right lg:pr-10">
+                    <h2
+                        class="text-3xl md:text-4xl lg:text-[52px] font-light text-gray-500 leading-tight tracking-tight">
+                        Hello. Our Business has been present for over 20 years in City.
+                    </h2>
+                </div>
+                <div class="lg:col-span-7 flex flex-col md:flex-row gap-6">
+                    <!-- Team Member 1 -->
+                    <div class="relative w-full h-64 md:h-80 overflow-hidden shadow-sm group">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400"
+                            class="w-full h-full object-cover grayscale opacity-70 group-hover:grayscale-0 transition-all duration-1000"
+                            alt="Betty Stuart" />
+                        <div class="absolute inset-0 flex flex-col items-center justify-center text-white bg-black/10">
+                            <h3 class="text-xl md:text-2xl font-light tracking-wide">Betty Stuart</h3>
+                            <p class="text-[9px] md:text-[10px] tracking-[0.4em] font-bold uppercase mt-2 opacity-80">
+                                DIRECTOR</p>
+                        </div>
+                    </div>
+                    <!-- Team Member 2 -->
+                    <div class="relative w-full h-64 md:h-80 overflow-hidden shadow-sm group">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=400"
+                            class="w-full h-full object-cover grayscale opacity-70 group-hover:grayscale-0 transition-all duration-1000"
+                            alt="Lucas Pine" />
+                        <div class="absolute inset-0 flex flex-col items-center justify-center text-white bg-black/10">
+                            <h3 class="text-xl md:text-2xl font-light tracking-wide">Lucas Pine</h3>
+                            <p class="text-[9px] md:text-[10px] tracking-[0.4em] font-bold uppercase mt-2 opacity-80">
+                                COPARTNER</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Image Grid -->
+        <section class="pb-16 md:pb-24">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-0.5">
+                <!-- Gallery Item 1 -->
+                <div class="gallery-item aspect-square overflow-hidden group cursor-pointer relative" data-index="0">
+                    <img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&q=80&w=1200"
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        alt="Gallery item 0" />
+                    <div
+                        class="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
+                        <i
+                            class="fas fa-search-plus text-white opacity-0 group-hover:opacity-100 scale-50 group-hover:scale-100 transition-all duration-300 text-2xl"></i>
+                    </div>
+                </div>
+                <!-- Gallery Item 2 -->
+                <div class="gallery-item aspect-square overflow-hidden group cursor-pointer relative" data-index="1">
+                    <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&q=80&w=1200"
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        alt="Gallery item 1" />
+                    <div
+                        class="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
+                        <i
+                            class="fas fa-search-plus text-white opacity-0 group-hover:opacity-100 scale-50 group-hover:scale-100 transition-all duration-300 text-2xl"></i>
+                    </div>
+                </div>
+                <!-- Gallery Item 3 -->
+                <div class="gallery-item aspect-square overflow-hidden group cursor-pointer relative" data-index="2">
+                    <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&q=80&w=1200"
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        alt="Gallery item 2" />
+                    <div
+                        class="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
+                        <i
+                            class="fas fa-search-plus text-white opacity-0 group-hover:opacity-100 scale-50 group-hover:scale-100 transition-all duration-300 text-2xl"></i>
+                    </div>
+                </div>
+                <!-- Gallery Item 4 -->
+                <div class="gallery-item aspect-square overflow-hidden group cursor-pointer relative" data-index="3">
+                    <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&q=80&w=1200"
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        alt="Gallery item 3" />
+                    <div
+                        class="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
+                        <i
+                            class="fas fa-search-plus text-white opacity-0 group-hover:opacity-100 scale-50 group-hover:scale-100 transition-all duration-300 text-2xl"></i>
+                    </div>
+                </div>
+                <!-- Gallery Item 5 -->
+                <div class="gallery-item aspect-square overflow-hidden group cursor-pointer relative" data-index="4">
+                    <img src="https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&q=80&w=1200"
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        alt="Gallery item 4" />
+                    <div
+                        class="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
+                        <i
+                            class="fas fa-search-plus text-white opacity-0 group-hover:opacity-100 scale-50 group-hover:scale-100 transition-all duration-300 text-2xl"></i>
+                    </div>
+                </div>
+                <!-- Gallery Item 6 -->
+                <div class="gallery-item aspect-square overflow-hidden group cursor-pointer relative" data-index="5">
+                    <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&q=80&w=1200"
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        alt="Gallery item 5" />
+                    <div
+                        class="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
+                        <i
+                            class="fas fa-search-plus text-white opacity-0 group-hover:opacity-100 scale-50 group-hover:scale-100 transition-all duration-300 text-2xl"></i>
+                    </div>
+                </div>
+                <!-- Gallery Item 7 -->
+                <div class="gallery-item aspect-square overflow-hidden group cursor-pointer relative" data-index="6">
+                    <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&q=80&w=1200"
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        alt="Gallery item 6" />
+                    <div
+                        class="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
+                        <i
+                            class="fas fa-search-plus text-white opacity-0 group-hover:opacity-100 scale-50 group-hover:scale-100 transition-all duration-300 text-2xl"></i>
+                    </div>
+                </div>
+                <!-- Gallery Item 8 -->
+                <div class="gallery-item aspect-square overflow-hidden group cursor-pointer relative" data-index="7">
+                    <img src="https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&q=80&w=1200"
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        alt="Gallery item 7" />
+                    <div
+                        class="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
+                        <i
+                            class="fas fa-search-plus text-white opacity-0 group-hover:opacity-100 scale-50 group-hover:scale-100 transition-all duration-300 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Bar with Scrolling Counters -->
+        <section class="relative min-h-[300px] bg-[#1a2b3c] py-16 md:py-24 flex items-center">
+            <img src="https://images.unsplash.com/photo-1541971875076-8f970d573be6?auto=format&fit=crop&q=80&w=1920"
+                class="absolute inset-0 w-full h-full object-cover opacity-20 grayscale" alt="Stats background" />
+            <div class="relative z-10 w-full">
+                <div
+                    class="container mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 text-white text-center">
+                    <!-- Stat 1 -->
+                    <div class="flex flex-col items-center justify-center space-y-2">
+                        <span class="text-5xl md:text-7xl font-light tracking-tighter animated-counter"
+                            data-target="13">
+                            <span class="count">0</span>
+                        </span>
+                        <div class="text-center">
+                            <p class="text-[10px] md:text-[12px] font-bold uppercase tracking-[0.3em] text-[#78b3ce]">
+                                Producents</p>
+                            <p class="text-[9px] md:text-[10px] text-gray-400 mt-1">Dolor Sit Amet</p>
+                        </div>
+                    </div>
+                    <!-- Stat 2 -->
+                    <div class="flex flex-col items-center justify-center space-y-2">
+                        <span class="text-5xl md:text-7xl font-light tracking-tighter animated-counter"
+                            data-target="45">
+                            <span class="count">0</span>
+                        </span>
+                        <div class="text-center">
+                            <p class="text-[10px] md:text-[12px] font-bold uppercase tracking-[0.3em] text-[#78b3ce]">
+                                Workers</p>
+                            <p class="text-[9px] md:text-[10px] text-gray-400 mt-1">Vivamus vel nibh</p>
+                        </div>
+                    </div>
+                    <!-- Stat 3 -->
+                    <div class="flex flex-col items-center justify-center space-y-2">
+                        <span class="text-5xl md:text-7xl font-light tracking-tighter animated-counter"
+                            data-target="26">
+                            <span class="count">0</span>
+                        </span>
+                        <div class="text-center">
+                            <p class="text-[10px] md:text-[12px] font-bold uppercase tracking-[0.3em] text-[#78b3ce]">
+                                Creators</p>
+                            <p class="text-[9px] md:text-[10px] text-gray-400 mt-1">Nunc sollicitudin dol</p>
+                        </div>
+                    </div>
+                    <!-- Stat 4 -->
+                    <div class="flex flex-col items-center justify-center space-y-2">
+                        <span class="text-5xl md:text-7xl font-light tracking-tighter animated-counter"
+                            data-target="78">
+                            <span class="count">0</span>
+                        </span>
+                        <div class="text-center">
+                            <p class="text-[10px] md:text-[12px] font-bold uppercase tracking-[0.3em] text-[#78b3ce]">
+                                Years</p>
+                            <p class="text-[9px] md:text-[10px] text-gray-400 mt-1">Etiam fringillaqu</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- History Section -->
+        <section
+            class="py-20 md:py-32 max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+            <div class="text-center lg:text-left">
+                <p class="text-[9px] md:text-[11px] tracking-[0.5em] uppercase font-bold text-[#78b3ce] mb-6">OUR
+                    HISTORY</p>
+                <h2 class="text-3xl md:text-5xl lg:text-6xl font-light text-gray-700 leading-tight tracking-tight mb-8">
+                    The origin of the Business
+                </h2>
+                <p
+                    class="text-[14px] md:text-[15px] text-gray-400 leading-relaxed font-light mb-10 max-w-xl mx-auto lg:mx-0">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus et metus augue. Mauris ut libero
+                    eget erat scelerisque vehicula. Phasellus nec blandit metus. Nulla quis molestie risus.
+                </p>
+                <button
+                    class="bg-[#78b3ce] text-white px-10 py-4 text-[11px] tracking-[0.4em] font-bold uppercase hover:bg-[#1a2b3c] transition-all duration-300 shadow-lg">
+                    VIEW PRICES
+                </button>
+            </div>
+
+            <div class="relative group overflow-hidden shadow-2xl h-[400px] md:h-[550px]">
+                <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&q=80&w=800"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
+                    alt="History" />
+                <div
+                    class="absolute bottom-0 left-0 right-0 bg-[#1a2b3c]/90 text-white flex justify-around py-8 md:py-12 backdrop-blur-md">
+                    <div class="text-center">
+                        <p class="text-2xl md:text-3xl font-light">4+</p>
+                        <p class="text-[8px] md:text-[10px] tracking-[0.2em] font-bold uppercase opacity-60 mt-1">IDEA
+                        </p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-2xl md:text-3xl font-light">13</p>
+                        <p class="text-[8px] md:text-[10px] tracking-[0.2em] font-bold uppercase opacity-60 mt-1">START
+                        </p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-2xl md:text-3xl font-light">5 km</p>
+                        <p class="text-[8px] md:text-[10px] tracking-[0.2em] font-bold uppercase opacity-60 mt-1">
+                            SETTLING</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-2xl md:text-3xl font-light">26</p>
+                        <p class="text-[8px] md:text-[10px] tracking-[0.2em] font-bold uppercase opacity-60 mt-1">SHOP
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer Features -->
+        <section
+            class="py-20 md:py-32 border-t border-gray-50 max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12">
+            <!-- Feature 1 -->
+            <div class="flex flex-col items-center text-center space-y-4">
+                <div
+                    class="w-20 h-20 bg-white border border-gray-100 rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-110 duration-300 overflow-hidden p-4">
+                    <img src="https://dev.czapliskosiedlisko.pl/wp-content/uploads/2022/11/icon01.png"
+                        alt="The Beginning Icon" class="w-full h-full object-contain">
+                </div>
+                <h4 class="text-xl font-light text-gray-700">The Beginning</h4>
+                <p class="text-[12px] text-gray-400 font-light leading-relaxed px-4">Proin at varius arcu. Sed posuere
+                    orci bibendum pharetra dapibus.</p>
+            </div>
+            <!-- Feature 2 -->
+            <div class="flex flex-col items-center text-center space-y-4">
+                <div
+                    class="w-20 h-20 bg-white border border-gray-100 rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-110 duration-300 overflow-hidden p-4">
+                    <img src="https://dev.czapliskosiedlisko.pl/wp-content/uploads/2022/11/icon02.png"
+                        alt="Production Icon" class="w-full h-full object-contain">
+                </div>
+                <h4 class="text-xl font-light text-gray-700">Production</h4>
+                <p class="text-[12px] text-gray-400 font-light leading-relaxed px-4">Mauris ut libero eget erat
+                    scelerisque vehicula. Phasellus nec blandit.</p>
+            </div>
+            <!-- Feature 3 -->
+            <div class="flex flex-col items-center text-center space-y-4">
+                <div
+                    class="w-20 h-20 bg-white border border-gray-100 rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-110 duration-300 overflow-hidden p-4">
+                    <img src="https://dev.czapliskosiedlisko.pl/wp-content/uploads/2022/11/icon04.png"
+                        alt="Current Day Icon" class="w-full h-full object-contain">
+                </div>
+                <h4 class="text-xl font-light text-gray-700">Current Day</h4>
+                <p class="text-[12px] text-gray-400 font-light leading-relaxed px-4">Etiam tincidunt erat nunc, et
+                    dictum dui vestibulum ac.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Lightbox Overlay -->
+    <div id="lightbox"
+        class="fixed inset-0 z-[1000] bg-black/95 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <!-- Close Button -->
+        <button id="lightbox-close"
+            class="absolute top-6 right-6 text-white/50 hover:text-white text-4xl transition-colors z-[1010]">
+            <i class="fas fa-times"></i>
+        </button>
+
+        <!-- Navigation - Left -->
+        <button id="lightbox-prev"
+            class="absolute left-4 md:left-8 text-white/30 hover:text-white text-5xl transition-all hover:scale-110 z-[1010]">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+
+        <!-- Main Image Container -->
+        <div class="relative max-w-[90vw] max-h-[85vh] flex flex-col items-center">
+            <img id="lightbox-image" src="" class="max-w-full max-h-[85vh] object-contain shadow-2xl"
+                alt="Gallery Preview" />
+            <!-- Image Counter -->
+            <div id="lightbox-counter" class="mt-4 text-white/50 text-[11px] font-bold tracking-[0.5em] uppercase">
+                1 / 8
+            </div>
+        </div>
+
+        <!-- Navigation - Right -->
+        <button id="lightbox-next"
+            class="absolute right-4 md:right-8 text-white/30 hover:text-white text-5xl transition-all hover:scale-110 z-[1010]">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+
+    <!-- ========== FOOTER SECTION - START ========== -->
+    <footer class="bg-white border-t border-gray-100 font-['Montserrat']">
+        <div class="max-w-7xl mx-auto px-6 md:px-24 py-20 grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div>
+                <h4 class="text-[28px] font-normal text-gray-700 mb-10 tracking-tight">Visit us</h4>
+                <div class="text-[14px] text-gray-500 space-y-2 font-light tracking-wide">
+                    <p class="mb-4">Czaplisko Siedlisko</p>
+                    <p class="mb-4">Dog Friendly & Eco Guesthouse</p>
+                    <p class="mt-6">Skitławki 2A</p>
+                    <p>14-230 Zalewo</p>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="text-[28px] font-normal text-gray-700 mb-10 tracking-tight">Social media</h4>
+                <div class="flex space-x-6 items-center">
+                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
+                        aria-label="Visit our Facebook page"
+                        class="w-12 h-12 flex items-center justify-center border border-gray-400 text-[#4a6b8a] text-xl hover:text-white hover:bg-[#4a6b8a] hover:border-[#4a6b8a] transition-all duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 512 512"
+                            class="w-5 h-5 fill-current">
+                            <path
+                                d="M425.614 86.349C382.172 42.901 322.253 16.07 255.96 16.07c-66.292 0-126.209 26.831-169.652 70.278C42.865 129.793 16.029 189.707 16.029 256c0 66.29 26.836 126.209 70.279 169.652 43.443 43.447 103.359 70.276 169.652 70.276 66.293 0 126.212-26.829 169.654-70.276C469.057 382.209 495.896 322.29 495.896 256c0-66.292-26.838-126.206-70.282-169.651zm-13.149 326.15c-40.121 39.993-95.394 64.702-156.505 64.702-61.109 0-116.379-24.709-156.367-64.702-39.991-40.117-64.833-95.385-64.833-156.498 0-61.111 24.842-116.379 64.833-156.367 39.988-39.988 95.258-64.835 156.367-64.835 61.111 0 116.384 24.847 156.505 64.835 39.988 39.988 64.698 95.256 64.698 156.367 0 61.113-24.71 116.381-64.698 156.498z">
+                            </path>
+                            <path
+                                d="M276 187.316c0-9.433 4.537-13.316 9.061-13.316H314v-43h-39.307C232.58 131 222 164.729 222 184.925V204h-24v48h24v126h54V252h32.705l1.595-18.752L313.225 204H276v-16.684z">
+                            </path>
+                        </svg>
+                    </a>
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
+                        aria-label="Visit our Instagram profile"
+                        class="w-12 h-12 flex items-center justify-center border border-gray-400 text-[#4a6b8a] text-xl hover:text-white hover:bg-[#4a6b8a] hover:border-[#4a6b8a] transition-all duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"
+                            class="w-5 h-5 stroke-current fill-none">
+                            <rect width="256" height="256" fill="none"></rect>
+                            <circle cx="128" cy="128" r="40" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="8"></circle>
+                            <rect width="184" height="184" x="36" y="36" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="8" rx="48"></rect>
+                            <circle cx="180" cy="76" r="8" fill="currentColor" stroke="none"></circle>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="bg-[#4a6b8a] text-white py-5 px-6 md:px-24 flex flex-col md:flex-row justify-between items-center text-[11px] font-medium tracking-wide">
+            <p class="mb-4 md:mb-0 opacity-90">
+                Czaplisko Siedlisko - Dog Friendly & Eco Guesthouse © <span id="current-year"></span>
+            </p>
+
+            <div class="flex items-center space-x-12">
+                <div class="flex items-center space-x-4 mr-6 border-r border-white/20 pr-10">
+                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
+                        class="hover:text-[#78b3ce] transition-colors">FB</a>
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
+                        class="hover:text-[#78b3ce] transition-colors">IG</a>
+                </div>
+
+                <div class="flex items-center gap-6 opacity-60">
+                    <i class="fab fa-cc-visa text-lg hover:opacity-100 transition-opacity"></i>
+                    <i class="fab fa-cc-mastercard text-lg hover:opacity-100 transition-opacity"></i>
+                    <i class="fab fa-stripe text-lg hover:opacity-100 transition-opacity"></i>
+                    <i class="fab fa-cc-paypal text-lg hover:opacity-100 transition-opacity"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- ========== FOOTER SECTION - END ========== -->
+
+    <script src="js/main.js"></script>
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+
+</body>
+
+</html>

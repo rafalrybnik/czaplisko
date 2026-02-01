@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <title>Price List | Czaplisko Siedlisko - Seasonal Rates</title>
+    <meta name="description"
+        content="Check our seasonal price list for luxury suites and eco cabins. Summer and Winter rates available with special offers.">
+    <meta name="keywords" content="price list, rates, accommodation prices, seasonal offers, Western Masuria">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts - Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-white text-gray-800 antialiased">
+
+    <!-- ========== HEADER SECTION - START ========== -->
+    <!-- This is identical to index.html header - copy-paste ready -->
+    <header class="w-full bg-white font-['Montserrat'] sticky top-0 z-[100] shadow-sm md:relative md:shadow-none">
+        <div
+            class="bg-[#4a6b8a] text-white py-2 px-4 md:px-24 flex justify-between items-center text-[11px] font-medium tracking-wider">
+            <div class="flex items-center space-x-4 md:space-x-8">
+                <div class="flex items-center space-x-3">
+                    <span class="cursor-pointer hover:opacity-70 transition-opacity">PL</span>
+                    <span class="font-bold border-b border-white">EN</span>
+                </div>
+                <div class="flex items-center space-x-5 border-l border-white/20 pl-4 md:pl-6">
+                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
+                        class="hover:text-[#78b3ce] transition-colors duration-300" aria-label="Follow us on Facebook">
+                        <i class="fab fa-facebook-f text-[13px]"></i>
+                    </a>
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
+                        class="hover:text-[#78b3ce] transition-colors duration-300" aria-label="Follow us on Instagram">
+                        <i class="fab fa-instagram text-[13px]"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="apartments.html" class="flex items-center space-x-2 hover:opacity-70 transition-opacity group">
+                    <i class="far fa-star"></i>
+                    <span class="uppercase text-[10px] font-bold tracking-[0.1em]">OUR ROOMS</span>
+                </a>
+                <a href="contact.html" class="flex items-center space-x-2 hover:opacity-70 transition-opacity group">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span class="uppercase text-[10px] font-bold tracking-[0.1em]">CONTACT</span>
+                </a>
+            </div>
+
+            <div class="md:hidden flex items-center">
+                <a href="tel:+48123456789" class="text-white hover:text-[#78b3ce] transition-colors p-1"
+                    aria-label="Call us">
+                    <i class="fas fa-phone-alt"></i>
+                </a>
+            </div>
+        </div>
+
+        <div
+            class="px-6 py-4 md:py-10 flex flex-row md:flex-col items-center justify-between md:justify-center relative bg-white border-b border-gray-50 md:border-none">
+            <a href="index.html" class="flex flex-col items-center group">
+                <img src="https://i.ibb.co/q4Yf33P/logotyp-czaplisko-df-kolor-4x-kopia.png"
+                    alt="Czaplisko Siedlisko Logo"
+                    class="h-14 sm:h-16 md:h-56 lg:h-64 w-auto object-contain transition-transform duration-500 group-hover:scale-[1.03]">
+            </a>
+
+            <button id="mobile-menu-toggle"
+                class="md:hidden relative z-[150] w-12 h-12 flex items-center justify-center bg-gray-50 rounded-full text-[#4a6b8a] shadow-sm active:scale-90 transition-all"
+                aria-label="Toggle Menu">
+                <div class="w-6 h-5 flex flex-col justify-between items-center">
+                    <span class="block w-full h-0.5 bg-current transition-all duration-300"></span>
+                    <span class="block w-full h-0.5 bg-current transition-all duration-300"></span>
+                    <span class="block w-full h-0.5 bg-current transition-all duration-300"></span>
+                </div>
+            </button>
+        </div>
+
+        <nav class="hidden md:block border-t border-b border-gray-100 bg-white">
+            <div class="max-w-7xl mx-auto px-6 py-4 flex justify-center">
+                <ul
+                    class="flex flex-wrap justify-center items-center gap-x-10 gap-y-4 text-[13px] font-normal text-gray-500">
+                    <li>
+                        <a href="index.html"
+                            class="hover:text-gray-900 transition-colors uppercase tracking-wider relative group py-2">
+                            Start
+                            <span
+                                class="absolute bottom-0 left-0 w-full h-0.5 bg-[#78b3ce] transition-transform duration-300 origin-left scale-x-0 group-hover:scale-x-100"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="apartments.html"
+                            class="hover:text-gray-900 transition-colors uppercase tracking-wider relative group py-2">
+                            Apartments
+                            <span
+                                class="absolute bottom-0 left-0 w-full h-0.5 bg-[#78b3ce] transition-transform duration-300 origin-left scale-x-0 group-hover:scale-x-100"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="price-list.html"
+                            class="hover:text-gray-900 transition-colors uppercase tracking-wider relative group py-2 text-gray-900 font-medium">
+                            Price-list
+                            <span
+                                class="absolute bottom-0 left-0 w-full h-0.5 bg-[#78b3ce] transition-transform duration-300 origin-left scale-x-100"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="gallery.html"
+                            class="hover:text-gray-900 transition-colors uppercase tracking-wider relative group py-2">
+                            Gallery
+                            <span
+                                class="absolute bottom-0 left-0 w-full h-0.5 bg-[#78b3ce] transition-transform duration-300 origin-left scale-x-0 group-hover:scale-x-100"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="faq.html"
+                            class="hover:text-gray-900 transition-colors uppercase tracking-wider relative group py-2">
+                            Questions and Answers
+                            <span
+                                class="absolute bottom-0 left-0 w-full h-0.5 bg-[#78b3ce] transition-transform duration-300 origin-left scale-x-0 group-hover:scale-x-100"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="contact.html"
+                            class="hover:text-gray-900 transition-colors uppercase tracking-wider relative group py-2">
+                            Contact
+                            <span
+                                class="absolute bottom-0 left-0 w-full h-0.5 bg-[#78b3ce] transition-transform duration-300 origin-left scale-x-0 group-hover:scale-x-100"></span>
+                        </a>
+                    </li>
+                    <li class="ml-4">
+                        <button
+                            class="bg-[#78b3ce] text-white px-7 py-2 text-[12px] font-bold uppercase tracking-[0.1em] hover:bg-[#1a2b3c] transition-all shadow-md">
+                            BOOK NOW
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div id="mobile-menu"
+            class="md:hidden fixed inset-0 z-[140] bg-white transition-all duration-500 ease-in-out transform translate-x-full">
+            <div class="flex flex-col h-full">
+                <div class="h-[80px] flex items-center px-6 border-b border-gray-100">
+                    <span class="text-[#4a6b8a] font-bold text-[14px] tracking-[0.2em] uppercase">Siedlisko Menu</span>
+                </div>
+
+                <div class="flex-1 overflow-y-auto px-10 py-12 flex flex-col">
+                    <ul class="space-y-8">
+                        <li><a href="index.html"
+                                class="text-[22px] uppercase tracking-[0.2em] block w-full text-left transition-all duration-300 text-gray-500 font-light">Start</a>
+                        </li>
+                        <li><a href="apartments.html"
+                                class="text-[22px] uppercase tracking-[0.2em] block w-full text-left transition-all duration-300 text-gray-500 font-light">Apartments</a>
+                        </li>
+                        <li><a href="price-list.html"
+                                class="text-[22px] uppercase tracking-[0.2em] block w-full text-left transition-all duration-300 text-[#78b3ce] font-bold">Price-list</a>
+                        </li>
+                        <li><a href="gallery.html"
+                                class="text-[22px] uppercase tracking-[0.2em] block w-full text-left transition-all duration-300 text-gray-500 font-light">Gallery</a>
+                        </li>
+                        <li><a href="faq.html"
+                                class="text-[22px] uppercase tracking-[0.2em] block w-full text-left transition-all duration-300 text-gray-500 font-light">Questions
+                                and Answers</a></li>
+                        <li><a href="contact.html"
+                                class="text-[22px] uppercase tracking-[0.2em] block w-full text-left transition-all duration-300 text-gray-500 font-light">Contact</a>
+                        </li>
+                    </ul>
+
+                    <div class="mt-16 space-y-10">
+                        <button
+                            class="w-full bg-[#78b3ce] text-white py-5 font-bold uppercase tracking-[0.4em] text-[12px] shadow-lg">
+                            BOOK ONLINE
+                        </button>
+
+                        <div class="flex justify-center space-x-12 pb-6">
+                            <a href="https://facebook.com"
+                                class="text-3xl text-gray-300 hover:text-[#4a6b8a] transition-colors"><i
+                                    class="fab fa-facebook-f"></i></a>
+                            <a href="https://instagram.com"
+                                class="text-3xl text-gray-300 hover:text-[#78b3ce] transition-colors"><i
+                                    class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-10 bg-gray-50 text-center border-t border-gray-100">
+                    <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Western Masuria, Poland</p>
+                    <p class="text-[12px] text-[#4a6b8a] uppercase tracking-[0.2em] mt-2 font-bold">+48 123 456 789</p>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ========== HEADER SECTION - END ========== -->
+
+    <!-- Main Content -->
+    <main class="flex-grow bg-white overflow-hidden font-['Montserrat']">
+
+        <!-- Page Header -->
+        <section class="bg-gray-50 py-16 md:py-24 px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-light text-[#1a2b3c] tracking-tight mb-4 uppercase">Price List</h1>
+            <p class="text-[10px] md:text-[12px] tracking-[0.5em] font-bold text-[#78b3ce] uppercase">Premium
+                Accommodations</p>
+            <div class="w-16 h-[1px] bg-gray-200 mx-auto mt-10"></div>
+        </section>
+
+        <!-- Summer Section -->
+        <section class="relative py-20 md:py-32">
+            <!-- Thematic Background Elements -->
+            <div class="absolute top-0 right-0 w-1/3 h-full bg-gray-50/50 -z-10"></div>
+
+            <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                <!-- Label Content -->
+                <div class="lg:col-span-4 sticky top-32">
+                    <div class="flex items-center space-x-4 mb-6">
+                        <i class="fas fa-sun text-[#78b3ce] text-3xl"></i>
+                        <h2 class="text-5xl md:text-7xl font-light text-gray-800 tracking-tight uppercase">
+                            Summer
+                        </h2>
+                    </div>
+                    <p class="text-gray-400 text-sm font-light leading-loose max-w-xs mb-8">
+                        Experience the vibrant energy of Western Masuria in full bloom. Long days, crystal clear waters,
+                        and absolute tranquility.
+                    </p>
+                    <div class="flex space-x-2">
+                        <div class="w-10 h-[1px] bg-[#78b3ce] mt-3"></div>
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-gray-300">Available May -
+                            Sept</span>
+                    </div>
+                </div>
+
+                <!-- List Card -->
+                <div class="lg:col-span-8">
+                    <div class="bg-white shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] p-6 md:p-12 lg:p-16 relative">
+                        <div class="absolute -top-10 -right-10 w-40 h-40 bg-[#78b3ce]/5 rounded-full blur-3xl -z-10">
+                        </div>
+
+                        <!-- Item 1 -->
+                        <div
+                            class="flex flex-col sm:flex-row items-start sm:items-center justify-between py-6 md:py-8 border-b border-gray-100 last:border-0 gap-4 sm:gap-0 group hover:bg-gray-50/50 transition-colors px-4 -mx-4">
+                            <div class="flex items-center space-x-6 md:space-x-10 flex-1">
+                                <div
+                                    class="w-16 h-16 md:w-20 md:h-20 overflow-hidden bg-gray-50 flex-shrink-0 shadow-sm">
+                                    <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=200"
+                                        alt="Luxury Suite"
+                                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+                                </div>
+                                <div>
+                                    <h3 class="text-base md:text-lg font-light text-gray-700 mb-1 tracking-tight">Luxury
+                                        Suite</h3>
+                                    <p
+                                        class="text-[11px] md:text-[12px] text-gray-400 font-light leading-relaxed max-w-sm">
+                                        Our finest room with panoramic lake views and private terrace access.
+                                    </p>
+                                </div>
+                            </div>
+                            <div
+                                class="text-left sm:text-right flex flex-row sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto mt-2 sm:mt-0">
+                                <span class="text-gray-900 text-lg md:text-xl font-light sm:mb-2">$174</span>
+                                <span
+                                    class="text-[8px] font-bold tracking-[0.15em] text-white px-3 py-1.5 rounded-[1px] bg-[#78b3ce] uppercase shadow-sm">
+                                    POPULAR
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Item 2 -->
+                        <div
+                            class="flex flex-col sm:flex-row items-start sm:items-center justify-between py-6 md:py-8 border-b border-gray-100 last:border-0 gap-4 sm:gap-0 group hover:bg-gray-50/50 transition-colors px-4 -mx-4">
+                            <div class="flex items-center space-x-6 md:space-x-10 flex-1">
+                                <div
+                                    class="w-16 h-16 md:w-20 md:h-20 overflow-hidden bg-gray-50 flex-shrink-0 shadow-sm">
+                                    <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&q=80&w=200"
+                                        alt="Family Studio"
+                                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+                                </div>
+                                <div>
+                                    <h3 class="text-base md:text-lg font-light text-gray-700 mb-1 tracking-tight">Family
+                                        Studio</h3>
+                                    <p
+                                        class="text-[11px] md:text-[12px] text-gray-400 font-light leading-relaxed max-w-sm">
+                                        Spacious multi-room studio perfect for families with pets.
+                                    </p>
+                                </div>
+                            </div>
+                            <div
+                                class="text-left sm:text-right flex flex-row sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto mt-2 sm:mt-0">
+                                <span class="text-gray-900 text-lg md:text-xl font-light sm:mb-2">$129</span>
+                                <span
+                                    class="text-[8px] font-bold tracking-[0.15em] text-white px-3 py-1.5 rounded-[1px] bg-[#1a2b3c] uppercase shadow-sm">
+                                    HOT
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Item 3 -->
+                        <div
+                            class="flex flex-col sm:flex-row items-start sm:items-center justify-between py-6 md:py-8 border-b border-gray-100 last:border-0 gap-4 sm:gap-0 group hover:bg-gray-50/50 transition-colors px-4 -mx-4">
+                            <div class="flex items-center space-x-6 md:space-x-10 flex-1">
+                                <div
+                                    class="w-16 h-16 md:w-20 md:h-20 overflow-hidden bg-gray-50 flex-shrink-0 shadow-sm">
+                                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=200"
+                                        alt="Eco Cabin"
+                                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+                                </div>
+                                <div>
+                                    <h3 class="text-base md:text-lg font-light text-gray-700 mb-1 tracking-tight">Eco
+                                        Cabin</h3>
+                                    <p
+                                        class="text-[11px] md:text-[12px] text-gray-400 font-light leading-relaxed max-w-sm">
+                                        Sustainable living at its best. Solar powered and near the woods.
+                                    </p>
+                                </div>
+                            </div>
+                            <div
+                                class="text-left sm:text-right flex flex-row sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto mt-2 sm:mt-0">
+                                <span class="text-gray-900 text-lg md:text-xl font-light sm:mb-2">$94</span>
+                                <span
+                                    class="text-[8px] font-bold tracking-[0.15em] text-white px-3 py-1.5 rounded-[1px] bg-[#78b3ce] uppercase shadow-sm">
+                                    NEW
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Item 4 -->
+                        <div
+                            class="flex flex-col sm:flex-row items-start sm:items-center justify-between py-6 md:py-8 border-b border-gray-100 last:border-0 gap-4 sm:gap-0 group hover:bg-gray-50/50 transition-colors px-4 -mx-4">
+                            <div class="flex items-center space-x-6 md:space-x-10 flex-1">
+                                <div
+                                    class="w-16 h-16 md:w-20 md:h-20 overflow-hidden bg-gray-50 flex-shrink-0 shadow-sm">
+                                    <img src="https://images.unsplash.com/photo-1445019980597-93fa8acb246c?auto=format&fit=crop&q=80&w=200"
+                                        alt="Standard Double"
+                                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+                                </div>
+                                <div>
+                                    <h3 class="text-base md:text-lg font-light text-gray-700 mb-1 tracking-tight">
+                                        Standard Double</h3>
+                                    <p
+                                        class="text-[11px] md:text-[12px] text-gray-400 font-light leading-relaxed max-w-sm">
+                                        Comfortable and cozy room for a weekend getaway.
+                                    </p>
+                                </div>
+                            </div>
+                            <div
+                                class="text-left sm:text-right flex flex-row sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto mt-2 sm:mt-0">
+                                <span class="text-gray-900 text-lg md:text-xl font-light sm:mb-2">$111</span>
+                                <span
+                                    class="text-[8px] font-bold tracking-[0.15em] text-white px-3 py-1.5 rounded-[1px] bg-[#78b3ce]/60 uppercase shadow-sm">
+                                    PROMO
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Winter Section -->
+        <section class="relative py-20 md:py-32 bg-[#1a2b3c]">
+            <!-- Subtle texture or image overlay -->
+            <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
+                <img src="https://images.unsplash.com/photo-1483921020237-2ff51e8e4b22?auto=format&fit=crop&q=80&w=1920"
+                    class="w-full h-full object-cover grayscale" alt="Winter texture" />
+            </div>
+
+            <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start relative z-10">
+
+                <!-- List Card (Desktop First for Alternating feel) -->
+                <div class="lg:col-span-8 order-2 lg:order-1">
+                    <div class="bg-white shadow-2xl p-6 md:p-12 lg:p-16">
+
+                        <!-- Item 1 -->
+                        <div
+                            class="flex flex-col sm:flex-row items-start sm:items-center justify-between py-6 md:py-8 border-b border-gray-100 last:border-0 gap-4 sm:gap-0 group hover:bg-gray-50/50 transition-colors px-4 -mx-4">
+                            <div class="flex items-center space-x-6 md:space-x-10 flex-1">
+                                <div
+                                    class="w-16 h-16 md:w-20 md:h-20 overflow-hidden bg-gray-50 flex-shrink-0 shadow-sm">
+                                    <img src="https://images.unsplash.com/photo-1445510861639-5651173bc5d5?auto=format&fit=crop&q=80&w=200"
+                                        alt="Snowview Loft"
+                                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+                                </div>
+                                <div>
+                                    <h3 class="text-base md:text-lg font-light text-gray-700 mb-1 tracking-tight">
+                                        Snowview Loft</h3>
+                                    <p
+                                        class="text-[11px] md:text-[12px] text-gray-400 font-light leading-relaxed max-w-sm">
+                                        Heated floors and a fireplace to enjoy the winter landscape.
+                                    </p>
+                                </div>
+                            </div>
+                            <div
+                                class="text-left sm:text-right flex flex-row sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto mt-2 sm:mt-0">
+                                <span class="text-gray-900 text-lg md:text-xl font-light sm:mb-2">$176</span>
+                                <span
+                                    class="text-[8px] font-bold tracking-[0.15em] text-white px-3 py-1.5 rounded-[1px] bg-[#1a2b3c] uppercase shadow-sm">
+                                    PREMIUM
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Item 2 -->
+                        <div
+                            class="flex flex-col sm:flex-row items-start sm:items-center justify-between py-6 md:py-8 border-b border-gray-100 last:border-0 gap-4 sm:gap-0 group hover:bg-gray-50/50 transition-colors px-4 -mx-4">
+                            <div class="flex items-center space-x-6 md:space-x-10 flex-1">
+                                <div
+                                    class="w-16 h-16 md:w-20 md:h-20 overflow-hidden bg-gray-50 flex-shrink-0 shadow-sm">
+                                    <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&q=80&w=200"
+                                        alt="Fireside Suite"
+                                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+                                </div>
+                                <div>
+                                    <h3 class="text-base md:text-lg font-light text-gray-700 mb-1 tracking-tight">
+                                        Fireside Suite</h3>
+                                    <p
+                                        class="text-[11px] md:text-[12px] text-gray-400 font-light leading-relaxed max-w-sm">
+                                        Romantic setting with a focus on relaxation and wellness.
+                                    </p>
+                                </div>
+                            </div>
+                            <div
+                                class="text-left sm:text-right flex flex-row sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto mt-2 sm:mt-0">
+                                <span class="text-gray-900 text-lg md:text-xl font-light sm:mb-2">$119</span>
+                                <span
+                                    class="text-[8px] font-bold tracking-[0.15em] text-white px-3 py-1.5 rounded-[1px] bg-[#78b3ce] uppercase shadow-sm">
+                                    HOT DEAL
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Item 3 -->
+                        <div
+                            class="flex flex-col sm:flex-row items-start sm:items-center justify-between py-6 md:py-8 border-b border-gray-100 last:border-0 gap-4 sm:gap-0 group hover:bg-gray-50/50 transition-colors px-4 -mx-4">
+                            <div class="flex items-center space-x-6 md:space-x-10 flex-1">
+                                <div
+                                    class="w-16 h-16 md:w-20 md:h-20 overflow-hidden bg-gray-50 flex-shrink-0 shadow-sm">
+                                    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=200"
+                                        alt="Garden Room"
+                                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+                                </div>
+                                <div>
+                                    <h3 class="text-base md:text-lg font-light text-gray-700 mb-1 tracking-tight">Garden
+                                        Room</h3>
+                                    <p
+                                        class="text-[11px] md:text-[12px] text-gray-400 font-light leading-relaxed max-w-sm">
+                                        Quiet and peaceful room facing our frost-covered organic gardens.
+                                    </p>
+                                </div>
+                            </div>
+                            <div
+                                class="text-left sm:text-right flex flex-row sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto mt-2 sm:mt-0">
+                                <span class="text-gray-900 text-lg md:text-xl font-light sm:mb-2">$145</span>
+                                <span
+                                    class="text-[8px] font-bold tracking-[0.15em] text-white px-3 py-1.5 rounded-[1px] bg-[#78b3ce]/60 uppercase shadow-sm">
+                                    LIMITED
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Item 4 -->
+                        <div
+                            class="flex flex-col sm:flex-row items-start sm:items-center justify-between py-6 md:py-8 border-b border-gray-100 last:border-0 gap-4 sm:gap-0 group hover:bg-gray-50/50 transition-colors px-4 -mx-4">
+                            <div class="flex items-center space-x-6 md:space-x-10 flex-1">
+                                <div
+                                    class="w-16 h-16 md:w-20 md:h-20 overflow-hidden bg-gray-50 flex-shrink-0 shadow-sm">
+                                    <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=200"
+                                        alt="Budget Single"
+                                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+                                </div>
+                                <div>
+                                    <h3 class="text-base md:text-lg font-light text-gray-700 mb-1 tracking-tight">Budget
+                                        Single</h3>
+                                    <p
+                                        class="text-[11px] md:text-[12px] text-gray-400 font-light leading-relaxed max-w-sm">
+                                        Essential comfort for solo travelers or eco-digital nomads.
+                                    </p>
+                                </div>
+                            </div>
+                            <div
+                                class="text-left sm:text-right flex flex-row sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto mt-2 sm:mt-0">
+                                <span class="text-gray-900 text-lg md:text-xl font-light sm:mb-2">$80</span>
+                                <span
+                                    class="text-[8px] font-bold tracking-[0.15em] text-white px-3 py-1.5 rounded-[1px] bg-[#1a2b3c]/70 uppercase shadow-sm">
+                                    SAVER
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Label Content -->
+                <div class="lg:col-span-4 order-1 lg:order-2 lg:pl-12 sticky top-32">
+                    <div class="flex items-center space-x-4 mb-6">
+                        <i class="fas fa-snowflake text-[#78b3ce] text-3xl"></i>
+                        <h2 class="text-5xl md:text-7xl font-light text-white tracking-tight uppercase">
+                            Winter <span class="text-[#78b3ce]">Sale</span>
+                        </h2>
+                    </div>
+                    <p class="text-gray-400 text-sm font-light leading-loose max-w-xs mb-8">
+                        Cozy up in our eco-guesthouse. Enjoy special off-season rates for the ultimate winter escape and
+                        spa experiences.
+                    </p>
+                    <div class="flex space-x-2">
+                        <div class="w-10 h-[1px] bg-[#78b3ce] mt-3"></div>
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-[#78b3ce]">Available Oct -
+                            April</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Booking CTA -->
+        <section class="py-24 text-center">
+            <h3 class="text-3xl font-light text-gray-700 mb-8">Ready to book your serenity?</h3>
+            <button
+                class="bg-[#78b3ce] text-white px-12 py-5 text-[11px] tracking-[0.4em] font-bold uppercase hover:bg-[#1a2b3c] transition-all duration-500 shadow-xl hover:shadow-2xl active:scale-95">
+                Reserve your stay
+            </button>
+        </section>
+
+    </main>
+
+    <!-- ========== FOOTER SECTION - START ========== -->
+    <footer class="bg-white border-t border-gray-100 font-['Montserrat']">
+        <div class="max-w-7xl mx-auto px-6 md:px-24 py-20 grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div>
+                <h4 class="text-[28px] font-normal text-gray-700 mb-10 tracking-tight">Visit us</h4>
+                <div class="text-[14px] text-gray-500 space-y-2 font-light tracking-wide">
+                    <p class="mb-4">Czaplisko Siedlisko</p>
+                    <p class="mb-4">Dog Friendly & Eco Guesthouse</p>
+                    <p class="mt-6">Skitławki 2A</p>
+                    <p>14-230 Zalewo</p>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="text-[28px] font-normal text-gray-700 mb-10 tracking-tight">Social media</h4>
+                <div class="flex space-x-6 items-center">
+                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
+                        aria-label="Visit our Facebook page"
+                        class="w-12 h-12 flex items-center justify-center border border-gray-400 text-[#4a6b8a] text-xl hover:text-white hover:bg-[#4a6b8a] hover:border-[#4a6b8a] transition-all duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 512 512"
+                            class="w-5 h-5 fill-current">
+                            <path
+                                d="M425.614 86.349C382.172 42.901 322.253 16.07 255.96 16.07c-66.292 0-126.209 26.831-169.652 70.278C42.865 129.793 16.029 189.707 16.029 256c0 66.29 26.836 126.209 70.279 169.652 43.443 43.447 103.359 70.276 169.652 70.276 66.293 0 126.212-26.829 169.654-70.276C469.057 382.209 495.896 322.29 495.896 256c0-66.292-26.838-126.206-70.282-169.651zm-13.149 326.15c-40.121 39.993-95.394 64.702-156.505 64.702-61.109 0-116.379-24.709-156.367-64.702-39.991-40.117-64.833-95.385-64.833-156.498 0-61.111 24.842-116.379 64.833-156.367 39.988-39.988 95.258-64.835 156.367-64.835 61.111 0 116.384 24.847 156.505 64.835 39.988 39.988 64.698 95.256 64.698 156.367 0 61.113-24.71 116.381-64.698 156.498z">
+                            </path>
+                            <path
+                                d="M276 187.316c0-9.433 4.537-13.316 9.061-13.316H314v-43h-39.307C232.58 131 222 164.729 222 184.925V204h-24v48h24v126h54V252h32.705l1.595-18.752L313.225 204H276v-16.684z">
+                            </path>
+                        </svg>
+                    </a>
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
+                        aria-label="Visit our Instagram profile"
+                        class="w-12 h-12 flex items-center justify-center border border-gray-400 text-[#4a6b8a] text-xl hover:text-white hover:bg-[#78b3ce] hover:border-[#78b3ce] transition-all duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"
+                            class="w-5 h-5 stroke-current fill-none">
+                            <rect width="256" height="256" fill="none"></rect>
+                            <circle cx="128" cy="128" r="40" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="8"></circle>
+                            <rect width="184" height="184" x="36" y="36" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="8" rx="48"></rect>
+                            <circle cx="180" cy="76" r="8" fill="currentColor" stroke="none"></circle>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="bg-[#4a6b8a] text-white py-5 px-6 md:px-24 flex flex-col md:flex-row justify-between items-center text-[11px] font-medium tracking-wide">
+            <p class="mb-4 md:mb-0 opacity-90">
+                Czaplisko Siedlisko - Dog Friendly & Eco Guesthouse © <span id="current-year"></span>
+            </p>
+
+            <div class="flex items-center space-x-12">
+                <div class="flex items-center space-x-4 mr-6 border-r border-white/20 pr-10">
+                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
+                        class="hover:text-[#78b3ce] transition-colors">FB</a>
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
+                        class="hover:text-[#78b3ce] transition-colors">IG</a>
+                </div>
+
+                <div class="flex items-center gap-6 opacity-60">
+                    <i class="fab fa-cc-visa text-lg hover:opacity-100 transition-opacity"></i>
+                    <i class="fab fa-cc-mastercard text-lg hover:opacity-100 transition-opacity"></i>
+                    <i class="fab fa-stripe text-lg hover:opacity-100 transition-opacity"></i>
+                    <i class="fab fa-cc-paypal text-lg hover:opacity-100 transition-opacity"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- ========== FOOTER SECTION - END ========== -->
+
+    <script src="js/main.js"></script>
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+
+</body>
+
+</html>
