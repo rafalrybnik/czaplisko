@@ -39,6 +39,10 @@ COPY --from=builder /app/.output ./.output
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
+COPY --from=builder /app/start.sh ./start.sh
+
+# Make start script executable
+RUN chmod +x ./start.sh
 
 USER nuxtjs
 
@@ -47,4 +51,4 @@ EXPOSE 3000
 ENV HOST=0.0.0.0
 ENV PORT=3000
 
-CMD ["node", ".output/server/index.mjs"]
+CMD ["./start.sh"]
