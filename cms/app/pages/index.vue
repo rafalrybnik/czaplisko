@@ -1,51 +1,362 @@
-<template>
-  <div class="min-h-screen bg-gradient-to-br from-[#1a2b3c] to-[#4a6b8a] text-white">
-    <div class="container mx-auto px-4 py-16">
-      <div class="text-center max-w-2xl mx-auto">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4">Czaplisko Siedlisko</h1>
-        <p class="text-xl text-white/80 mb-8">
-          Ekologiczny pensjonat przyjazny psom w sercu Mazur Zachodnich
-        </p>
+<script setup lang="ts">
+definePageMeta({
+  layout: 'public',
+})
 
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <NuxtLink
-            to="/admin"
-            class="px-8 py-3 bg-[#78b3ce] hover:bg-[#4a6b8a] rounded-lg font-medium transition-colors"
-          >
-            Panel Administracyjny
-          </NuxtLink>
-          <a
-            href="/"
-            class="px-8 py-3 bg-white/10 hover:bg-white/20 rounded-lg font-medium transition-colors"
-          >
-            Strona główna (wkrótce)
-          </a>
+useSeoMeta({
+  title: 'Czaplisko Siedlisko | Dog Friendly & Eco Guesthouse',
+  description: 'Ekologiczny pensjonat przyjazny psom w sercu Mazur Zachodnich. Nowoczesny komfort w rustykalnym wydaniu.',
+})
+
+// Fetch data from API
+const { data: apartments } = await useFetch('/api/public/apartments')
+const { data: newsResponse } = await useFetch('/api/public/news')
+
+const news = computed(() => newsResponse.value?.data?.slice(0, 3) || [])
+
+// Hero slider logic
+const currentSlide = ref(0)
+const slides = [
+  { image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=80&w=1920', alt: 'Pensjonat zewnatrz' },
+  { image: 'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&q=80&w=1920', alt: 'Dom nad jeziorem' },
+  { image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&q=80&w=1920', alt: 'Wellness i spa' },
+  { image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&q=80&w=1920', alt: 'Przytulne wnetrze' },
+]
+
+let slideInterval: ReturnType<typeof setInterval> | null = null
+
+function goToSlide(index: number) {
+  currentSlide.value = index
+}
+
+function nextSlide() {
+  currentSlide.value = (currentSlide.value + 1) % slides.length
+}
+
+onMounted(() => {
+  slideInterval = setInterval(nextSlide, 5000)
+})
+
+onUnmounted(() => {
+  if (slideInterval) clearInterval(slideInterval)
+})
+</script>
+
+<template>
+  <!-- Hero Section -->
+  <section class="relative min-h-[600px] md:h-[800px] w-full bg-[#1a2b3c] overflow-hidden flex items-center">
+    <!-- Background Image Carousel -->
+    <div
+      v-for="(slide, index) in slides"
+      :key="index"
+      class="absolute inset-0 transition-opacity duration-[2000ms] ease-in-out"
+      :class="index === currentSlide ? 'opacity-70' : 'opacity-0'"
+    >
+      <img
+        :src="slide.image"
+        :alt="slide.alt"
+        class="w-full h-full object-cover transition-transform duration-[10000ms] ease-linear"
+        :class="{ 'scale-110': index === currentSlide }"
+      >
+    </div>
+
+    <!-- Gradient Overlays -->
+    <div class="absolute inset-0 bg-gradient-to-r from-black/60 md:from-black/50 via-transparent to-transparent"></div>
+    <div class="absolute inset-0 bg-black/10"></div>
+
+    <div class="relative z-10 container mx-auto h-full flex flex-col lg:flex-row items-center justify-between px-6 lg:px-24 py-12 lg:py-0">
+      <!-- Left Side: Vertical Tabs -->
+      <div class="flex flex-col space-y-4 md:space-y-6 w-full lg:w-[350px] mt-12 lg:mt-0 order-2 lg:order-1">
+        <div class="p-6 md:p-8 border-l-4 transition-all duration-500 transform hover:-translate-y-1 bg-white/10 border-[#78b3ce] translate-x-2">
+          <h3 class="text-white font-bold text-[10px] md:text-[11px] uppercase tracking-[0.25em] mb-2 md:mb-3">
+            Komfortowe Pokoje
+          </h3>
+          <p class="text-gray-300 text-[10px] md:text-[11px] leading-relaxed font-light opacity-80">
+            Przestronne apartamenty z widokiem na jezioro i las. Idealne dla rodzin z psami.
+          </p>
+        </div>
+        <div class="p-6 md:p-8 border-l-4 transition-all duration-500 transform hover:-translate-y-1 bg-white/5 border-transparent hover:bg-white/10">
+          <h3 class="text-white font-bold text-[10px] md:text-[11px] uppercase tracking-[0.25em] mb-2 md:mb-3">
+            Idealne Wakacje
+          </h3>
+          <p class="text-gray-300 text-[10px] md:text-[11px] leading-relaxed font-light opacity-80">
+            Cisza, spokój i kontakt z natura. Wypoczynek jakiego szukasz.
+          </p>
+        </div>
+        <div class="p-6 md:p-8 border-l-4 transition-all duration-500 transform hover:-translate-y-1 bg-white/5 border-transparent hover:bg-white/10">
+          <h3 class="text-white font-bold text-[10px] md:text-[11px] uppercase tracking-[0.25em] mb-2 md:mb-3">
+            Ekologia i Natura
+          </h3>
+          <p class="text-gray-300 text-[10px] md:text-[11px] leading-relaxed font-light opacity-80">
+            Certyfikowany ekologiczny pensjonat. Dbamy o srodowisko.
+          </p>
         </div>
       </div>
 
-      <!-- Stats -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 max-w-4xl mx-auto">
-        <div class="bg-white/10 rounded-xl p-6 text-center backdrop-blur-sm">
-          <p class="text-3xl font-bold">{{ apartments?.length || 0 }}</p>
-          <p class="text-white/70">Apartamenty</p>
-        </div>
-        <div class="bg-white/10 rounded-xl p-6 text-center backdrop-blur-sm">
-          <p class="text-3xl font-bold">{{ news?.length || 0 }}</p>
-          <p class="text-white/70">Aktualności</p>
-        </div>
-        <div class="bg-white/10 rounded-xl p-6 text-center backdrop-blur-sm">
-          <p class="text-3xl font-bold">{{ media?.length || 0 }}</p>
-          <p class="text-white/70">Zdjęcia</p>
+      <!-- Right Side: Main Hero Content -->
+      <div class="w-full lg:w-1/2 text-center lg:text-right order-1 lg:order-2">
+        <p class="text-[#78b3ce] text-[10px] md:text-[11px] tracking-[0.6em] font-bold uppercase mb-4 animate-pulse">
+          ODKRYJ SPOKOJ
+        </p>
+        <h1 class="text-4xl md:text-6xl lg:text-8xl font-light text-white mb-6 md:mb-8 tracking-tight leading-[1.1]">
+          Relaksujace <br class="hidden lg:block"> Wakacje
+        </h1>
+        <p class="text-[13px] md:text-base font-light leading-relaxed text-gray-200 mb-8 md:mb-12 max-w-lg lg:ml-auto opacity-100 mx-auto lg:mx-0">
+          Przezyj niezapomniane chwile na Mazurach Zachodnich. Nasz ekologiczny pensjonat to idealne miejsce na wypoczynek w otoczeniu dziewiczej natury i absolutnego spokoju.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center lg:justify-end gap-4 md:gap-6">
+          <NuxtLink
+            to="/apartamenty"
+            class="px-10 md:px-14 py-4 md:py-5 border border-white text-[10px] md:text-[11px] tracking-[0.45em] uppercase text-white hover:bg-white hover:text-[#1a2b3c] transition-all duration-500 font-bold"
+          >
+            Zobacz Apartamenty
+          </NuxtLink>
         </div>
       </div>
     </div>
-  </div>
+
+    <!-- Navigation Indicators -->
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 lg:left-auto lg:right-24 lg:translate-x-0 z-20 flex space-x-4">
+      <button
+        v-for="(slide, index) in slides"
+        :key="index"
+        @click="goToSlide(index)"
+        class="group relative h-1 transition-all duration-500"
+        :class="index === currentSlide ? 'w-12 bg-[#78b3ce]' : 'w-6 bg-white/40 hover:bg-white/60'"
+        :aria-label="`Slajd ${index + 1}`"
+      >
+        <span class="absolute -top-6 left-0 text-[9px] font-bold text-white opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-tighter">
+          {{ String(index + 1).padStart(2, '0') }}
+        </span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Intro Section -->
+  <section class="py-16 md:py-24 bg-white">
+    <div class="max-w-4xl mx-auto text-center px-6">
+      <p class="text-[9px] md:text-[10px] tracking-[0.4em] md:tracking-[0.5em] font-bold text-[#78b3ce] uppercase mb-4 md:mb-6">
+        Witamy w Czaplisku
+      </p>
+      <h2 class="text-3xl md:text-5xl font-light text-gray-700 leading-tight mb-6 md:mb-8">
+        Twoja oaza spokoju w sercu Mazur Zachodnich
+      </h2>
+      <p class="text-[13px] md:text-[14px] text-gray-400 font-light leading-relaxed max-w-2xl mx-auto mb-10 md:mb-12">
+        Przezyj prawdziwa harmonie z natura. Nasz ekologiczny pensjonat oferuje unikalne polaczenie nowoczesnego komfortu i wiejskiego uroku, gdzie kazdy gosc — rowniez ten czworonozny — jest traktowany z krolewska troska.
+      </p>
+      <div class="flex justify-center gap-6 md:gap-10 opacity-80 text-[#78b3ce]">
+        <i class="fas fa-leaf text-2xl md:text-3xl"></i>
+        <i class="fas fa-paw text-2xl md:text-3xl"></i>
+        <i class="fas fa-solar-panel text-2xl md:text-3xl"></i>
+        <i class="fas fa-recycle text-2xl md:text-3xl"></i>
+      </div>
+    </div>
+  </section>
+
+  <!-- Apartments Preview Section -->
+  <section class="pb-16 md:pb-24 bg-white">
+    <div class="text-center mb-12 md:mb-16">
+      <p class="text-[9px] md:text-[10px] tracking-[0.5em] font-bold text-gray-300 uppercase mb-3">Luksusowe Pokoje</p>
+      <h2 class="text-4xl md:text-5xl font-light text-gray-600 tracking-tight">Nasze Apartamenty</h2>
+      <div class="w-20 h-[1px] bg-[#78b3ce] mx-auto mt-6"></div>
+    </div>
+    <NuxtLink
+      to="/apartamenty"
+      class="block mt-12 md:mt-16 w-full h-[350px] md:h-[600px] overflow-hidden relative cursor-pointer group"
+    >
+      <img
+        src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=1920"
+        alt="Widok apartamentu"
+        class="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
+      >
+      <div class="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-700"></div>
+      <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <span class="bg-white/95 px-8 md:px-12 py-3 md:py-5 text-[9px] md:text-[10px] tracking-[0.3em] md:tracking-[0.4em] font-bold uppercase text-[#1a2b3c] shadow-2xl opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+          Odkryj Apartamenty
+        </span>
+      </div>
+    </NuxtLink>
+  </section>
+
+  <!-- Features Section -->
+  <section class="py-16 md:py-32 px-6 md:px-12 max-w-7xl mx-auto overflow-hidden bg-white">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start mb-16 md:mb-28">
+      <div class="lg:col-span-5 text-center lg:text-right lg:pr-12">
+        <h2 class="text-3xl md:text-[48px] font-light text-gray-500 leading-[1.2] tracking-tight">
+          Najlepszy wypoczynek nad jeziorem na Mazurach Zachodnich
+        </h2>
+      </div>
+
+      <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
+        <div class="relative h-[280px] md:h-[340px] group overflow-hidden shadow-xl">
+          <img
+            src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&q=80&w=800"
+            class="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110"
+            alt="Taras"
+          >
+          <div class="absolute inset-0 bg-black/15 group-hover:bg-black/5 transition-colors"></div>
+          <div class="absolute inset-0 p-8 md:p-12 flex flex-col justify-end">
+            <h3 class="text-white text-2xl md:text-3xl font-light tracking-wide drop-shadow-md">Taras</h3>
+            <p class="text-[#78b3ce] text-[9px] md:text-[10px] font-bold uppercase tracking-[0.4em] mt-2 drop-shadow-sm">Z widokiem</p>
+          </div>
+        </div>
+        <div class="relative h-[280px] md:h-[340px] group overflow-hidden shadow-xl">
+          <img
+            src="https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&q=80&w=800"
+            class="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110"
+            alt="Pomost"
+          >
+          <div class="absolute inset-0 bg-black/15 group-hover:bg-black/5 transition-colors"></div>
+          <div class="absolute inset-0 p-8 md:p-12 flex flex-col justify-end">
+            <h3 class="text-white text-2xl md:text-3xl font-light tracking-wide drop-shadow-md">Pomost</h3>
+            <p class="text-[#78b3ce] text-[9px] md:text-[10px] font-bold uppercase tracking-[0.4em] mt-2 drop-shadow-sm">Nad jeziorem</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 lg:gap-x-20 gap-y-12 md:gap-y-20 max-w-5xl mx-auto">
+      <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-8 lg:space-x-10 items-start sm:items-center md:items-start group">
+        <div class="flex-shrink-0 w-[60px] h-[60px] md:w-[70px] md:h-[70px] border border-gray-100 flex items-center justify-center p-3 shadow-sm hover:shadow-md transition-all duration-300 rounded-full bg-white">
+          <i class="fas fa-paw text-2xl text-[#78b3ce]"></i>
+        </div>
+        <div>
+          <p class="text-[12px] md:text-[13px] text-gray-400 leading-[1.8] md:leading-[2] mb-3 md:mb-5 font-light">
+            Pensjonat przyjazny psom. Twoj czworonozny przyjaciel jest u nas mile widziany i moze korzystac z calego terenu.
+          </p>
+          <NuxtLink
+            to="/faq"
+            class="text-[9px] md:text-[10px] font-bold tracking-[0.35em] uppercase text-[#1a2b3c] hover:text-[#78b3ce] transition-colors inline-block border-b border-gray-100 pb-1"
+          >
+            WIECEJ INFO
+          </NuxtLink>
+        </div>
+      </div>
+      <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-8 lg:space-x-10 items-start sm:items-center md:items-start group">
+        <div class="flex-shrink-0 w-[60px] h-[60px] md:w-[70px] md:h-[70px] border border-gray-100 flex items-center justify-center p-3 shadow-sm hover:shadow-md transition-all duration-300 rounded-full bg-white">
+          <i class="fas fa-leaf text-2xl text-[#78b3ce]"></i>
+        </div>
+        <div>
+          <p class="text-[12px] md:text-[13px] text-gray-400 leading-[1.8] md:leading-[2] mb-3 md:mb-5 font-light">
+            Certyfikowany ekologiczny obiekt. Korzystamy z energii odnawialnej i dbamy o minimalizacje naszego wplywu na srodowisko.
+          </p>
+          <NuxtLink
+            to="/faq"
+            class="text-[9px] md:text-[10px] font-bold tracking-[0.35em] uppercase text-[#1a2b3c] hover:text-[#78b3ce] transition-colors inline-block border-b border-gray-100 pb-1"
+          >
+            WIECEJ INFO
+          </NuxtLink>
+        </div>
+      </div>
+      <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-8 lg:space-x-10 items-start sm:items-center md:items-start group">
+        <div class="flex-shrink-0 w-[60px] h-[60px] md:w-[70px] md:h-[70px] border border-gray-100 flex items-center justify-center p-3 shadow-sm hover:shadow-md transition-all duration-300 rounded-full bg-white">
+          <i class="fas fa-water text-2xl text-[#78b3ce]"></i>
+        </div>
+        <div>
+          <p class="text-[12px] md:text-[13px] text-gray-400 leading-[1.8] md:leading-[2] mb-3 md:mb-5 font-light">
+            Bezposredni dostep do jeziora z wlasnym pomostem. Idealne miejsce na poranne plywanie lub wieczorny relaks.
+          </p>
+          <NuxtLink
+            to="/kontakt"
+            class="text-[9px] md:text-[10px] font-bold tracking-[0.35em] uppercase text-[#1a2b3c] hover:text-[#78b3ce] transition-colors inline-block border-b border-gray-100 pb-1"
+          >
+            WIECEJ INFO
+          </NuxtLink>
+        </div>
+      </div>
+      <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-8 lg:space-x-10 items-start sm:items-center md:items-start group">
+        <div class="flex-shrink-0 w-[60px] h-[60px] md:w-[70px] md:h-[70px] border border-gray-100 flex items-center justify-center p-3 shadow-sm hover:shadow-md transition-all duration-300 rounded-full bg-white">
+          <i class="fas fa-utensils text-2xl text-[#78b3ce]"></i>
+        </div>
+        <div>
+          <p class="text-[12px] md:text-[13px] text-gray-400 leading-[1.8] md:leading-[2] mb-3 md:mb-5 font-light">
+            W pelni wyposaziona kuchnia w kazdym apartamencie. Lokalne produkty dostepne na zamowienie.
+          </p>
+          <NuxtLink
+            to="/apartamenty"
+            class="text-[9px] md:text-[10px] font-bold tracking-[0.35em] uppercase text-[#1a2b3c] hover:text-[#78b3ce] transition-colors inline-block border-b border-gray-100 pb-1"
+          >
+            WIECEJ INFO
+          </NuxtLink>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Location Section -->
+  <section class="bg-[#1a2b3c] flex flex-col lg:flex-row min-h-screen lg:min-h-[700px]">
+    <div class="lg:w-1/2 relative min-h-[300px] md:min-h-[450px] lg:min-h-full">
+      <img
+        src="https://images.unsplash.com/photo-1541971875076-8f970d573be6?auto=format&fit=crop&q=80&w=1000"
+        alt="Lokalizacja"
+        class="absolute inset-0 w-full h-full object-cover opacity-80"
+      >
+      <div class="absolute inset-0 bg-black/20 lg:bg-black/10"></div>
+    </div>
+
+    <div class="lg:w-1/2 p-10 md:p-16 lg:p-24 flex flex-col justify-center text-white">
+      <p class="text-[9px] md:text-[10px] tracking-[0.5em] uppercase font-bold text-[#78b3ce] mb-6">Mazury Zachodnie</p>
+      <h2 class="text-4xl md:text-5xl lg:text-6xl font-light mb-8 md:mb-12 tracking-tight leading-tight">
+        Odkryj nasza <br class="hidden md:block">
+        <span class="text-[#78b3ce]">lokalizacje</span>
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 text-[12px] md:text-[13px] leading-[1.8] md:leading-[2] text-gray-300 font-light">
+        <p>
+          Czaplisko Siedlisko znajduje sie w malowniczej wsi Skitlawki, w samym sercu Mazur Zachodnich. Otoczeni lasami i jeziorami, oferujemy ucieczkę od zgiełku miasta.
+        </p>
+        <p>
+          Zaledwie 15 minut jazdy od Zalewa i 40 minut od Ostrody. Idealna baza wypadowa do odkrywania regionu — szlaki rowerowe, kajakowe i piesze na wyciagniecie reki.
+        </p>
+      </div>
+
+      <div class="mt-12 md:mt-16 pt-8 md:pt-10 border-t border-white/10">
+        <NuxtLink
+          to="/kontakt"
+          class="text-[9px] md:text-[10px] tracking-[0.4em] uppercase border-b border-white/30 pb-2 hover:border-[#78b3ce] hover:text-[#78b3ce] transition-all inline-block"
+        >
+          Zobacz na mapie
+        </NuxtLink>
+      </div>
+    </div>
+  </section>
+
+  <!-- News Section -->
+  <section v-if="news.length > 0" class="py-16 md:py-32 bg-white overflow-hidden">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-16 md:mb-28">
+        <h2 class="text-4xl md:text-[54px] font-light text-gray-600 mb-5 tracking-tight">Aktualnosci</h2>
+        <p class="text-[9px] md:text-[10px] tracking-[0.7em] text-gray-300 font-bold uppercase">- BLOG -</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 max-w-[1200px] mx-auto">
+        <article
+          v-for="item in news"
+          :key="item.id"
+          class="bg-white border border-gray-50 shadow-sm relative group overflow-visible"
+        >
+          <div v-if="item.featureImage" class="relative h-48 overflow-hidden">
+            <img
+              :src="item.featureImage"
+              :alt="item.title"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+            >
+          </div>
+          <div class="p-8 md:p-10">
+            <p class="text-[9px] uppercase tracking-[0.3em] text-[#78b3ce] font-bold mb-4">Aktualnosci</p>
+            <h3 class="text-xl md:text-2xl font-light mb-4 text-gray-700 leading-tight">{{ item.title }}</h3>
+            <p v-if="item.excerpt" class="text-[12px] md:text-[13px] leading-[1.8] text-gray-400 font-light mb-6">
+              {{ item.excerpt }}
+            </p>
+            <div class="flex items-center text-[10px] text-gray-300 font-bold border-t border-gray-50 pt-6">
+              <span class="flex items-center space-x-2">
+                <i class="far fa-calendar"></i>
+                <span>{{ new Date(item.publishedAt).toLocaleDateString('pl-PL') }}</span>
+              </span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
 </template>
-
-<script setup lang="ts">
-const { data: apartments } = await useFetch('/api/public/apartments')
-const { data: newsData } = await useFetch('/api/public/news')
-const { data: media } = await useFetch('/api/admin/media')
-
-const news = computed(() => newsData.value?.data || [])
-</script>

@@ -82,6 +82,7 @@ const navItems = [
   { to: '/admin/pricing', label: 'Cennik', icon: 'IconCurrency' },
   { to: '/admin/news', label: 'Aktualności', icon: 'IconNews' },
   { to: '/admin/media', label: 'Media', icon: 'IconPhoto' },
+  { to: '/admin/navigation', label: 'Nawigacja', icon: 'IconMenu' },
 ]
 
 function isActive(path: string) {
