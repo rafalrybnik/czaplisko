@@ -1,5 +1,5 @@
-import { loginSchema } from '~/shared/schemas'
-import { comparePassword, generateToken, setAuthCookie } from '~/server/utils/auth'
+import { loginSchema } from '../../../app/shared/schemas'
+import { comparePassword, generateToken, setAuthCookie } from '../../utils/auth'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)

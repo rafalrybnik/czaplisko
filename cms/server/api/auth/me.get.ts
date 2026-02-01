@@ -1,4 +1,4 @@
-import { getAuthenticatedUser } from '~/server/utils/auth'
+import { getAuthenticatedUser } from '../../utils/auth'
 
 export default defineEventHandler((event) => {
   const user = getAuthenticatedUser(event)

@@ -1,6 +1,6 @@
-import { prisma } from '~/server/utils/prisma'
-import { processImage, generateImageKey, generateWebpKey } from '~/server/utils/image'
-import { uploadToR2 } from '~/server/utils/r2'
+import { prisma } from '../../../utils/prisma'
+import { processImage, generateImageKey, generateWebpKey } from '../../../utils/image'
+import { uploadToR2 } from '../../../utils/r2'
 
 export default defineEventHandler(async (event) => {
   const formData = await readMultipartFormData(event)

@@ -1,5 +1,5 @@
-import { prisma } from '~/server/utils/prisma'
-import { deleteFromR2, getKeyFromUrl } from '~/server/utils/r2'
+import { prisma } from '../../../utils/prisma'
+import { deleteFromR2, getKeyFromUrl } from '../../../utils/r2'
 
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')

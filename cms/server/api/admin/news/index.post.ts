@@ -1,5 +1,5 @@
-import { prisma } from '~/server/utils/prisma'
-import { newsCreateSchema } from '~/shared/schemas'
+import { prisma } from '../../../utils/prisma'
+import { newsCreateSchema } from '../../../../app/shared/schemas'
 
 function generateSlug(title: string): string {
   return title

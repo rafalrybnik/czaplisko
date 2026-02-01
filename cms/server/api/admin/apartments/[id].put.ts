@@ -1,5 +1,5 @@
-import { prisma } from '~/server/utils/prisma'
-import { apartmentUpdateSchema } from '~/shared/schemas'
+import { prisma } from '../../../utils/prisma'
+import { apartmentUpdateSchema } from '../../../../app/shared/schemas'
 
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')

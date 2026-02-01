@@ -1,5 +1,5 @@
-import { prisma } from '~/server/utils/prisma'
-import { newsUpdateSchema } from '~/shared/schemas'
+import { prisma } from '../../../utils/prisma'
+import { newsUpdateSchema } from '../../../../app/shared/schemas'
 
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')
