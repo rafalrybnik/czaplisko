@@ -1,7 +1,11 @@
 import { prisma } from '../utils/prisma'
 
-export default defineNitroPlugin(async () => {
-  console.log('[init-db] Checking database initialization...')
+async function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+async function initDatabase(attempt = 1, maxAttempts = 5): Promise<void> {
+  console.log(`[init-db] Checking database initialization (attempt ${attempt}/${maxAttempts})...`)
 
   try {
     // Check if apartments exist
@@ -110,6 +114,21 @@ export default defineNitroPlugin(async () => {
 
     console.log('[init-db] Database initialization complete')
   } catch (error) {
-    console.error('[init-db] Error during database initialization:', error)
+    console.error(`[init-db] Error during database initialization (attempt ${attempt}):`, error)
+
+    if (attempt < maxAttempts) {
+      const delay = attempt * 2000 // Exponential backoff: 2s, 4s, 6s, 8s
+      console.log(`[init-db] Retrying in ${delay / 1000} seconds...`)
+      await sleep(delay)
+      return initDatabase(attempt + 1, maxAttempts)
+    } else {
+      console.error('[init-db] Max attempts reached. Database initialization failed.')
+    }
   }
+}
+
+export default defineNitroPlugin(async () => {
+  // Add initial delay to let the database connection stabilize
+  await sleep(3000)
+  await initDatabase()
 })
