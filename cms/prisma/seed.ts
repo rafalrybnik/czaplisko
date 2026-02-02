@@ -8,7 +8,10 @@ if (!connectionString) {
   throw new Error('DATABASE_URL environment variable is required')
 }
 
-const pool = new pg.Pool({ connectionString })
+const pool = new pg.Pool({
+  connectionString,
+  ssl: connectionString.includes('railway') ? { rejectUnauthorized: false } : false,
+})
 const adapter = new PrismaPg(pool)
 const prisma = new PrismaClient({ adapter })
 
