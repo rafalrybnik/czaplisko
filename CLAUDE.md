@@ -123,14 +123,57 @@ R2_PUBLIC_URL=https://...
 
 ## Deployment (Railway)
 
+### Deployment Methods
+
+**Primary: GitHub Integration (recommended)**
+- Railway auto-deploys on every push to `main` branch
+- No manual intervention needed
+- Configured in Railway dashboard: Settings → Source → Connect GitHub
+
+**Manual: Safe Deploy Script**
+```bash
+cd cms
+./deploy.sh  # Verifies service before deploying
+```
+
+The script:
+1. Checks Railway CLI is installed and logged in
+2. Verifies linked service is `cms` (not Postgres!)
+3. Auto-switches if wrong service detected
+4. Warns about uncommitted changes
+5. Deploys with `railway up --detach`
+
 ### Critical Safety Rules
 
 1. **NEVER run `prisma db push` on container startup** - causes conflicts with concurrent deployments
-2. **Always verify active service before deploy:**
-   ```bash
-   railway status  # Must show "Service: cms"
-   ```
-3. **Never link to Postgres service for deployment** - only for debugging, then immediately switch back
+2. **NEVER deploy manually without `./deploy.sh`** - prevents deploying to wrong service
+3. **NEVER link to Postgres service** - only for debugging variables, then immediately switch back
+4. **ALWAYS use Prisma CLI for migrations** - never raw SQL
+
+### Database Migrations
+
+**Development workflow:**
+```bash
+# 1. Modify prisma/schema.prisma
+# 2. Create migration (generates SQL + applies to dev DB)
+npm run db:migrate
+
+# 3. Push changes to GitHub → Railway auto-deploys
+git add prisma/
+git commit -m "Add XYZ field to Model"
+git push
+```
+
+**Production migration:**
+- Migrations are applied automatically during build via `prisma generate`
+- Schema changes via `prisma migrate deploy` (NOT `db push`)
+- For breaking changes: deploy migration first, then code that uses it
+
+**Emergency schema sync (use sparingly):**
+```bash
+# Only when dev DB is out of sync, NEVER on production
+npm run db:push
+```
 
 ### Database Connection
 
@@ -147,6 +190,15 @@ ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : fal
 `start.sh` only runs the Node server - no schema operations:
 ```bash
 exec node .output/server/index.mjs
+```
+
+### Railway Project Structure
+
+```
+Railway Project: czaplisko
+├── cms (Node.js service)     ← Deploy target
+│   └── GitHub: main branch
+└── Postgres (database)       ← NEVER deploy here
 ```
 
 ## Language
