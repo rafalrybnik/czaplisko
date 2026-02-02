@@ -6,31 +6,44 @@ export default defineEventHandler(async (event) => {
   const page = Math.max(Number(query.page) || 1, 1)
   const skip = (page - 1) * limit
 
-  const [news, total] = await Promise.all([
-    prisma.news.findMany({
-      where: { status: 'published' },
-      orderBy: { publishedAt: 'desc' },
-      skip,
-      take: limit,
-      select: {
-        id: true,
-        title: true,
-        slug: true,
-        excerpt: true,
-        featureImage: true,
-        publishedAt: true,
-      },
-    }),
-    prisma.news.count({ where: { status: 'published' } }),
-  ])
+  try {
+    const [news, total] = await Promise.all([
+      prisma.news.findMany({
+        where: { status: 'published' },
+        orderBy: { publishedAt: 'desc' },
+        skip,
+        take: limit,
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          excerpt: true,
+          featureImage: true,
+          publishedAt: true,
+        },
+      }),
+      prisma.news.count({ where: { status: 'published' } }),
+    ])
 
-  return {
-    data: news,
-    pagination: {
-      page,
-      limit,
-      total,
-      totalPages: Math.ceil(total / limit),
-    },
+    return {
+      data: news,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    }
+  } catch (error) {
+    console.error('[news] Database error, returning empty list:', error)
+    return {
+      data: [],
+      pagination: {
+        page,
+        limit,
+        total: 0,
+        totalPages: 0,
+      },
+    }
   }
 })
