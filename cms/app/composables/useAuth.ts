@@ -29,7 +29,7 @@ export function useAuth() {
   async function logout() {
     await $fetch('/api/auth/logout', { method: 'POST' })
     user.value = null
-    await navigateTo('/admin/login')
+    await navigateTo('/')
   }
 
   return {
