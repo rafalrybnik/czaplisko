@@ -58,16 +58,17 @@ watch(() => route.path, () => {
     <!-- Top Utility Bar -->
     <div class="bg-[#4a6b8a] text-white py-2 px-4 md:px-24 flex justify-between items-center text-[11px] font-medium tracking-wider">
       <div class="flex items-center space-x-4 md:space-x-8">
-        <div class="flex items-center space-x-3">
+        <!-- <div class="flex items-center space-x-3">
           <span class="font-bold border-b border-white">PL</span>
           <span class="cursor-pointer hover:opacity-70 transition-opacity">EN</span>
-        </div>
-        <div class="flex items-center space-x-5 border-l border-white/20 pl-4 md:pl-6">
-          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
+        </div> -->
+        <!-- <div class="flex items-center space-x-5 border-l border-white/20 pl-4 md:pl-6"> -->
+        <div class="flex items-center space-x-5 pl-4 md:pl-6">
+            <a href="https://www.facebook.com/czapliskosiedlisko" target="_blank" rel="noopener noreferrer"
             class="hover:text-[#78b3ce] transition-colors duration-300" aria-label="Facebook">
             <i class="fab fa-facebook-f text-[13px]"></i>
           </a>
-          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
+          <a href="https://www.instagram.com/czapliskosiedliskodogfriendly/" target="_blank" rel="noopener noreferrer"
             class="hover:text-[#78b3ce] transition-colors duration-300" aria-label="Instagram">
             <i class="fab fa-instagram text-[13px]"></i>
           </a>
@@ -77,7 +78,7 @@ watch(() => route.path, () => {
       <div class="hidden md:flex items-center space-x-8">
         <NuxtLink to="/apartamenty" class="flex items-center space-x-2 hover:opacity-70 transition-opacity">
           <i class="far fa-star"></i>
-          <span class="uppercase text-[10px] font-bold tracking-[0.1em]">POKOJE</span>
+          <span class="uppercase text-[10px] font-bold tracking-[0.1em]">APARTAMENTY</span>
         </NuxtLink>
         <NuxtLink to="/kontakt" class="flex items-center space-x-2 hover:opacity-70 transition-opacity">
           <i class="fas fa-map-marker-alt"></i>

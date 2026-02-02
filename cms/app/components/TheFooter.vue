@@ -64,7 +64,7 @@ const { get } = usePageContent('footer')
         />
         <div class="flex space-x-6 items-center">
           <a
-            href="https://facebook.com"
+            href="https://www.facebook.com/czapliskosiedlisko"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Facebook"
@@ -76,7 +76,7 @@ const { get } = usePageContent('footer')
             </svg>
           </a>
           <a
-            href="https://instagram.com"
+            href="https://www.instagram.com/czapliskosiedliskodogfriendly/"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram"
@@ -96,23 +96,10 @@ const { get } = usePageContent('footer')
     <!-- Bottom Copyright Bar -->
     <div class="bg-[#4a6b8a] text-white py-5 px-6 md:px-24 flex flex-col md:flex-row justify-between items-center text-[11px] font-medium tracking-wide">
       <p class="mb-4 md:mb-0 opacity-90">
-        Czaplisko Siedlisko - Dog Friendly & Eco Guesthouse &copy; {{ currentYear }} | Realizacja: <a href="https://kadmos.pl" target="_blank" rel="noopener noreferrer" class="hover:text-[#78b3ce] transition-colors">Kadmos</a>
+        Czaplisko Siedlisko - Dog Friendly & Eco Guesthouse &copy; {{ currentYear }} <br /> Projekt strony: <a href="https://kadmos.pl" target="_blank" rel="noopener noreferrer" class="hover:text-[#78b3ce] transition-colors">Kadmos</a>
       </p>
 
-      <div class="flex items-center space-x-12">
-        <!-- Small Secondary Socials -->
-        <div class="flex items-center space-x-4 mr-6 border-r border-white/20 pr-10">
-          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="hover:text-[#78b3ce] transition-colors">FB</a>
-          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="hover:text-[#78b3ce] transition-colors">IG</a>
-        </div>
 
-        <div class="flex items-center gap-6 opacity-60">
-          <i class="fab fa-cc-visa text-lg hover:opacity-100 transition-opacity"></i>
-          <i class="fab fa-cc-mastercard text-lg hover:opacity-100 transition-opacity"></i>
-          <i class="fab fa-stripe text-lg hover:opacity-100 transition-opacity"></i>
-          <i class="fab fa-cc-paypal text-lg hover:opacity-100 transition-opacity"></i>
-        </div>
-      </div>
     </div>
   </footer>
 </template>
