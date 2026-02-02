@@ -140,6 +140,7 @@ function handleEdit() {
             <div class="admin-toolbar__divider"></div>
             <NuxtLink
               to="/admin"
+              target="_blank"
               class="admin-toolbar__button admin-toolbar__button--secondary"
             >
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -156,6 +157,7 @@ function handleEdit() {
                 v-for="link in adminLinks"
                 :key="link.path"
                 :to="link.path"
+                target="_blank"
                 class="admin-toolbar__button admin-toolbar__button--secondary"
               >
                 <svg v-if="link.icon === 'newspaper'" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
