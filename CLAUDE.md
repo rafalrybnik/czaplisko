@@ -4,106 +4,153 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Czaplisko Siedlisko is a website for an eco-friendly, dog-friendly guesthouse in Western Masuria, Poland. The project has two phases:
+Czaplisko is a CMS for a Polish eco-guesthouse website. Two main components:
 
-1. **Current Phase**: Static HTML template (production-ready, no build process)
-2. **Planned Phase**: Full CMS using Nuxt 3 + PostgreSQL + Prisma 7 + Cloudflare R2
+- **`/cms`** - Nuxt 4 full-stack app (admin panel + API)
+- **`/template`** - Static HTML/Tailwind template (reference design)
 
 ## Development Commands
 
-### Local Testing (Static Template)
+All commands run from `/cms` directory:
+
 ```bash
-# Python 3
-python -m http.server 8000
+npm run dev              # Dev server on port 2137
+npm run build            # Production build
 
-# Node.js
-npx serve
-
-# PHP
-php -S localhost:8000
-```
-
-Then navigate to `http://localhost:8000`
-
-### Production Optimization (Optional)
-```bash
-# Generate minified Tailwind CSS
-npx tailwindcss -o css/tailwind.min.css --minify
+# Database (Prisma 7 with Driver Adapters)
+npm run db:push          # Push schema changes
+npm run db:migrate       # Create migration
+npm run db:seed          # Seed data
+npm run db:studio        # Prisma Studio GUI
+npm run db:reset         # Reset database
 ```
 
 ## Architecture
 
-### Static Template Structure
-```
-template/
-├── index.html          # Homepage with hero slider
-├── apartments.html     # Apartment showcase
-├── price-list.html     # Seasonal pricing
-├── gallery.html        # Lightbox gallery with animated counters
-├── faq.html            # Accordion Q&A
-├── contact.html        # Form + Google Maps
-├── room-details.html   # Individual room details
-├── css/styles.css      # Custom styles (Tailwind via CDN)
-└── js/main.js          # All interactive features
-```
+### Backend (Nitro/Nuxt)
 
-### JavaScript Modules (main.js)
-Seven independently-initialized features, each wrapped in DOMContentLoaded:
-- Mobile menu toggle (`#mobile-menu-toggle`, `#mobile-menu`)
-- Hero slider (auto-play 5s, `.hero-slide`, `.slide-indicator`)
-- Gallery lightbox (keyboard nav: Arrow keys, Escape)
-- FAQ accordion (`.faq-item`, `.faq-question`, `.faq-answer`)
-- Contact form validation (`#contact-form`)
-- Smooth scrolling for anchor links
-- Animated counters with IntersectionObserver (`.animated-counter`)
-
-### Reusable Sections
-Header and footer are marked with comments for copy-paste across pages:
-```html
-<!-- ========== HEADER SECTION - START ========== -->
-<!-- ========== HEADER SECTION - END ========== -->
+```
+cms/server/
+├── api/
+│   ├── admin/          # Protected endpoints (apartments, content, media, pricing, etc.)
+│   ├── auth/           # Login/logout/me
+│   └── public/         # Public read endpoints
+├── middleware/auth.ts  # JWT verification
+├── plugins/init-db.ts  # DB initialization
+└── utils/
+    ├── prisma.ts       # Prisma client with pg adapter
+    ├── auth.ts         # JWT/bcrypt helpers
+    ├── image.ts        # Sharp compression
+    └── r2.ts           # Cloudflare R2 uploads
 ```
 
-### Color Palette
-- Primary Blue: `#78b3ce`
-- Dark Blue: `#4a6b8a`
-- Charcoal: `#1a2b3c`
+### Frontend (Vue 3)
 
-### External Dependencies (via CDN)
-- Tailwind CSS
-- FontAwesome 6.4.0
-- Google Fonts (Montserrat: 300-700)
+```
+cms/app/
+├── components/
+│   ├── admin/          # Admin panel components
+│   ├── editable/       # Inline editing (EditableText, EditableImage, AdminToolbar)
+│   └── public/         # Public website components
+├── composables/
+│   ├── useAuth.ts      # Authentication state
+│   ├── useEditMode.ts  # Inline editing state
+│   └── usePageContent.ts
+├── layouts/
+│   ├── admin.vue       # Admin panel layout
+│   └── public.vue      # Public website layout
+└── pages/
+    ├── admin/          # Admin routes
+    └── *.vue           # Public pages (Polish: apartamenty, cennik, galeria, kontakt, faq)
+```
 
-## Planned CMS Architecture (Phase 2)
+### Database Models (Prisma)
 
-### Tech Stack
-- **Framework**: Nuxt 3 (Vue 3) with Nitro Engine
-- **Database**: PostgreSQL via Prisma 7
-- **Validation**: Zod
-- **Assets**: Cloudflare R2 (public bucket for images, private for backups)
-- **Data Fetching**: `useAsyncData` or `useFetch`
+- `Apartment` - Guesthouse units (fixed at 2)
+- `Pricing` - Per-apartment seasonal pricing (high/low season)
+- `SeasonRange` - Date ranges for high season
+- `Media` - Images with R2 URLs (urlOriginal, urlCompressed)
+- `News` - Blog posts (draft/published)
+- `PageContent` - Inline editable content (page/section/key structure)
+- `NavigationItem` - Dynamic menu
+- `GlobalSettings` - Site-wide config
 
-### Prisma Models
-- `GlobalSettings` - Key-value pairs for footer/header
-- `Apartment` - id, name, slug, description, amenities (JSON)
-- `SeasonRange` - id, startDate, endDate, label
-- `Pricing` - apartmentId, seasonType, pricePerNight, extraBedPrice, minStayNights
-- `News` - title, slug, content, publishedAt, status
-- `Page` - title, slug, content, status, showInFooter
-- `Media` - url_original, url_compressed, alt, order, category
+## Key Patterns
 
-### Business Rules
-- Fixed 2 apartments: "Czapla Polna" and "Czapla Wodna"
-- Seasonal pricing: High Season (defined date ranges) vs Low Season (default)
-- Extra bed pricing (dostawka) per apartment per season
-- Minimum stay requirements per season
-- Single admin user (no multi-user roles)
+### Prisma 7 Configuration
 
-### Image Processing Pipeline
-On upload: original stored in R2, compressed WebP/AVIF generated via Sharp, both URLs saved in Media table.
+Uses Driver Adapters pattern. URL defined only in `prisma.config.ts`, NOT in schema.prisma:
 
-## Documentation
+```typescript
+// prisma.config.ts - CLI config
+datasource: { url: process.env.DATABASE_URL }
 
-- `docs/PRD.md` - Product scope and MVP definition
-- `docs/FRS.md` - Technical requirements and acceptance criteria
-- `docs/BACKLOG.md` - 4-phase development roadmap
+// server/utils/prisma.ts - Runtime with pg.Pool adapter
+const pool = new pg.Pool({ connectionString, ssl: ... })
+const adapter = new PrismaPg(pool)
+const prisma = new PrismaClient({ adapter })
+```
+
+### Inline Editing System
+
+PageContent uses `page/section/key` structure:
+- `home/hero/title` → Hero section title
+- `contact/info/phone` → Contact phone number
+- `footer/address/city` → Footer city
+
+Components: `EditableText`, `EditableImage`, `EditableBackground`, `AdminToolbar`
+
+### Authentication
+
+- JWT tokens (7-day expiry) in httpOnly cookies
+- Single admin user (credentials in env vars)
+- Protected routes: `/admin/**`, `/api/admin/**`
+
+## Environment Variables
+
+Required in `.env`:
+```
+DATABASE_URL=postgresql://...
+JWT_SECRET=<32+ chars>
+ADMIN_EMAIL=...
+ADMIN_PASSWORD_HASH=<bcrypt hash>
+R2_ACCOUNT_ID=...
+R2_ACCESS_KEY_ID=...
+R2_SECRET_ACCESS_KEY=...
+R2_BUCKET_PUBLIC=czaplisko-assets
+R2_PUBLIC_URL=https://...
+```
+
+## Deployment (Railway)
+
+### Critical Safety Rules
+
+1. **NEVER run `prisma db push` on container startup** - causes conflicts with concurrent deployments
+2. **Always verify active service before deploy:**
+   ```bash
+   railway status  # Must show "Service: cms"
+   ```
+3. **Never link to Postgres service for deployment** - only for debugging, then immediately switch back
+
+### Database Connection
+
+- Internal Railway: `postgresql://...@postgres.railway.internal:5432/railway` (no SSL)
+- External proxy: `postgresql://...@nozomi.proxy.rlwy.net:39249/railway?sslmode=require`
+
+SSL config in prisma.ts:
+```typescript
+ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+```
+
+### Start Script
+
+`start.sh` only runs the Node server - no schema operations:
+```bash
+exec node .output/server/index.mjs
+```
+
+## Language
+
+- UI/content is in Polish
+- Code comments and technical docs in English
+- Page routes use Polish names: `/apartamenty`, `/cennik`, `/galeria`, `/kontakt`, `/faq`
