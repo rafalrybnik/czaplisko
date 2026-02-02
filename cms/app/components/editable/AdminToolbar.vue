@@ -405,20 +405,70 @@ function handleEdit() {
 }
 
 /* Mobile responsiveness */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .admin-toolbar-wrapper {
-    left: 1rem;
-    right: 1rem;
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 1rem;
     transform: none;
   }
 
   .admin-toolbar {
     width: 100%;
-    justify-content: space-between;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
   }
 
-  .admin-toolbar__email {
+  .admin-toolbar__info {
     display: none;
+  }
+
+  .admin-toolbar__divider {
+    display: none;
+  }
+
+  .admin-toolbar__button {
+    padding: 0.5rem 0.625rem;
+    font-size: 0.75rem;
+  }
+
+  .admin-toolbar__button span {
+    display: none;
+  }
+
+  .admin-toolbar__button svg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  .admin-toolbar__actions {
+    gap: 0.375rem;
+  }
+
+  /* Show text only for save/cancel in edit mode */
+  .admin-toolbar__button--success span,
+  .admin-toolbar__button--cancel span {
+    display: inline;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-toolbar {
+    padding: 0.5rem;
+    gap: 0.375rem;
+    border-radius: 0.75rem;
+  }
+
+  .admin-toolbar__button {
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+  }
+
+  .admin-toolbar__button--success,
+  .admin-toolbar__button--cancel {
+    padding: 0.5rem 0.75rem;
   }
 }
 </style>
