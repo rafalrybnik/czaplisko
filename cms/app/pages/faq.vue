@@ -10,47 +10,16 @@ useSeoMeta({
 
 const { get } = usePageContent('faq')
 
-// FAQ items - could be fetched from API in the future
-const faqItems = ref([
-  {
-    question: 'Czy przyjmujecie zwierzeta?',
-    answer: 'Tak! Jestesmy obiektem "Dog Friendly". Twoi czworononozni przyjaciele sa u nas zawsze mile widziani bez dodatkowych oplat.',
-    open: false,
-  },
-  {
-    question: 'Jakie sa godziny zameldowania?',
-    answer: 'Doba hotelowa zaczyna sie o godzinie 15:00, a konczy o 11:00 nastepnego dnia.',
-    open: false,
-  },
-  {
-    question: 'Czy jest dostepny parking na miejscu?',
-    answer: 'Oczywiscie. Zapewniamy bezplatny, monitorowany parking dla wszystkich naszych gosci bezposrednio przy pensjonacie.',
-    open: false,
-  },
-  {
-    question: 'Czy oferujecie sniadania?',
-    answer: 'Tak, serwujemy pyszne sniadania oparte na lokalnych produktach ekologicznych od 8:00 do 10:30.',
-    open: false,
-  },
-  {
-    question: 'Jak daleko jest do najblizszego jeziora?',
-    answer: 'Znajdujemy sie w bezposrednim sasiedztwie jeziora - zaledwie 5 minut spaceru przez nasz prywatny ogrod.',
-    open: false,
-  },
-  {
-    question: 'Czy apartamenty maja pelne wyposazenie kuchni?',
-    answer: 'Tak, kazdy apartament posiada w pelni wyposazony aneks kuchenny z lodowka, kuchenka, czajnikiem i podstawowymi naczyniami.',
-    open: false,
-  },
-  {
-    question: 'Czy mozna przyjechac z wiekszym psem?',
-    answer: 'Absolutnie tak! Mile widzimy psy kazdej wielkosci. Prosimy tylko o poinformowanie nas z wyprzedzeniem.',
-    open: false,
-  },
-])
+// FAQ item indices for iteration
+const faqIndices = [1, 2, 3, 4, 5, 6, 7]
+const openStates = ref<Record<number, boolean>>({})
 
 function toggleFaq(index: number) {
-  faqItems.value[index].open = !faqItems.value[index].open
+  openStates.value[index] = !openStates.value[index]
+}
+
+function isOpen(index: number) {
+  return openStates.value[index] ?? false
 }
 </script>
 
@@ -79,16 +48,23 @@ function toggleFaq(index: number) {
 
       <div class="space-y-4">
         <div
-          v-for="(item, index) in faqItems"
-          :key="index"
+          v-for="idx in faqIndices"
+          :key="idx"
           class="border-b border-gray-100 py-6"
         >
           <button
             class="w-full flex justify-between items-center text-left"
-            @click="toggleFaq(index)"
+            @click="toggleFaq(idx)"
           >
-            <span class="text-lg font-light text-gray-700 tracking-tight">{{ item.question }}</span>
-            <span class="text-[#78b3ce] transition-transform duration-300" :class="{ 'rotate-45': item.open }">
+            <EditableText
+              page="faq"
+              section="items"
+              :content-key="`q${idx}_question`"
+              tag="span"
+              class="text-lg font-light text-gray-700 tracking-tight"
+              :fallback="`Pytanie ${idx}`"
+            />
+            <span class="text-[#78b3ce] transition-transform duration-300 flex-shrink-0 ml-4" :class="{ 'rotate-45': isOpen(idx) }">
               <i class="fas fa-plus"></i>
             </span>
           </button>
@@ -100,10 +76,15 @@ function toggleFaq(index: number) {
             leave-from-class="opacity-100 max-h-40"
             leave-to-class="opacity-0 max-h-0"
           >
-            <div v-if="item.open" class="overflow-hidden mt-4">
-              <p class="text-[14px] text-gray-400 font-light leading-relaxed">
-                {{ item.answer }}
-              </p>
+            <div v-if="isOpen(idx)" class="overflow-hidden mt-4">
+              <EditableText
+                page="faq"
+                section="items"
+                :content-key="`q${idx}_answer`"
+                tag="p"
+                class="text-[14px] text-gray-400 font-light leading-relaxed"
+                :fallback="`Odpowiedz ${idx}`"
+              />
             </div>
           </Transition>
         </div>

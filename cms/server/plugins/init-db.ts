@@ -213,6 +213,21 @@ async function initDatabase(attempt = 1, maxAttempts = 5): Promise<void> {
         { page: 'faq', section: 'cta', key: 'title', value: 'Masz wiecej pytan?', type: 'text' },
         { page: 'faq', section: 'cta', key: 'description', value: 'Nasz zespol jest gotowy, aby pomoc Ci zaplanowac idealny pobyt.', type: 'text' },
         { page: 'faq', section: 'cta', key: 'button_text', value: 'Skontaktuj sie', type: 'text' },
+        // FAQ items
+        { page: 'faq', section: 'items', key: 'q1_question', value: 'Czy przyjmujecie zwierzeta?', type: 'text' },
+        { page: 'faq', section: 'items', key: 'q1_answer', value: 'Tak! Jestesmy obiektem "Dog Friendly". Twoi czworononozni przyjaciele sa u nas zawsze mile widziani bez dodatkowych oplat.', type: 'text' },
+        { page: 'faq', section: 'items', key: 'q2_question', value: 'Jakie sa godziny zameldowania?', type: 'text' },
+        { page: 'faq', section: 'items', key: 'q2_answer', value: 'Doba hotelowa zaczyna sie o godzinie 15:00, a konczy o 11:00 nastepnego dnia.', type: 'text' },
+        { page: 'faq', section: 'items', key: 'q3_question', value: 'Czy jest dostepny parking na miejscu?', type: 'text' },
+        { page: 'faq', section: 'items', key: 'q3_answer', value: 'Oczywiscie. Zapewniamy bezplatny, monitorowany parking dla wszystkich naszych gosci bezposrednio przy pensjonacie.', type: 'text' },
+        { page: 'faq', section: 'items', key: 'q4_question', value: 'Czy oferujecie sniadania?', type: 'text' },
+        { page: 'faq', section: 'items', key: 'q4_answer', value: 'Tak, serwujemy pyszne sniadania oparte na lokalnych produktach ekologicznych od 8:00 do 10:30.', type: 'text' },
+        { page: 'faq', section: 'items', key: 'q5_question', value: 'Jak daleko jest do najblizszego jeziora?', type: 'text' },
+        { page: 'faq', section: 'items', key: 'q5_answer', value: 'Znajdujemy sie w bezposrednim sasiedztwie jeziora - zaledwie 5 minut spaceru przez nasz prywatny ogrod.', type: 'text' },
+        { page: 'faq', section: 'items', key: 'q6_question', value: 'Czy apartamenty maja pelne wyposazenie kuchni?', type: 'text' },
+        { page: 'faq', section: 'items', key: 'q6_answer', value: 'Tak, kazdy apartament posiada w pelni wyposazony aneks kuchenny z lodowka, kuchenka, czajnikiem i podstawowymi naczyniami.', type: 'text' },
+        { page: 'faq', section: 'items', key: 'q7_question', value: 'Czy mozna przyjechac z wiekszym psem?', type: 'text' },
+        { page: 'faq', section: 'items', key: 'q7_answer', value: 'Absolutnie tak! Mile widzimy psy kazdej wielkosci. Prosimy tylko o poinformowanie nas z wyprzedzeniem.', type: 'text' },
 
         // Gallery page
         { page: 'gallery', section: 'hero', key: 'title', value: 'Galeria', type: 'text' },
