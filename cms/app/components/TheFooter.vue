@@ -54,7 +54,7 @@ const currentYear = new Date().getFullYear()
     <!-- Bottom Copyright Bar -->
     <div class="bg-[#4a6b8a] text-white py-5 px-6 md:px-24 flex flex-col md:flex-row justify-between items-center text-[11px] font-medium tracking-wide">
       <p class="mb-4 md:mb-0 opacity-90">
-        Czaplisko Siedlisko - Dog Friendly & Eco Guesthouse &copy; {{ currentYear }}
+        Czaplisko Siedlisko - Dog Friendly & Eco Guesthouse &copy; {{ currentYear }} | Realizacja: <a href="https://kadmos.pl" target="_blank" rel="noopener noreferrer" class="hover:text-[#78b3ce] transition-colors">Kadmos</a>
       </p>
 
       <div class="flex items-center space-x-12">
