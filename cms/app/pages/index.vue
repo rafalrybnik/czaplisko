@@ -20,10 +20,10 @@ const news = computed(() => newsResponse.value?.data?.slice(0, 3) || [])
 // Hero slider logic
 const currentSlide = ref(0)
 const slides = [
-  { image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=80&w=1920', alt: 'Pensjonat zewnatrz' },
-  { image: 'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&q=80&w=1920', alt: 'Dom nad jeziorem' },
-  { image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&q=80&w=1920', alt: 'Wellness i spa' },
-  { image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&q=80&w=1920', alt: 'Przytulne wnetrze' },
+  { image: 'https://cdn.czapliskosiedlisko.pl/defaults/hero-pensjonat.jpg', alt: 'Pensjonat zewnatrz' },
+  { image: 'https://cdn.czapliskosiedlisko.pl/defaults/hero-dom-jezioro.jpg', alt: 'Dom nad jeziorem' },
+  { image: 'https://cdn.czapliskosiedlisko.pl/defaults/hero-wellness.jpg', alt: 'Wellness i spa' },
+  { image: 'https://cdn.czapliskosiedlisko.pl/defaults/hero-wnetrze.jpg', alt: 'Przytulne wnetrze' },
 ]
 
 let slideInterval: ReturnType<typeof setInterval> | null = null
@@ -237,7 +237,7 @@ onUnmounted(() => {
         page="home"
         section="apartments_preview"
         content-key="image"
-        fallback="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=1920"
+        fallback="https://cdn.czapliskosiedlisko.pl/defaults/apartments-preview.jpg"
         alt="Widok apartamentu"
         class="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
       />
@@ -269,7 +269,7 @@ onUnmounted(() => {
           page="home"
           section="features_cards"
           content-key="card1_image"
-          fallback="https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&q=80&w=800"
+          fallback="https://cdn.czapliskosiedlisko.pl/defaults/feature-taras.jpg"
           class="relative h-[280px] md:h-[340px] group overflow-hidden shadow-xl bg-cover bg-center"
         >
           <div class="absolute inset-0 bg-black/15 group-hover:bg-black/5 transition-colors pointer-events-none"></div>
@@ -296,7 +296,7 @@ onUnmounted(() => {
           page="home"
           section="features_cards"
           content-key="card2_image"
-          fallback="https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&q=80&w=800"
+          fallback="https://cdn.czapliskosiedlisko.pl/defaults/feature-pomost.jpg"
           class="relative h-[280px] md:h-[340px] group overflow-hidden shadow-xl bg-cover bg-center"
         >
           <div class="absolute inset-0 bg-black/15 group-hover:bg-black/5 transition-colors pointer-events-none"></div>
@@ -416,7 +416,7 @@ onUnmounted(() => {
       page="home"
       section="location"
       content-key="image"
-      fallback="https://images.unsplash.com/photo-1541971875076-8f970d573be6?auto=format&fit=crop&q=80&w=1000"
+      fallback="https://cdn.czapliskosiedlisko.pl/defaults/location-map.jpg"
       class="lg:w-1/2 relative min-h-[300px] md:min-h-[450px] lg:min-h-full bg-cover bg-center"
     >
       <div class="absolute inset-0 bg-black/20 lg:bg-black/10 pointer-events-none"></div>

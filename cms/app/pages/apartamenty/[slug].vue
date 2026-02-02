@@ -32,10 +32,10 @@ const galleryImages = computed(() => {
     }))
   }
   return [
-    { src: 'https://images.unsplash.com/photo-1549488344-c705e46405ce?auto=format&fit=crop&q=80&w=1200', alt: 'Pokoj glowny' },
-    { src: 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&q=80&w=1200', alt: 'Lazienka' },
-    { src: 'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&q=80&w=1200', alt: 'Sypialnia' },
-    { src: 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&q=80&w=1200', alt: 'Widok' },
+    { src: 'https://cdn.czapliskosiedlisko.pl/defaults/gallery-1.jpg', alt: 'Pokoj glowny' },
+    { src: 'https://cdn.czapliskosiedlisko.pl/defaults/apartment-bathroom.jpg', alt: 'Lazienka' },
+    { src: 'https://cdn.czapliskosiedlisko.pl/defaults/apartment-bedroom.jpg', alt: 'Sypialnia' },
+    { src: 'https://cdn.czapliskosiedlisko.pl/defaults/apartment-view.jpg', alt: 'Widok' },
   ]
 })
 

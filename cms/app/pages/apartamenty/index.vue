@@ -13,8 +13,8 @@ const { get } = usePageContent('apartments')
 
 // Placeholder images for apartments without media
 const placeholderImages = [
-  'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&q=80&w=800',
-  'https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&q=80&w=800',
+  'https://cdn.czapliskosiedlisko.pl/defaults/apartment-bedroom.jpg',
+  'https://cdn.czapliskosiedlisko.pl/defaults/apartment-view.jpg',
 ]
 
 function getApartmentImage(apartment: any, index: number): string {
@@ -31,7 +31,7 @@ function getApartmentImage(apartment: any, index: number): string {
     page="apartments"
     section="hero"
     content-key="background"
-    fallback="https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&q=80&w=1920"
+    fallback="https://cdn.czapliskosiedlisko.pl/defaults/apartment-view.jpg"
     class="relative h-[450px] w-full overflow-hidden bg-cover bg-center"
   >
     <div class="absolute inset-0 bg-black/20 pointer-events-none"></div>

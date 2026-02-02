@@ -2,6 +2,8 @@
 const route = useRoute()
 const mobileMenuOpen = ref(false)
 
+const { get } = usePageContent('global')
+
 // Fetch navigation from API
 const { data: navigationData } = await useFetch('/api/public/navigation')
 
@@ -94,11 +96,14 @@ watch(() => route.path, () => {
     <div class="px-6 py-4 md:py-10 flex flex-row md:flex-col items-center justify-between md:justify-center relative bg-white border-b border-gray-50 md:border-none">
       <!-- Logo Section -->
       <NuxtLink to="/" class="flex flex-col items-center group">
-        <img
-          src="https://i.ibb.co/q4Yf33P/logotyp-czaplisko-df-kolor-4x-kopia.png"
+        <EditableImage
+          page="global"
+          section="header"
+          content-key="logo"
+          fallback="https://cdn.czapliskosiedlisko.pl/defaults/logo-czaplisko.png"
           alt="Czaplisko Siedlisko Logo"
           class="h-14 sm:h-16 md:h-56 lg:h-64 w-auto object-contain transition-transform duration-500 group-hover:scale-[1.03]"
-        >
+        />
       </NuxtLink>
 
       <!-- Mobile Menu Button -->

@@ -54,8 +54,8 @@ function getApartmentImage(apartmentId: string): string {
   }
   // Placeholder images
   const placeholders = [
-    'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=200',
-    'https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&q=80&w=200',
+    'https://cdn.czapliskosiedlisko.pl/defaults/pricing-thumb-1.jpg',
+    'https://cdn.czapliskosiedlisko.pl/defaults/gallery-4.jpg',
   ]
   const index = apartments.value?.findIndex((a: any) => a.id === apartmentId) || 0
   return placeholders[index % placeholders.length]
@@ -193,7 +193,7 @@ function getApartmentDescription(apartmentId: string): string {
         page="pricing"
         section="low_season"
         content-key="background"
-        fallback="https://images.unsplash.com/photo-1483921020237-2ff51e8e4b22?auto=format&fit=crop&q=80&w=1920"
+        fallback="https://cdn.czapliskosiedlisko.pl/defaults/pricing-winter.jpg"
         class="absolute inset-0 overflow-hidden pointer-events-none opacity-10 bg-cover bg-center grayscale"
       />
 

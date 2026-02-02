@@ -50,7 +50,7 @@ async function handleSubmit() {
       page="contact"
       section="hero"
       content-key="background"
-      fallback="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=1920"
+      fallback="https://cdn.czapliskosiedlisko.pl/defaults/contact-hero.jpg"
       class="relative h-[300px] md:h-[550px] w-full flex items-center justify-center overflow-hidden bg-cover bg-center"
     >
       <div class="absolute inset-0 bg-black/30 md:bg-black/20 pointer-events-none"></div>

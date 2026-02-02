@@ -22,14 +22,14 @@ const galleryImages = computed(() => {
   }
   // Placeholder images
   return [
-    { src: 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&q=80&w=1200', alt: 'Galeria 1' },
-    { src: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&q=80&w=1200', alt: 'Galeria 2' },
-    { src: 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&q=80&w=1200', alt: 'Galeria 3' },
-    { src: 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&q=80&w=1200', alt: 'Galeria 4' },
-    { src: 'https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&q=80&w=1200', alt: 'Galeria 5' },
-    { src: 'https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&q=80&w=1200', alt: 'Galeria 6' },
-    { src: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&q=80&w=1200', alt: 'Galeria 7' },
-    { src: 'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&q=80&w=1200', alt: 'Galeria 8' },
+    { src: 'https://cdn.czapliskosiedlisko.pl/defaults/gallery-1.jpg', alt: 'Galeria 1' },
+    { src: 'https://cdn.czapliskosiedlisko.pl/defaults/gallery-2.jpg', alt: 'Galeria 2' },
+    { src: 'https://cdn.czapliskosiedlisko.pl/defaults/apartment-view.jpg', alt: 'Galeria 3' },
+    { src: 'https://cdn.czapliskosiedlisko.pl/defaults/apartment-bathroom.jpg', alt: 'Galeria 4' },
+    { src: 'https://cdn.czapliskosiedlisko.pl/defaults/gallery-3.jpg', alt: 'Galeria 5' },
+    { src: 'https://cdn.czapliskosiedlisko.pl/defaults/gallery-4.jpg', alt: 'Galeria 6' },
+    { src: 'https://cdn.czapliskosiedlisko.pl/defaults/gallery-5.jpg', alt: 'Galeria 7' },
+    { src: 'https://cdn.czapliskosiedlisko.pl/defaults/apartment-bedroom.jpg', alt: 'Galeria 8' },
   ]
 })
 
@@ -78,7 +78,7 @@ onMounted(() => {
       page="gallery"
       section="hero"
       content-key="background"
-      fallback="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=80&w=1920"
+      fallback="https://cdn.czapliskosiedlisko.pl/defaults/hero-pensjonat.jpg"
       class="relative h-[300px] md:h-[500px] w-full overflow-hidden bg-cover bg-center"
     >
       <div class="absolute inset-0 bg-black/20 pointer-events-none"></div>
