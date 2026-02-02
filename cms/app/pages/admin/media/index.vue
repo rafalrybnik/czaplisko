@@ -18,6 +18,89 @@
       />
     </div>
 
+    <!-- Hero Slider Section -->
+    <div class="bg-white rounded-xl p-6 shadow-sm mb-8">
+      <h2 class="text-lg font-semibold text-gray-900 mb-4">Slider Hero (strona główna)</h2>
+      <p class="text-sm text-gray-500 mb-4">Wybierz 4 zdjęcia do karuzeli na stronie głównej</p>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div
+          v-for="idx in 4"
+          :key="idx"
+          class="relative aspect-video bg-gray-100 rounded-lg overflow-hidden border-2 border-dashed border-gray-300 hover:border-[#78b3ce] transition-colors cursor-pointer group"
+          @click="openHeroImageSelector(idx)"
+        >
+          <img
+            v-if="heroImages[idx]"
+            :src="heroImages[idx]"
+            :alt="`Hero image ${idx}`"
+            class="w-full h-full object-cover"
+          />
+          <div v-else class="absolute inset-0 flex items-center justify-center">
+            <div class="text-center text-gray-400">
+              <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span class="text-xs">Zdjęcie {{ idx }}</span>
+            </div>
+          </div>
+          <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+            <span class="text-white text-sm font-medium">Zmień</span>
+          </div>
+          <div v-if="heroImages[idx]" class="absolute top-2 right-2">
+            <button
+              @click.stop="removeHeroImage(idx)"
+              class="p-1 bg-red-500 rounded-full text-white hover:bg-red-600"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero Image Selector Modal -->
+    <div
+      v-if="heroSelectorOpen"
+      class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+      @click="heroSelectorOpen = false"
+    >
+      <div
+        class="bg-white rounded-xl max-w-4xl w-full max-h-[80vh] overflow-hidden"
+        @click.stop
+      >
+        <div class="p-4 border-b flex items-center justify-between">
+          <h3 class="text-lg font-semibold">Wybierz zdjęcie do slidera {{ selectedHeroSlot }}</h3>
+          <button @click="heroSelectorOpen = false" class="text-gray-500 hover:text-gray-700">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div class="p-4 overflow-y-auto max-h-[60vh]">
+          <div v-if="!media?.length" class="text-center text-gray-500 py-8">
+            Brak zdjęć w bibliotece. Dodaj zdjęcia najpierw.
+          </div>
+          <div v-else class="grid grid-cols-3 md:grid-cols-4 gap-3">
+            <div
+              v-for="item in media"
+              :key="item.id"
+              class="aspect-video bg-gray-100 rounded-lg overflow-hidden cursor-pointer hover:ring-2 hover:ring-[#78b3ce] transition-all"
+              @click="selectHeroImage(item)"
+            >
+              <img
+                :src="item.urlCompressed"
+                :alt="item.alt || 'Image'"
+                class="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Filters -->
     <div class="flex flex-wrap gap-4 mb-6">
       <div class="inline-flex bg-gray-100 rounded-lg p-1">
@@ -138,12 +221,66 @@ const route = useRoute()
 
 const { data: media, refresh } = await useFetch('/api/admin/media')
 const { data: apartments } = await useFetch('/api/admin/apartments')
+const { data: heroContent, refresh: refreshHeroContent } = await useFetch<Record<string, { value: string }>>('/api/public/content/home')
 
 const fileInput = ref<HTMLInputElement>()
 const uploading = ref(false)
 const uploadProgress = ref(0)
 const uploadError = ref('')
 const lightboxImage = ref<any>(null)
+
+// Hero slider state
+const heroSelectorOpen = ref(false)
+const selectedHeroSlot = ref(1)
+const heroImages = computed(() => {
+  const images: Record<number, string> = {}
+  for (let i = 1; i <= 4; i++) {
+    images[i] = heroContent.value?.hero_slider?.[`image_${i}`]?.value || ''
+  }
+  return images
+})
+
+function openHeroImageSelector(slot: number) {
+  selectedHeroSlot.value = slot
+  heroSelectorOpen.value = true
+}
+
+async function selectHeroImage(item: any) {
+  try {
+    await $fetch('/api/admin/content', {
+      method: 'POST',
+      body: {
+        page: 'home',
+        section: 'hero_slider',
+        key: `image_${selectedHeroSlot.value}`,
+        value: item.urlCompressed,
+        type: 'image',
+      },
+    })
+    await refreshHeroContent()
+    heroSelectorOpen.value = false
+  } catch (e) {
+    console.error('Failed to save hero image:', e)
+  }
+}
+
+async function removeHeroImage(slot: number) {
+  try {
+    await $fetch('/api/admin/content', {
+      method: 'POST',
+      body: {
+        page: 'home',
+        section: 'hero_slider',
+        key: `image_${slot}`,
+        value: '',
+        type: 'image',
+      },
+    })
+    await refreshHeroContent()
+  } catch (e) {
+    console.error('Failed to remove hero image:', e)
+  }
+}
 
 const categories = [
   { label: 'Wszystkie', value: '' },

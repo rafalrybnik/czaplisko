@@ -172,6 +172,12 @@ async function initDatabase(attempt = 1, maxAttempts = 5): Promise<void> {
         // Home page - Hero button
         { page: 'home', section: 'hero', key: 'button_text', value: 'Zobacz Apartamenty', type: 'text' },
 
+        // Home page - Hero slider images
+        { page: 'home', section: 'hero_slider', key: 'image_1', value: 'https://cdn.czapliskosiedlisko.pl/defaults/hero-pensjonat.jpg', type: 'image' },
+        { page: 'home', section: 'hero_slider', key: 'image_2', value: 'https://cdn.czapliskosiedlisko.pl/defaults/hero-dom-jezioro.jpg', type: 'image' },
+        { page: 'home', section: 'hero_slider', key: 'image_3', value: 'https://cdn.czapliskosiedlisko.pl/defaults/hero-wellness.jpg', type: 'image' },
+        { page: 'home', section: 'hero_slider', key: 'image_4', value: 'https://cdn.czapliskosiedlisko.pl/defaults/hero-wnetrze.jpg', type: 'image' },
+
         // Home page - Features cards (Taras/Pomost)
         { page: 'home', section: 'features_cards', key: 'card1_title', value: 'Taras', type: 'text' },
         { page: 'home', section: 'features_cards', key: 'card1_subtitle', value: 'Z widokiem', type: 'text' },

@@ -13,18 +13,29 @@ const { data: apartments } = await useFetch('/api/public/apartments')
 const { data: newsResponse } = await useFetch('/api/public/news')
 
 // Page content for inline editing
-const { get } = usePageContent('home')
+const { get, getImage } = usePageContent('home')
 
 const news = computed(() => newsResponse.value?.data?.slice(0, 3) || [])
 
-// Hero slider logic
-const currentSlide = ref(0)
-const slides = [
+// Default hero images
+const defaultSlides = [
   { image: 'https://cdn.czapliskosiedlisko.pl/defaults/hero-pensjonat.jpg', alt: 'Pensjonat zewnatrz' },
   { image: 'https://cdn.czapliskosiedlisko.pl/defaults/hero-dom-jezioro.jpg', alt: 'Dom nad jeziorem' },
   { image: 'https://cdn.czapliskosiedlisko.pl/defaults/hero-wellness.jpg', alt: 'Wellness i spa' },
   { image: 'https://cdn.czapliskosiedlisko.pl/defaults/hero-wnetrze.jpg', alt: 'Przytulne wnetrze' },
 ]
+
+// Hero slider logic - use dynamic images from CMS or fallback to defaults
+const currentSlide = ref(0)
+const slides = computed(() => {
+  return defaultSlides.map((defaultSlide, idx) => {
+    const customImage = getImage('hero_slider', `image_${idx + 1}`, '')
+    return {
+      image: customImage || defaultSlide.image,
+      alt: defaultSlide.alt,
+    }
+  })
+})
 
 let slideInterval: ReturnType<typeof setInterval> | null = null
 
@@ -33,7 +44,7 @@ function goToSlide(index: number) {
 }
 
 function nextSlide() {
-  currentSlide.value = (currentSlide.value + 1) % slides.length
+  currentSlide.value = (currentSlide.value + 1) % slides.value.length
 }
 
 onMounted(() => {
@@ -70,7 +81,7 @@ onUnmounted(() => {
     <div class="relative z-10 container mx-auto h-full flex flex-col lg:flex-row items-center justify-between px-6 lg:px-24 py-12 lg:py-0">
       <!-- Left Side: Vertical Tabs -->
       <div class="flex flex-col space-y-4 md:space-y-6 w-full lg:w-[350px] mt-12 lg:mt-0 order-2 lg:order-1">
-        <div class="p-6 md:p-8 border-l-4 transition-all duration-500 transform hover:-translate-y-1 bg-white/10 border-[#78b3ce] translate-x-2">
+        <div class="p-6 md:p-8 border-l-4 transition-all duration-500 transform hover:-translate-y-1 bg-white/5 border-transparent hover:bg-white/10">
           <EditableText
             page="home"
             section="hero_cards"
