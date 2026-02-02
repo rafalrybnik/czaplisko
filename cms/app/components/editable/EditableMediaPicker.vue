@@ -17,6 +17,11 @@ const isLoading = ref(true)
 const searchQuery = ref('')
 const selectedCategory = ref<string>('all')
 
+// Upload state
+const fileInput = ref<HTMLInputElement>()
+const isUploading = ref(false)
+const uploadError = ref('')
+
 const categories = ['all', 'gallery', 'apartment', 'news', 'content']
 
 const filteredMedia = computed(() => {
@@ -57,6 +62,41 @@ function selectMedia(item: MediaItem) {
 
 function close() {
   emit('close')
+}
+
+function triggerUpload() {
+  fileInput.value?.click()
+}
+
+async function handleFileUpload(event: Event) {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  if (!file) return
+
+  isUploading.value = true
+  uploadError.value = ''
+
+  try {
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append('category', 'content')
+
+    const uploaded = await $fetch<MediaItem>('/api/admin/media/upload', {
+      method: 'POST',
+      body: formData,
+      credentials: 'include',
+    })
+
+    // Add to list and select immediately
+    mediaItems.value.unshift(uploaded)
+    selectMedia(uploaded)
+  } catch (e: any) {
+    console.error('Upload failed:', e)
+    uploadError.value = e.data?.message || 'Błąd podczas przesyłania pliku'
+  } finally {
+    isUploading.value = false
+    input.value = ''
+  }
 }
 
 // Handle escape key
@@ -101,6 +141,34 @@ onUnmounted(() => {
               {{ cat === 'all' ? 'Wszystkie' : cat }}
             </option>
           </select>
+          <button
+            type="button"
+            class="media-picker__upload-btn"
+            :disabled="isUploading"
+            @click="triggerUpload"
+          >
+            <svg v-if="!isUploading" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+            </svg>
+            <svg v-else class="w-5 h-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            {{ isUploading ? 'Przesyłanie...' : 'Wrzuć nowe' }}
+          </button>
+          <input
+            ref="fileInput"
+            type="file"
+            accept="image/*"
+            class="hidden"
+            @change="handleFileUpload"
+          />
+        </div>
+
+        <!-- Upload Error -->
+        <div v-if="uploadError" class="media-picker__error">
+          {{ uploadError }}
+          <button type="button" @click="uploadError = ''">×</button>
         </div>
 
         <div v-if="isLoading" class="media-picker__loading">
@@ -211,6 +279,64 @@ onUnmounted(() => {
   border-radius: 0.375rem;
   font-size: 0.875rem;
   background: white;
+}
+
+.media-picker__upload-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #78b3ce;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+
+.media-picker__upload-btn:hover:not(:disabled) {
+  background: #4a6b8a;
+}
+
+.media-picker__upload-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.hidden {
+  display: none;
+}
+
+.media-picker__error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  background: #fef2f2;
+  border-bottom: 1px solid #fecaca;
+  color: #dc2626;
+  font-size: 0.875rem;
+}
+
+.media-picker__error button {
+  background: none;
+  border: none;
+  color: #dc2626;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0 0.25rem;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .media-picker__loading,
