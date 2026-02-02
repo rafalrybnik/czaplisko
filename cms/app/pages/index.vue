@@ -472,8 +472,22 @@ onUnmounted(() => {
   <section v-if="news.length > 0" class="py-16 md:py-32 bg-white overflow-hidden">
     <div class="container mx-auto px-6">
       <div class="text-center mb-16 md:mb-28">
-        <h2 class="text-4xl md:text-[54px] font-light text-gray-600 mb-5 tracking-tight">Aktualnosci</h2>
-        <p class="text-[9px] md:text-[10px] tracking-[0.7em] text-gray-300 font-bold uppercase">- BLOG -</p>
+        <EditableText
+          page="home"
+          section="news"
+          content-key="title"
+          tag="h2"
+          class="text-4xl md:text-[54px] font-light text-gray-600 mb-5 tracking-tight"
+          fallback="Aktualnosci"
+        />
+        <EditableText
+          page="home"
+          section="news"
+          content-key="label"
+          tag="p"
+          class="text-[9px] md:text-[10px] tracking-[0.7em] text-gray-300 font-bold uppercase"
+          fallback="- BLOG -"
+        />
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 max-w-[1200px] mx-auto">
