@@ -2,6 +2,7 @@
 const route = useRoute()
 const mobileMenuOpen = ref(false)
 
+const { editMode } = useEditMode()
 const { get } = usePageContent('global')
 
 // Fetch navigation from API
@@ -95,7 +96,7 @@ watch(() => route.path, () => {
     <!-- Main Brand Section -->
     <div class="px-6 py-4 md:py-10 flex flex-row md:flex-col items-center justify-between md:justify-center relative bg-white border-b border-gray-50 md:border-none">
       <!-- Logo Section -->
-      <NuxtLink to="/" class="flex flex-col items-center group">
+      <NuxtLink v-if="!editMode" to="/" class="flex flex-col items-center group">
         <EditableImage
           page="global"
           section="header"
@@ -105,6 +106,16 @@ watch(() => route.path, () => {
           class="h-14 sm:h-16 md:h-56 lg:h-64 w-auto object-contain transition-transform duration-500 group-hover:scale-[1.03]"
         />
       </NuxtLink>
+      <div v-else class="flex flex-col items-center">
+        <EditableImage
+          page="global"
+          section="header"
+          content-key="logo"
+          fallback="https://cdn.czapliskosiedlisko.pl/defaults/logo-czaplisko.png"
+          alt="Czaplisko Siedlisko Logo"
+          class="h-14 sm:h-16 md:h-56 lg:h-64 w-auto object-contain"
+        />
+      </div>
 
       <!-- Mobile Menu Button -->
       <button

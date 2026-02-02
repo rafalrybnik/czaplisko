@@ -19,8 +19,10 @@ const currentAlt = computed(() => {
   return (meta?.alt as string) ?? props.alt ?? ''
 })
 
-function openPicker() {
+function openPicker(event: Event) {
   if (editMode.value) {
+    event.preventDefault()
+    event.stopPropagation()
     showPicker.value = true
   }
 }
