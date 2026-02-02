@@ -196,6 +196,10 @@ async function initDatabase(attempt = 1, maxAttempts = 5): Promise<void> {
         { page: 'home', section: 'location', key: 'description_1', value: 'Czaplisko Siedlisko znajduje sie w malowniczej wsi Skitlawki, w samym sercu Mazur Zachodnich. Otoczeni lasami i jeziorami, oferujemy ucieczkę od zgiełku miasta.', type: 'text' },
         { page: 'home', section: 'location', key: 'description_2', value: 'Zaledwie 15 minut jazdy od Zalewa i 40 minut od Ostrody. Idealna baza wypadowa do odkrywania regionu — szlaki rowerowe, kajakowe i piesze na wyciagniecie reki.', type: 'text' },
 
+        // Home page - Apartments section
+        { page: 'home', section: 'apartments', key: 'label', value: 'Luksusowe Pokoje', type: 'text' },
+        { page: 'home', section: 'apartments', key: 'title', value: 'Nasze Apartamenty', type: 'text' },
+
         // Home page - News section
         { page: 'home', section: 'news', key: 'title', value: 'Aktualnosci', type: 'text' },
         { page: 'home', section: 'news', key: 'label', value: '- BLOG -', type: 'text' },

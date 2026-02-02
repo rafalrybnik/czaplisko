@@ -236,8 +236,22 @@ onUnmounted(() => {
   <!-- Apartments Preview Section -->
   <section class="pb-16 md:pb-24 bg-white">
     <div class="text-center mb-12 md:mb-16">
-      <p class="text-[9px] md:text-[10px] tracking-[0.5em] font-bold text-gray-300 uppercase mb-3">Luksusowe Pokoje</p>
-      <h2 class="text-4xl md:text-5xl font-light text-gray-600 tracking-tight">Nasze Apartamenty</h2>
+      <EditableText
+        page="home"
+        section="apartments"
+        content-key="label"
+        tag="p"
+        class="text-[9px] md:text-[10px] tracking-[0.5em] font-bold text-gray-300 uppercase mb-3"
+        fallback="Luksusowe Pokoje"
+      />
+      <EditableText
+        page="home"
+        section="apartments"
+        content-key="title"
+        tag="h2"
+        class="text-4xl md:text-5xl font-light text-gray-600 tracking-tight"
+        fallback="Nasze Apartamenty"
+      />
       <div class="w-20 h-[1px] bg-[#78b3ce] mx-auto mt-6"></div>
     </div>
     <NuxtLink
