@@ -93,3 +93,17 @@ model NavigationItem {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model PageContent {
+  id        String   @id @default(cuid())
+  page      String   // "home", "apartments", "contact", "faq", "gallery", "pricing", "footer"
+  section   String   // "hero", "about", "intro", "info", "social"
+  key       String   // "title", "subtitle", "description", "image", "address", etc.
+  value     String   @db.Text
+  type      String   @default("text") // "text" | "richtext" | "image"
+  metadata  Json?    // { alt: "...", placeholder: "..." }
+  updatedAt DateTime @updatedAt
+
+  @@unique([page, section, key])
+  @@index([page])
+}

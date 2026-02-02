@@ -8,9 +8,11 @@ function getS3Client(): S3Client {
 
   const config = useRuntimeConfig()
 
+  // Cloudflare R2 endpoint: https://{account_id}.r2.cloudflarestorage.com
+  // Note: For EU jurisdiction buckets, use .eu.r2.cloudflarestorage.com
   s3Client = new S3Client({
     region: 'auto',
-    endpoint: `https://${config.r2AccountId}.eu.r2.cloudflarestorage.com`,
+    endpoint: `https://${config.r2AccountId}.r2.cloudflarestorage.com`,
     credentials: {
       accessKeyId: config.r2AccessKeyId,
       secretAccessKey: config.r2SecretAccessKey,

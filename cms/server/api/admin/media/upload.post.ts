@@ -1,8 +1,18 @@
 import { prisma } from '../../../utils/prisma'
 import { processImage, generateImageKey, generateWebpKey } from '../../../utils/image'
 import { uploadToR2 } from '../../../utils/r2'
+import { getAuthenticatedUser } from '../../../utils/auth'
 
 export default defineEventHandler(async (event) => {
+  // Check authentication
+  const user = getAuthenticatedUser(event)
+  if (!user) {
+    throw createError({
+      statusCode: 401,
+      message: 'Brak autoryzacji',
+    })
+  }
+
   const formData = await readMultipartFormData(event)
 
   if (!formData || formData.length === 0) {
@@ -80,11 +90,25 @@ export default defineEventHandler(async (event) => {
     })
 
     return media
-  } catch (error) {
+  } catch (error: any) {
     console.error('Upload error:', error)
+
+    // Provide more specific error messages
+    let message = 'Błąd podczas przesyłania pliku'
+
+    if (error.name === 'CredentialsProviderError' || error.message?.includes('credentials')) {
+      message = 'Błąd konfiguracji R2: nieprawidłowe dane uwierzytelniające'
+    } else if (error.code === 'ENOTFOUND' || error.message?.includes('getaddrinfo')) {
+      message = 'Błąd połączenia z R2: sprawdź R2_ACCOUNT_ID'
+    } else if (error.name === 'NoSuchBucket' || error.message?.includes('bucket')) {
+      message = 'Błąd R2: bucket nie istnieje'
+    } else if (error.message?.includes('sharp')) {
+      message = 'Błąd przetwarzania obrazu'
+    }
+
     throw createError({
       statusCode: 500,
-      message: 'Błąd podczas przesyłania pliku',
+      message,
     })
   }
 })

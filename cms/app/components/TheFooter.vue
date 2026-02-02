@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const currentYear = new Date().getFullYear()
+const { get } = usePageContent('footer')
 </script>
 
 <template>
@@ -8,18 +9,59 @@ const currentYear = new Date().getFullYear()
     <div class="max-w-7xl mx-auto px-6 md:px-24 py-20 grid grid-cols-1 md:grid-cols-2 gap-12">
       <!-- Visit Us Column -->
       <div>
-        <h4 class="text-[28px] font-normal text-gray-700 mb-10 tracking-tight">Odwiedz nas</h4>
+        <EditableText
+          page="footer"
+          section="visit"
+          content-key="title"
+          tag="h4"
+          class="text-[28px] font-normal text-gray-700 mb-10 tracking-tight"
+          fallback="Odwiedz nas"
+        />
         <div class="text-[14px] text-gray-500 space-y-2 font-light tracking-wide">
-          <p class="mb-4">Czaplisko Siedlisko</p>
-          <p class="mb-4">Dog Friendly & Eco Guesthouse</p>
-          <p class="mt-6">Skitlawki 2A</p>
-          <p>14-230 Zalewo</p>
+          <EditableText
+            page="footer"
+            section="address"
+            content-key="line1"
+            tag="p"
+            class="mb-4"
+            fallback="Czaplisko Siedlisko"
+          />
+          <EditableText
+            page="footer"
+            section="address"
+            content-key="line2"
+            tag="p"
+            class="mb-4"
+            fallback="Dog Friendly & Eco Guesthouse"
+          />
+          <EditableText
+            page="footer"
+            section="address"
+            content-key="street"
+            tag="p"
+            class="mt-6"
+            fallback="Skitlawki 2A"
+          />
+          <EditableText
+            page="footer"
+            section="address"
+            content-key="city"
+            tag="p"
+            fallback="14-230 Zalewo"
+          />
         </div>
       </div>
 
       <!-- Social Media Column -->
       <div>
-        <h4 class="text-[28px] font-normal text-gray-700 mb-10 tracking-tight">Social media</h4>
+        <EditableText
+          page="footer"
+          section="social"
+          content-key="title"
+          tag="h4"
+          class="text-[28px] font-normal text-gray-700 mb-10 tracking-tight"
+          fallback="Social media"
+        />
         <div class="flex space-x-6 items-center">
           <a
             href="https://facebook.com"

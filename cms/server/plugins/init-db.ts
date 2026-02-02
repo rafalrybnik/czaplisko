@@ -112,6 +112,115 @@ async function initDatabase(attempt = 1, maxAttempts = 5): Promise<void> {
       console.log('[init-db] Created season ranges')
     }
 
+    // Check if page content exists
+    const contentCount = await prisma.pageContent.count()
+
+    if (contentCount === 0) {
+      console.log('[init-db] No page content found, creating defaults...')
+
+      const defaultContent = [
+        // Home page - Intro section
+        { page: 'home', section: 'intro', key: 'label', value: 'Witamy w Czaplisku', type: 'text' },
+        { page: 'home', section: 'intro', key: 'title', value: 'Twoja oaza spokoju w sercu Mazur Zachodnich', type: 'text' },
+        { page: 'home', section: 'intro', key: 'description', value: 'Przezyj prawdziwa harmonie z natura. Nasz ekologiczny pensjonat oferuje unikalne polaczenie nowoczesnego komfortu i wiejskiego uroku, gdzie kazdy gosc — rowniez ten czworonozny — jest traktowany z krolewska troska.', type: 'text' },
+
+        // Home page - Hero section
+        { page: 'home', section: 'hero', key: 'label', value: 'ODKRYJ SPOKOJ', type: 'text' },
+        { page: 'home', section: 'hero', key: 'title', value: 'Relaksujace Wakacje', type: 'text' },
+        { page: 'home', section: 'hero', key: 'description', value: 'Przezyj niezapomniane chwile na Mazurach Zachodnich. Nasz ekologiczny pensjonat to idealne miejsce na wypoczynek w otoczeniu dziewiczej natury i absolutnego spokoju.', type: 'text' },
+
+        // Home page - Features section
+        { page: 'home', section: 'features', key: 'title', value: 'Najlepszy wypoczynek nad jeziorem na Mazurach Zachodnich', type: 'text' },
+
+        // Home page - Hero cards (left side)
+        { page: 'home', section: 'hero_cards', key: 'card1_title', value: 'Komfortowe Pokoje', type: 'text' },
+        { page: 'home', section: 'hero_cards', key: 'card1_description', value: 'Przestronne apartamenty z widokiem na jezioro i las. Idealne dla rodzin z psami.', type: 'text' },
+        { page: 'home', section: 'hero_cards', key: 'card2_title', value: 'Idealne Wakacje', type: 'text' },
+        { page: 'home', section: 'hero_cards', key: 'card2_description', value: 'Cisza, spokój i kontakt z natura. Wypoczynek jakiego szukasz.', type: 'text' },
+        { page: 'home', section: 'hero_cards', key: 'card3_title', value: 'Ekologia i Natura', type: 'text' },
+        { page: 'home', section: 'hero_cards', key: 'card3_description', value: 'Certyfikowany ekologiczny pensjonat. Dbamy o srodowisko.', type: 'text' },
+
+        // Home page - Hero button
+        { page: 'home', section: 'hero', key: 'button_text', value: 'Zobacz Apartamenty', type: 'text' },
+
+        // Home page - Features cards (Taras/Pomost)
+        { page: 'home', section: 'features_cards', key: 'card1_title', value: 'Taras', type: 'text' },
+        { page: 'home', section: 'features_cards', key: 'card1_subtitle', value: 'Z widokiem', type: 'text' },
+        { page: 'home', section: 'features_cards', key: 'card2_title', value: 'Pomost', type: 'text' },
+        { page: 'home', section: 'features_cards', key: 'card2_subtitle', value: 'Nad jeziorem', type: 'text' },
+
+        // Home page - Features descriptions (4 feature boxes)
+        { page: 'home', section: 'features_list', key: 'paw_description', value: 'Pensjonat przyjazny psom. Twoj czworonozny przyjaciel jest u nas mile widziany i moze korzystac z calego terenu.', type: 'text' },
+        { page: 'home', section: 'features_list', key: 'leaf_description', value: 'Certyfikowany ekologiczny obiekt. Korzystamy z energii odnawialnej i dbamy o minimalizacje naszego wplywu na srodowisko.', type: 'text' },
+        { page: 'home', section: 'features_list', key: 'water_description', value: 'Bezposredni dostep do jeziora z wlasnym pomostem. Idealne miejsce na poranne plywanie lub wieczorny relaks.', type: 'text' },
+        { page: 'home', section: 'features_list', key: 'kitchen_description', value: 'W pelni wyposaziona kuchnia w kazdym apartamencie. Lokalne produkty dostepne na zamowienie.', type: 'text' },
+
+        // Home page - Location section
+        { page: 'home', section: 'location', key: 'label', value: 'Mazury Zachodnie', type: 'text' },
+        { page: 'home', section: 'location', key: 'title', value: 'Odkryj nasza lokalizacje', type: 'text' },
+        { page: 'home', section: 'location', key: 'description_1', value: 'Czaplisko Siedlisko znajduje sie w malowniczej wsi Skitlawki, w samym sercu Mazur Zachodnich. Otoczeni lasami i jeziorami, oferujemy ucieczkę od zgiełku miasta.', type: 'text' },
+        { page: 'home', section: 'location', key: 'description_2', value: 'Zaledwie 15 minut jazdy od Zalewa i 40 minut od Ostrody. Idealna baza wypadowa do odkrywania regionu — szlaki rowerowe, kajakowe i piesze na wyciagniecie reki.', type: 'text' },
+
+        // Apartments page
+        { page: 'apartments', section: 'hero', key: 'title', value: 'Apartamenty', type: 'text' },
+        { page: 'apartments', section: 'content', key: 'subtitle', value: 'Wybierz swoj apartament', type: 'text' },
+
+        // Contact page
+        { page: 'contact', section: 'hero', key: 'title', value: 'Kontakt', type: 'text' },
+        { page: 'contact', section: 'form', key: 'label', value: 'Napisz do nas', type: 'text' },
+        { page: 'contact', section: 'form', key: 'title', value: 'Skontaktuj sie', type: 'text' },
+        { page: 'contact', section: 'form', key: 'description', value: 'Masz pytania dotyczace rezerwacji lub pobytu? Chcesz dowiedziec sie wiecej o naszym pensjonacie? Napisz do nas, a odpowiemy najszybciej jak to mozliwe.', type: 'text' },
+        { page: 'contact', section: 'info', key: 'address_street', value: 'Skitlawki 2A', type: 'text' },
+        { page: 'contact', section: 'info', key: 'address_city', value: '14-230 Zalewo', type: 'text' },
+        { page: 'contact', section: 'info', key: 'phone', value: '+48 123 456 789', type: 'text' },
+        { page: 'contact', section: 'info', key: 'email', value: 'kontakt@czaplisko.pl', type: 'text' },
+        { page: 'contact', section: 'info', key: 'region', value: 'Mazury Zachodnie', type: 'text' },
+        { page: 'contact', section: 'info', key: 'checkin', value: '15:00 - 20:00', type: 'text' },
+        { page: 'contact', section: 'info', key: 'checkout', value: 'do 11:00', type: 'text' },
+
+        // FAQ page
+        { page: 'faq', section: 'header', key: 'label', value: 'Pytania i odpowiedzi', type: 'text' },
+        { page: 'faq', section: 'header', key: 'title', value: 'FAQ', type: 'text' },
+        { page: 'faq', section: 'cta', key: 'title', value: 'Masz wiecej pytan?', type: 'text' },
+        { page: 'faq', section: 'cta', key: 'description', value: 'Nasz zespol jest gotowy, aby pomoc Ci zaplanowac idealny pobyt.', type: 'text' },
+        { page: 'faq', section: 'cta', key: 'button_text', value: 'Skontaktuj sie', type: 'text' },
+
+        // Gallery page
+        { page: 'gallery', section: 'hero', key: 'title', value: 'Galeria', type: 'text' },
+        { page: 'gallery', section: 'intro', key: 'title', value: 'Odkryj piekno Czaplisko Siedlisko', type: 'text' },
+        { page: 'gallery', section: 'intro', key: 'description', value: 'Przegladaj zdjecia naszych apartamentow, otaczajacej natury i udogodnien. Pozwol, ze zabierzemy Cie w wirtualna podroz po naszym ekologicznym pensjonacie.', type: 'text' },
+        { page: 'gallery', section: 'cta', key: 'title', value: 'Zarezerwuj swoj pobyt', type: 'text' },
+        { page: 'gallery', section: 'cta', key: 'description', value: 'Przekonaj sie sam o uroku naszego pensjonatu. Skontaktuj sie z nami, aby zarezerwowac apartament.', type: 'text' },
+        { page: 'gallery', section: 'cta', key: 'button_text', value: 'Kontakt', type: 'text' },
+
+        // Pricing page
+        { page: 'pricing', section: 'header', key: 'title', value: 'Cennik', type: 'text' },
+        { page: 'pricing', section: 'header', key: 'subtitle', value: 'Sezonowe ceny apartamentow', type: 'text' },
+        { page: 'pricing', section: 'high_season', key: 'description', value: 'Przezyj energie Mazur Zachodnich w pelnym rozkwicie. Dlugie dni, krystalicznie czysta woda i absolutny spokoj.', type: 'text' },
+        { page: 'pricing', section: 'low_season', key: 'description', value: 'Przytul sie w naszym ekologicznym pensjonacie. Korzystaj ze specjalnych cen poza sezonem i ciesz sie spokojem.', type: 'text' },
+        { page: 'pricing', section: 'cta', key: 'title', value: 'Gotowy zarezerwowac wypoczynek?', type: 'text' },
+        { page: 'pricing', section: 'cta', key: 'button_text', value: 'Skontaktuj sie z nami', type: 'text' },
+
+        // Footer
+        { page: 'footer', section: 'visit', key: 'title', value: 'Odwiedz nas', type: 'text' },
+        { page: 'footer', section: 'social', key: 'title', value: 'Social media', type: 'text' },
+        { page: 'footer', section: 'address', key: 'line1', value: 'Czaplisko Siedlisko', type: 'text' },
+        { page: 'footer', section: 'address', key: 'line2', value: 'Dog Friendly & Eco Guesthouse', type: 'text' },
+        { page: 'footer', section: 'address', key: 'street', value: 'Skitlawki 2A', type: 'text' },
+        { page: 'footer', section: 'address', key: 'city', value: '14-230 Zalewo', type: 'text' },
+        { page: 'footer', section: 'social', key: 'facebook', value: 'https://facebook.com/czaplisko', type: 'text' },
+        { page: 'footer', section: 'social', key: 'instagram', value: 'https://instagram.com/czaplisko', type: 'text' },
+      ]
+
+      for (const content of defaultContent) {
+        await prisma.pageContent.create({
+          data: content,
+        })
+      }
+
+      console.log('[init-db] Created page content')
+    }
+
     console.log('[init-db] Database initialization complete')
   } catch (error) {
     console.error(`[init-db] Error during database initialization (attempt ${attempt}):`, error)

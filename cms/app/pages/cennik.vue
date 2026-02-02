@@ -8,6 +8,8 @@ useSeoMeta({
   description: 'Sprawdz nasz sezonowy cennik apartamentow. Ceny na sezon letni i zimowy oraz oferty specjalne.',
 })
 
+const { get } = usePageContent('pricing')
+
 // Fetch pricing data from API
 const { data: pricingData } = await useFetch('/api/public/pricing')
 const { data: apartments } = await useFetch('/api/public/apartments')
@@ -73,10 +75,22 @@ function getApartmentDescription(apartmentId: string): string {
   <main class="flex-grow bg-white overflow-hidden font-['Montserrat']">
     <!-- Page Header -->
     <section class="bg-gray-50 py-16 md:py-24 px-6 text-center">
-      <h1 class="text-4xl md:text-6xl font-light text-[#1a2b3c] tracking-tight mb-4 uppercase">Cennik</h1>
-      <p class="text-[10px] md:text-[12px] tracking-[0.5em] font-bold text-[#78b3ce] uppercase">
-        Sezonowe ceny apartamentow
-      </p>
+      <EditableText
+        page="pricing"
+        section="header"
+        content-key="title"
+        tag="h1"
+        class="text-4xl md:text-6xl font-light text-[#1a2b3c] tracking-tight mb-4 uppercase"
+        fallback="Cennik"
+      />
+      <EditableText
+        page="pricing"
+        section="header"
+        content-key="subtitle"
+        tag="p"
+        class="text-[10px] md:text-[12px] tracking-[0.5em] font-bold text-[#78b3ce] uppercase"
+        fallback="Sezonowe ceny apartamentow"
+      />
       <div class="w-16 h-[1px] bg-gray-200 mx-auto mt-10"></div>
     </section>
 
@@ -93,9 +107,14 @@ function getApartmentDescription(apartmentId: string): string {
               Sezon
             </h2>
           </div>
-          <p class="text-gray-400 text-sm font-light leading-loose max-w-xs mb-8">
-            Przezyj energie Mazur Zachodnich w pelnym rozkwicie. Dlugie dni, krystalicznie czysta woda i absolutny spokoj.
-          </p>
+          <EditableText
+            page="pricing"
+            section="high_season"
+            content-key="description"
+            tag="p"
+            class="text-gray-400 text-sm font-light leading-loose max-w-xs mb-8"
+            fallback="Przezyj energie Mazur Zachodnich w pelnym rozkwicie. Dlugie dni, krystalicznie czysta woda i absolutny spokoj."
+          />
           <div class="flex space-x-2">
             <div class="w-10 h-[1px] bg-[#78b3ce] mt-3"></div>
             <span class="text-[10px] font-bold uppercase tracking-widest text-gray-300">
@@ -170,13 +189,13 @@ function getApartmentDescription(apartmentId: string): string {
 
     <!-- Low Season Section -->
     <section class="relative py-20 md:py-32 bg-[#1a2b3c]">
-      <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
-        <img
-          src="https://images.unsplash.com/photo-1483921020237-2ff51e8e4b22?auto=format&fit=crop&q=80&w=1920"
-          class="w-full h-full object-cover grayscale"
-          alt="Winter texture"
-        >
-      </div>
+      <EditableBackground
+        page="pricing"
+        section="low_season"
+        content-key="background"
+        fallback="https://images.unsplash.com/photo-1483921020237-2ff51e8e4b22?auto=format&fit=crop&q=80&w=1920"
+        class="absolute inset-0 overflow-hidden pointer-events-none opacity-10 bg-cover bg-center grayscale"
+      />
 
       <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start relative z-10">
         <!-- Pricing Card -->
@@ -247,9 +266,14 @@ function getApartmentDescription(apartmentId: string): string {
               Poza <span class="text-[#78b3ce]">Sezonem</span>
             </h2>
           </div>
-          <p class="text-gray-400 text-sm font-light leading-loose max-w-xs mb-8">
-            Przytul sie w naszym ekologicznym pensjonacie. Korzystaj ze specjalnych cen poza sezonem i ciesz sie spokojem.
-          </p>
+          <EditableText
+            page="pricing"
+            section="low_season"
+            content-key="description"
+            tag="p"
+            class="text-gray-400 text-sm font-light leading-loose max-w-xs mb-8"
+            fallback="Przytul sie w naszym ekologicznym pensjonacie. Korzystaj ze specjalnych cen poza sezonem i ciesz sie spokojem."
+          />
           <div class="flex space-x-2">
             <div class="w-10 h-[1px] bg-[#78b3ce] mt-3"></div>
             <span class="text-[10px] font-bold uppercase tracking-widest text-[#78b3ce]">
@@ -262,12 +286,25 @@ function getApartmentDescription(apartmentId: string): string {
 
     <!-- Booking CTA -->
     <section class="py-24 text-center">
-      <h3 class="text-3xl font-light text-gray-700 mb-8">Gotowy zarezerwowac wypoczynek?</h3>
+      <EditableText
+        page="pricing"
+        section="cta"
+        content-key="title"
+        tag="h3"
+        class="text-3xl font-light text-gray-700 mb-8"
+        fallback="Gotowy zarezerwowac wypoczynek?"
+      />
       <NuxtLink
         to="/kontakt"
         class="inline-block bg-[#78b3ce] text-white px-12 py-5 text-[11px] tracking-[0.4em] font-bold uppercase hover:bg-[#1a2b3c] transition-all duration-500 shadow-xl hover:shadow-2xl active:scale-95"
       >
-        Skontaktuj sie z nami
+        <EditableText
+          page="pricing"
+          section="cta"
+          content-key="button_text"
+          tag="span"
+          fallback="Skontaktuj sie z nami"
+        />
       </NuxtLink>
     </section>
   </main>

@@ -1,447 +1,417 @@
-# TODO.md - Plan Implementacji Czaplisko CMS
+# TODO.md - Custom Inline Editing Implementation
 
-## Podsumowanie Projektu
-
-Transformacja statycznego szablonu HTML/Tailwind w dynamiczny CMS oparty o Nuxt 3 + PostgreSQL + Prisma 7 + Cloudflare R2.
-
-**MVP Features:**
-1. Autentykacja admina (JWT)
-2. Edycja apartamentów (nazwa, opis, galeria)
-3. Zarządzanie cennikiem sezonowym
-4. Moduł aktualności (CRUD)
-5. Upload i hosting obrazów (R2)
+**Archiwum poprzedniego planu:** `docs/archive/TODO-MVP-v1-20260202.md`
 
 ---
 
-## Faza 0: Inicjalizacja Projektu ✅ DONE
+## Cel Projektu
 
-### 0.1 Utworzenie projektu Nuxt 3
-- [x] `npx nuxi@latest init czaplisko-cms`
-- [x] Konfiguracja `nuxt.config.ts` (SSR enabled, Tailwind, runtime config)
-- [x] Instalacja zależności:
-  ```
-  @nuxtjs/tailwindcss
-  @prisma/client prisma
-  zod
-  jsonwebtoken bcryptjs
-  @aws-sdk/client-s3 (dla R2)
-  sharp (image processing)
-  ```
+Implementacja systemu edycji inline dla admina, umożliwiającego edycję treści (tekstów i obrazków) bezpośrednio na stronach publicznych, bez zmiany układu elementów.
 
-### 0.2 Struktura katalogów
+**Architektura przygotowana na przyszłą integrację z GrapesJS** (page builder dla landing pages).
+
+---
+
+## Architektura Systemu
+
+### Model danych
+
 ```
-czaplisko-cms/
-├── prisma/
-│   └── schema.prisma
-├── server/
-│   ├── api/
-│   │   ├── admin/          # Protected routes
-│   │   └── public/         # Public API
-│   ├── middleware/
-│   │   └── auth.ts
-│   └── utils/
-│       ├── prisma.ts
-│       ├── r2.ts
-│       └── image.ts
-├── pages/
-│   ├── admin/
-│   │   ├── index.vue       # Dashboard
-│   │   ├── login.vue
-│   │   ├── apartments/
-│   │   ├── pricing/
-│   │   ├── news/
-│   │   └── media/
-│   ├── [...slug].vue       # Dynamic pages
-│   └── index.vue
-├── components/
-│   ├── admin/
-│   └── public/
-├── composables/
-└── types/
+┌─────────────────────────────────────────────────────────────┐
+│                     PageContent                             │
+│  (edycja inline - teksty/obrazki w istniejącym layoucie)   │
+├─────────────────────────────────────────────────────────────┤
+│  id        │ cuid                                           │
+│  page      │ "home" | "apartments" | "contact" | ...        │
+│  section   │ "hero" | "about" | "features" | ...            │
+│  key       │ "title" | "subtitle" | "description" | "image" │
+│  value     │ treść tekstowa lub URL obrazka                 │
+│  type      │ "text" | "richtext" | "image"                  │
+│  metadata  │ JSON (alt dla obrazków, placeholder, etc.)     │
+│  updatedAt │ timestamp                                      │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-### 0.3 Zmienne środowiskowe (.env)
-- [x] Utworzyć `.env.example` z wymaganymi zmiennymi:
-  ```
-  DATABASE_URL=
-  JWT_SECRET=
-  ADMIN_EMAIL=
-  ADMIN_PASSWORD_HASH=
-  R2_ACCOUNT_ID=
-  R2_ACCESS_KEY_ID=
-  R2_SECRET_ACCESS_KEY=
-  R2_BUCKET_PUBLIC=
-  R2_BUCKET_PRIVATE=
-  R2_PUBLIC_URL=
-  ```
+### Przyszła rozbudowa (GrapesJS)
 
----
-
-## Faza 1: Fundament i Infrastruktura Chmurowa ✅ DONE
-
-### 1.1 Schema Prisma [B-1.1]
-- [x] Utworzyć `prisma/schema.prisma`:
-
-```prisma
-model GlobalSettings {
-  id        String   @id @default(cuid())
-  key       String   @unique
-  value     String
-  updatedAt DateTime @updatedAt
-}
-
-model Apartment {
-  id          String    @id @default(cuid())
-  name        String
-  slug        String    @unique
-  description String    @db.Text
-  amenities   Json      // ["WiFi", "Dog friendly", ...]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  pricing     Pricing[]
-  media       Media[]
-}
-
-model SeasonRange {
-  id        String   @id @default(cuid())
-  label     String   // "Sylwester", "Majówka", "Wakacje"
-  startDate DateTime
-  endDate   DateTime
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Pricing {
-  id            String    @id @default(cuid())
-  apartmentId   String
-  apartment     Apartment @relation(fields: [apartmentId], references: [id], onDelete: Cascade)
-  seasonType    String    // "high" | "low"
-  pricePerNight Decimal   @db.Decimal(10, 2)
-  extraBedPrice Decimal   @db.Decimal(10, 2)
-  minStayNights Int
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-
-  @@unique([apartmentId, seasonType])
-}
-
-model News {
-  id          String    @id @default(cuid())
-  title       String
-  slug        String    @unique
-  content     String    @db.Text
-  excerpt     String?
-  featureImage String?
-  status      String    @default("draft") // "draft" | "published"
-  publishedAt DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-}
-
-model Page {
-  id           String   @id @default(cuid())
-  title        String
-  slug         String   @unique
-  content      String   @db.Text
-  status       String   @default("draft")
-  showInFooter Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-}
-
-model Media {
-  id            String    @id @default(cuid())
-  urlOriginal   String
-  urlCompressed String
-  alt           String?
-  order         Int       @default(0)
-  category      String    // "gallery" | "apartment" | "news"
-  apartmentId   String?
-  apartment     Apartment? @relation(fields: [apartmentId], references: [id], onDelete: SetNull)
-  createdAt     DateTime  @default(now())
-}
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     CustomPage                              │
+│  (pełny page builder - landing pages, promocje)            │
+├─────────────────────────────────────────────────────────────┤
+│  id          │ cuid                                         │
+│  slug        │ unique URL path                              │
+│  title       │ tytuł strony                                 │
+│  gjsHtml     │ HTML wygenerowany przez GrapesJS             │
+│  gjsCss      │ CSS wygenerowany przez GrapesJS              │
+│  gjsData     │ JSON - pełna struktura edytora               │
+│  status      │ "draft" | "published"                        │
+│  publishedAt │ timestamp                                    │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-- [x] `npx prisma generate`
-- [x] `npx prisma db push` (development)
-- [x] Utworzyć seed script `prisma/seed.ts` z danymi inicjalnymi:
-  - 2 apartamenty: "Czapla Polna", "Czapla Wodna"
-  - Domyślne zakresy sezonów (High Season dates)
-  - Przykładowe ceny
-
-### 1.2 Konfiguracja Cloudflare R2 [B-1.2]
-- [x] Utworzyć `server/utils/r2.ts`:
-  - S3Client z konfiguracją R2 (EU endpoint)
-  - Funkcje: `uploadToR2()`, `deleteFromR2()`, `getSignedUrl()`
-- [x] Konfiguracja bucketów w Cloudflare Dashboard:
-  - Public bucket: `czaplisko-assets` (public access enabled)
-  - Private bucket: `czaplisko-backups` (API-only access)
-
-### 1.3 System Autentykacji [B-1.3]
-- [x] Utworzyć `server/utils/auth.ts`:
-  - `generateToken(userId)` - JWT z 7-dniowym expiry
-  - `verifyToken(token)` - walidacja JWT
-  - `hashPassword()`, `comparePassword()` - bcrypt
-- [x] Utworzyć `server/api/auth/login.post.ts`:
-  - Walidacja email/password przez Zod
-  - Zwrot JWT token + httpOnly cookie
-- [x] Utworzyć `server/api/auth/logout.post.ts`:
-  - Usunięcie cookie
-- [x] Utworzyć `server/api/auth/me.get.ts`:
-  - Zwrot danych zalogowanego użytkownika
-
-### 1.4 Middleware Autoryzacji [B-1.4]
-- [x] Utworzyć `server/middleware/auth.ts`:
-  - Sprawdzenie JWT z cookie/header
-  - Ochrona routes `/api/admin/*`
-  - Zwrot 401 dla nieautoryzowanych
-
-### 1.5 Skrypt Backupu [B-1.5]
-- [ ] Utworzyć `scripts/backup.ts`: (Deferred to post-MVP)
-  - Export PostgreSQL via `pg_dump`
-  - Kompresja gzip
-  - Upload do prywatnego bucketu R2
-  - Naming: `backup-YYYY-MM-DD-HHmmss.sql.gz`
-- [ ] Konfiguracja cron job (np. przez Nitro scheduled tasks lub zewnętrzny scheduler)
-
 ---
 
-## Faza 2: Logika Biznesowa Pensjonatu ✅ DONE (API + Admin UI)
+## Faza 1: Model Danych i API ✅ DONE
 
-### 2.1 Silnik Cennika Sezonowego [B-2.1]
-- [ ] Utworzyć `server/utils/pricing.ts`: (Optional for MVP - public API returns raw data)
-  ```typescript
-  function getSeasonType(date: Date): 'high' | 'low'
-  function getPriceForDate(apartmentId: string, date: Date): PricingInfo
-  function calculateStayPrice(apartmentId: string, checkIn: Date, checkOut: Date, extraBeds: number): number
+### 1.1 Rozszerzenie schematu Prisma
+- [x] Dodać model `PageContent` do `prisma/schema.prisma`:
+  ```prisma
+  model PageContent {
+    id        String   @id @default(cuid())
+    page      String   // identyfikator strony: "home", "apartments", etc.
+    section   String   // sekcja na stronie: "hero", "about", "features"
+    key       String   // klucz elementu: "title", "subtitle", "image"
+    value     String   @db.Text  // wartość (tekst lub URL)
+    type      String   @default("text") // "text" | "richtext" | "image"
+    metadata  Json?    // dodatkowe dane (alt, placeholder, etc.)
+    updatedAt DateTime @updatedAt
+
+    @@unique([page, section, key])
+    @@index([page])
+  }
   ```
-- [ ] Logika:
-  - Pobranie wszystkich SeasonRange z bazy
-  - Sprawdzenie czy data mieści się w którymkolwiek zakresie High Season
-  - Jeśli nie - Low Season (domyślny)
+- [x] Uruchomić `npx prisma db push`
 
-### 2.2 API Zarządzania Apartamentami [B-2.2]
-- [x] `server/api/admin/apartments/index.get.ts` - lista apartamentów
-- [x] `server/api/admin/apartments/[id].get.ts` - szczegóły apartamentu
-- [x] `server/api/admin/apartments/[id].put.ts` - aktualizacja apartamentu
-- [x] Walidacja Zod dla każdego endpointu
+### 1.2 API Admin - CRUD dla PageContent
+- [x] `server/api/admin/content/index.get.ts`
+  - Parametry query: `?page=home` (opcjonalnie `&section=hero`)
+  - Zwraca listę wszystkich elementów dla strony/sekcji
 
-### 2.3 API Zarządzania Cennikiem [B-2.3]
-- [x] `server/api/admin/seasons/index.get.ts` - lista zakresów sezonów
-- [x] `server/api/admin/seasons/index.post.ts` - dodanie zakresu
-- [x] `server/api/admin/seasons/[id].put.ts` - edycja zakresu
-- [x] `server/api/admin/seasons/[id].delete.ts` - usunięcie zakresu
-- [x] `server/api/admin/pricing/index.get.ts` - lista cen
-- [x] `server/api/admin/pricing/[id].put.ts` - aktualizacja ceny
-- [ ] Walidacja nakładania się dat (overlap validation) - Deferred
+- [x] `server/api/admin/content/index.post.ts`
+  - Body: `{ page, section, key, value, type, metadata? }`
+  - Tworzy nowy element lub aktualizuje istniejący (upsert)
 
-### 2.4 SSR Strona Cennika [B-2.4]
-- [ ] Utworzyć `pages/cennik.vue`:
-  - `useAsyncData` do pobrania cen z bazy
-  - Renderowanie tabeli cen (High/Low season)
-  - Zachowanie stylów z obecnego `template/price-list.html`
+- [x] `server/api/admin/content/bulk.put.ts`
+  - Body: `{ items: [{ page, section, key, value, type }] }`
+  - Masowa aktualizacja wielu elementów naraz (dla "Zapisz wszystko")
 
-### 2.5 Admin UI - Apartamenty
-- [x] `pages/admin/apartments/index.vue` - lista apartamentów
-- [x] `pages/admin/apartments/[id].vue` - formularz edycji:
-  - Nazwa, opis (Rich Text), udogodnienia (multi-select/tags)
-  - Galeria apartamentu (drag & drop reorder)
+- [x] `server/api/admin/content/[id].delete.ts`
+  - Usunięcie elementu (przywrócenie do domyślnego)
 
-### 2.6 Admin UI - Cennik
-- [x] `pages/admin/pricing/index.vue`:
-  - Tabela z cenami per apartament per sezon
-  - Inline editing lub modalne formularze
-- [x] Zarządzanie zakresami High Season (w tym samym widoku)
+### 1.3 API Public - Pobieranie treści
+- [x] `server/api/public/content/[page].get.ts`
+  - Zwraca wszystkie elementy dla danej strony
+  - Format: `{ [section]: { [key]: { value, type, metadata } } }`
+  - Cache-friendly (można dodać stale-while-revalidate)
+
+### 1.4 Seed domyślnych treści
+- [x] Rozszerzyć `server/plugins/init-db.ts` o seedowanie PageContent:
+  - Strona główna (home): hero title, subtitle, image, about section, etc.
+  - Strona apartamentów: intro text
+  - FAQ: intro text
+  - Kontakt: intro text, info sections
+  - Galeria: intro text
 
 ---
 
-## Faza 3: Treści i Media z Integracją R2 ✅ DONE (API + Admin UI)
+## Faza 2: Komponenty Edycji Inline ✅ DONE
 
-### 3.1 Pipeline Przetwarzania Obrazów [B-3.1]
-- [x] Utworzyć `server/utils/image.ts`:
+### 2.1 Composable useEditMode
+- [x] Utworzyć `composables/useEditMode.ts`:
   ```typescript
-  async function processImage(buffer: Buffer): Promise<{original: Buffer, compressed: Buffer}>
-  // Sharp: resize max 1920px, WebP quality 80
+  export function useEditMode() {
+    const isAdmin = useState<boolean>('isAdmin', () => false)
+    const editMode = useState<boolean>('editMode', () => false)
+    const pendingChanges = useState<Map<string, ContentChange>>('pendingChanges', () => new Map())
+    const isDirty = computed(() => pendingChanges.value.size > 0)
+
+    function toggleEditMode() { ... }
+    function registerChange(page: string, section: string, key: string, value: string) { ... }
+    function discardChanges() { ... }
+    async function saveAllChanges() { ... }
+
+    return { isAdmin, editMode, isDirty, toggleEditMode, registerChange, discardChanges, saveAllChanges }
+  }
   ```
-- [x] Utworzyć `server/api/admin/media/upload.post.ts`:
-  - Accept multipart/form-data
-  - Wywołanie `processImage()`
-  - Upload obu wersji do R2
-  - Zapis w tabeli Media (urlOriginal, urlCompressed)
-  - Zwrot URLs
-- [x] Utworzyć `server/api/admin/media/[id].delete.ts`:
-  - Usunięcie z R2 (obie wersje)
-  - Usunięcie z bazy
 
-### 3.2 Moduł Aktualności [B-3.2]
-- [x] API CRUD:
-  - `server/api/admin/news/index.get.ts`
-  - `server/api/admin/news/index.post.ts`
-  - `server/api/admin/news/[id].get.ts`
-  - `server/api/admin/news/[id].put.ts`
-  - `server/api/admin/news/[id].delete.ts`
-- [x] Public API:
-  - `server/api/public/news/index.get.ts` - lista opublikowanych
-  - `server/api/public/news/[slug].get.ts` - szczegóły po slug
-
-### 3.3 Admin UI - Aktualności
-- [x] `pages/admin/news/index.vue`:
-  - Lista aktualności z filtrem status
-  - Przycisk publikuj/ukryj
-- [x] `pages/admin/news/create.vue`:
-  - Formularz (Rich Text editor deferred - using textarea for MVP)
-  - Upload obrazu głównego
-- [x] `pages/admin/news/[id].vue`:
-  - Edycja istniejącej aktualności
-
-### 3.4 Moduł Stron Dynamicznych [B-3.3]
-- [ ] API CRUD dla Page (analogicznie do News) - Deferred post-MVP
-- [ ] Utworzyć `pages/[...slug].vue` - Deferred post-MVP
-
-### 3.5 Zarządzanie Galerią [B-3.4]
-- [x] `pages/admin/media/index.vue`:
-  - Grid wszystkich obrazów
-  - Filtrowanie po kategorii
-  - Drag & drop reorder (update `order` field)
-  - Usuwanie z potwierdzeniem
-- [ ] Komponent `components/admin/MediaPicker.vue` - Deferred
-
----
-
-## Faza 4: Finalna Integracja i SEO
-
-### 4.1 Migracja Szablonu [B-4.1]
-- [ ] Przekształcenie `template/index.html` → `pages/index.vue`:
-  - Hero slider z danymi z GlobalSettings
-  - Sekcja apartamentów z bazy
-  - Ostatnie aktualności
-- [ ] Przekształcenie `template/apartments.html` → `pages/apartamenty/index.vue`
-- [ ] Utworzenie `pages/apartamenty/[slug].vue` dla szczegółów
-- [ ] Przekształcenie `template/gallery.html` → `pages/galeria.vue`:
-  - Obrazy z tabeli Media (category: "gallery")
-- [ ] Przekształcenie `template/faq.html` → `pages/faq.vue`
-- [ ] Przekształcenie `template/contact.html` → `pages/kontakt.vue`
-
-### 4.2 Komponenty Współdzielone
-- [ ] `components/TheHeader.vue` - nawigacja z GlobalSettings
-- [ ] `components/TheFooter.vue` - stopka z GlobalSettings + dynamic pages (showInFooter)
-- [ ] `components/HeroSlider.vue`
-- [ ] `components/GalleryLightbox.vue`
-- [ ] `components/FaqAccordion.vue`
-- [ ] `components/ContactForm.vue`
-- [ ] `components/PricingTable.vue`
-
-### 4.3 SEO i Meta Tags [B-4.2]
-- [ ] Utworzyć `composables/useSeo.ts`:
+### 2.2 Composable usePageContent
+- [x] Utworzyć `composables/usePageContent.ts`:
   ```typescript
-  function useSeo(title: string, description: string, image?: string)
-  // Wrapper dla useServerSeoMeta + useHead
+  export function usePageContent(page: string) {
+    const { data: content } = useAsyncData(`content-${page}`, () =>
+      $fetch(`/api/public/content/${page}`)
+    )
+
+    function get(section: string, key: string, fallback: string = ''): string { ... }
+    function getImage(section: string, key: string, fallback: string = ''): string { ... }
+
+    return { content, get, getImage }
+  }
   ```
-- [ ] Zastosowanie na wszystkich stronach publicznych
-- [ ] Open Graph tags dla social media
-- [ ] Structured data (JSON-LD) dla apartamentów i cennika
 
-### 4.4 Admin Dashboard
-- [ ] `pages/admin/index.vue`:
-  - Podsumowanie: liczba apartamentów, aktualności, obrazów
-  - Ostatnie aktualności (draft/published)
-  - Quick links do sekcji
+### 2.3 Komponent EditableText
+- [x] Utworzyć `components/editable/EditableText.vue`:
+  ```vue
+  <script setup lang="ts">
+  defineProps<{
+    page: string
+    section: string
+    contentKey: string
+    tag?: string  // 'p' | 'h1' | 'h2' | 'span' | etc.
+    fallback?: string
+    richtext?: boolean
+  }>()
+  </script>
 
-### 4.5 Layout Admina
-- [ ] `layouts/admin.vue`:
-  - Sidebar z nawigacją
-  - Header z user info i logout
-  - Responsywny (mobile sidebar toggle)
+  <template>
+    <!-- Tryb normalny: renderuj tekst -->
+    <!-- Tryb edycji (admin): contenteditable z highlight -->
+  </template>
+  ```
 
-### 4.6 Audyt Wydajności [B-4.3]
-- [ ] Lighthouse audit
-- [ ] Weryfikacja SSR (view source powinno zawierać treść)
-- [ ] Sprawdzenie cache headers dla R2 assets
-- [ ] Lazy loading obrazów (native loading="lazy")
+  **Funkcjonalności:**
+  - Normalny tryb: renderuje tekst jako wybrany tag
+  - Tryb edycji: żółte obramowanie, contenteditable
+  - Auto-save do pendingChanges przy blur
+  - Opcjonalny richtext (bold, italic, links)
 
----
+### 2.4 Komponent EditableImage
+- [x] Utworzyć `components/editable/EditableImage.vue`:
+  ```vue
+  <script setup lang="ts">
+  defineProps<{
+    page: string
+    section: string
+    contentKey: string
+    fallback?: string
+    class?: string
+    alt?: string
+  }>()
+  </script>
 
-## Testy Akceptacyjne (Kryteria z FRS)
+  <template>
+    <!-- Tryb normalny: <img> lub background -->
+    <!-- Tryb edycji: overlay z ikoną "zmień", click otwiera modal -->
+  </template>
+  ```
 
-### Test: Optymalizacja Obrazów
-- [ ] Upload 5MB JPG w Admin Panel
-- [ ] Weryfikacja: 2 pliki w R2 (original + compressed WebP)
-- [ ] Frontend serwuje compressed version
+  **Funkcjonalności:**
+  - Normalny tryb: renderuje obrazek
+  - Tryb edycji: overlay z ikoną aparatu/edit
+  - Kliknięcie otwiera MediaPicker modal
+  - Po wyborze: zapis do pendingChanges
 
-### Test: Bezpieczeństwo Backupów
-- [ ] Backup file istnieje w R2 private bucket
-- [ ] Próba dostępu bez API key → 403 Forbidden
+### 2.5 Komponent EditableBackground
+- [x] Utworzyć `components/editable/EditableBackground.vue`:
+  - Wariant EditableImage dla background-image
+  - Używany dla sekcji hero, bannerów, etc.
 
-### Test: SSR Pricing
-- [ ] Strona /cennik renderuje ceny server-side
-- [ ] View source zawiera aktualne ceny
+### 2.6 Komponent MediaPickerModal
+- [x] Utworzyć `components/editable/EditableMediaPicker.vue`:
+  - Modal z galerią wszystkich obrazków z Media
+  - Opcja upload nowego obrazka
+  - Wyszukiwanie/filtrowanie
+  - Zwraca wybrany URL
 
----
-
-## Deployment ✅ DONE
-
-### Railway / Docker
-- [x] Utworzyć `Dockerfile` (multi-stage build)
-- [x] Railway project created with PostgreSQL
-- [x] CMS service deployed
-- [x] Environment variables configured
-- [x] Domain generated: **https://cms-production-5efa.up.railway.app**
-
-### Production URLs:
-- **CMS Admin**: https://cms-production-5efa.up.railway.app/admin/login
-- **Public API**: https://cms-production-5efa.up.railway.app/api/public/apartments
-
-### DNS i Certyfikat
-- [x] SSL przez Railway (auto-provisioned)
-- [ ] Custom domain (optional)
-
----
-
-## Notatki Implementacyjne
-
-### Kolejność Priorytetów (MVP)
-1. Faza 0 + Faza 1 (fundament)
-2. Faza 2.1-2.4 (cennik - core business logic)
-3. Faza 3.1-3.2 (media + news)
-4. Faza 4.1-4.3 (migracja szablonu)
-
-### Techniczne Decyzje
-- **Rich Text Editor**: Tiptap (Vue-native, extensible)
-- **Drag & Drop**: vuedraggable lub @formkit/drag-and-drop
-- **State Management**: Nuxt useState + composables (nie potrzeba Pinia dla tak małej app)
-- **Form Validation**: Zod + custom composable
-
-### Ograniczenia MVP
-- Brak rezerwacji online (Phase 2+)
-- Jeden użytkownik admin
-- Brak multi-language
-- Brak zaawansowanego SEO (tylko podstawowe meta tags)
+### 2.7 Komponent AdminToolbar
+- [x] Utworzyć `components/editable/AdminToolbar.vue`:
+  - Floating toolbar (fixed bottom)
+  - **Widoczny zawsze gdy admin zalogowany**
+  - Tryb podglądu: `[👤 Admin: email] [✏️ Edytuj stronę]`
+  - Tryb edycji: `[⚠️ Tryb edycji (X zmian)] [💾 Zapisz] [❌ Anuluj]`
+  - Przycisk "Edytuj" włącza editMode
+  - Przycisk "Anuluj" wyłącza editMode i odrzuca zmiany
+  - Przycisk "Zapisz" zapisuje i wyłącza editMode
 
 ---
 
-### Tech Lead Reviews / Notes
+## Faza 3: Integracja ze Stronami (CZĘŚCIOWO)
 
-1.  **Środowisko Uruchomieniowe (Runtime):**
-    *   Wybór biblioteki `sharp` wymusza użycie środowiska Node.js (konteneryzacja, np. Docker/Railway). Jest to zgodne z planem deploymentu, ale wyklucza proste wdrożenie na Cloudflare Workers (Edge). Decyzja o użyciu Railway jest poprawna w tym kontekście.
+### 3.1 Integracja AdminToolbar z layoutem
+- [x] Dodać `<AdminToolbar />` do `layouts/public.vue`:
+  - Komponent sam sprawdza czy admin zalogowany (`/api/auth/me`)
+  - Renderuje się tylko dla admina
+  - Fixed position na dole ekranu
+  - Z-index wysoki (nad resztą treści)
 
-2.  **Bezpieczeństwo (Auth):**
-    *   Implementacja własnego JWT (`server/utils/auth.ts`) jest ryzykowna. Należy zwrócić szczególną uwagę na:
-        *   Ustawienie flag `HttpOnly`, `Secure` i `SameSite=Strict` dla ciasteczka z tokenem.
-        *   Krótki czas życia tokena dostępowego (Access Token) i ewentualne użycie Refresh Token (choć dla MVP i jednego admina long-lived session cookie może wystarczyć, pod warunkiem możliwości jego unieważnienia - np. zmiana sekretu lub wersjonowanie tokena w bazie, czego obecny plan nie uwzględnia).
-        *   Zalecam rozważenie `nuxt-auth` lub `Lucia Auth` w przyszłości, ale akceptuję custom implementation dla MVP (Single User).
+### 3.2 Integracja ze stroną główną (home)
+- [x] Zmodyfikować `pages/index.vue`:
+  - Zastąpić statyczne teksty komponentami `<EditableText>`
+  - Zastąpić obrazki hero komponentami `<EditableBackground>` (TODO)
+  - Zachować istniejący layout i style
 
-3.  **Walidacja Danych:**
-    *   **Zod na froncie i back-endzie:** Upewnij się, że schematy walidacji są współdzielone (np. w katalogu `shared/` lub `utils/`) aby uniknąć duplikacji logiki.
-    *   **Env Variables:** Zalecam dodanie walidacji zmiennych środowiskowych przy starcie aplikacji (np. w `nuxt.config.ts`), aby aplikacja nie uruchomiła się bez kluczy do R2 czy bazy danych.
+  **Elementy zintegrowane:**
+  - [x] Hero: label, title, description
+  - [x] Hero: button_text (Zobacz Apartamenty)
+  - [x] Hero cards: card1/2/3 title + description (Komfortowe Pokoje, Idealne Wakacje, Ekologia i Natura)
+  - [x] Intro: label, title, description
+  - [x] Features: title
+  - [x] Features cards: Taras + subtitle, Pomost + subtitle
+  - [x] Features list: 4 opisy (paw, leaf, water, kitchen)
+  - [x] Location: label, title, description_1, description_2
+  - [ ] Hero background images (slider) - wymaga więcej pracy
 
-4.  **Sanityzacja HTML:**
-    *   Moduł News i Pages używa Rich Text. **Krytyczne:** Konieczne jest użycie biblioteki do sanityzacji HTML (np. `dompurify` lub wbudowane mechanizmy Tiptap) przed wyrenderowaniem treści (`v-html`) na froncie, aby zapobiec atakom XSS, nawet jeśli edytuje to tylko admin (ochrona przed wklejeniem złośliwego kodu).
+### 3.3 Integracja ze stroną apartamentów
+- [x] Zmodyfikować `pages/apartamenty/index.vue`:
+  - [x] Hero title
+  - [x] Subtitle "Wybierz swoj apartament"
+  - (Opisy apartamentów pozostają w modelu Apartment - osobna edycja)
 
-5.  **Relacje Prisma:**
-    *   W modelu `Pricing` klucz `@@unique([apartmentId, seasonType])` zakłada, że mamy tylko jeden rekord ceny dla danego typu sezonu dla danego apartamentu. Jest to zgodne z założeniami (High/Low), ale ogranicza elastyczność (np. "Super High Season"). Na potrzeby MVP jest to akceptowalne i zgodne z PRD.
+### 3.4 Integracja ze stroną FAQ
+- [x] Zmodyfikować `pages/faq.vue`:
+  - [x] Header label + title
+  - [x] CTA section (title, description, button)
+  - (Pytania i odpowiedzi zarządzane przez admin panel)
 
-6.  **Backup Restore:**
-    *   Plan zawiera skrypt backupu (`scripts/backup.ts`), ale brakuje procedury **odtwarzania (restore)**. Należy dodać przynajmniej dokumentację (README) procedury przywracania bazy z pliku `.sql.gz` pobranego z R2.
+### 3.5 Integracja ze stroną kontakt
+- [x] Zmodyfikować `pages/kontakt.vue`:
+  - [x] Hero title
+  - [x] Form section (label, title, description)
+  - [x] Contact info (address, phone, email, region, checkin, checkout)
 
-7.  **Inicjalizacja (Seed):**
-    *   Przy pierwszym wdrożeniu produkcyjnym, upewnij się, że admin zostanie utworzony. Skrypt `seed.ts` powinien zawierać tworzenie domyślnego admina (z hasłem do zmiany lub pobieranym z ENV przy pierwszym uruchomieniu).
+### 3.6 Integracja ze stroną galeria
+- [x] Zmodyfikować `pages/galeria.vue`:
+  - [x] Hero title
+  - [x] Intro section (title, description)
+  - [x] CTA section (title, description, button)
+  - (Obrazki zarządzane przez Media - bez zmian)
+
+### 3.7 Integracja ze stroną cennik
+- [x] Zmodyfikować `pages/cennik.vue`:
+  - [x] Header (title, subtitle)
+  - [x] Season descriptions (high/low)
+  - [x] CTA section (title, button)
+
+### 3.8 Integracja z TheFooter
+- [x] Zmodyfikować `components/TheFooter.vue`:
+  - [x] Section titles (Odwiedz nas, Social media)
+  - [x] Address info (line1, line2, street, city)
+
+---
+
+## Faza 4: Polish i UX
+
+### 4.1 Visual feedback podczas edycji
+- [x] Style CSS dla trybu edycji:
+  - [x] Żółte obramowanie edytowalnych elementów (dashed)
+  - [x] Hover effect z darker border
+  - [ ] Ikona ołówka przy hover (opcjonalne)
+  - [ ] Podświetlenie zmienionych elementów (przed zapisem)
+
+### 4.2 Autosave i draft
+- [ ] Opcjonalny autosave do localStorage:
+  - Zapisywanie pendingChanges co 30 sekund
+  - Odzyskiwanie po odświeżeniu strony
+  - Pytanie "Masz niezapisane zmiany, przywrócić?"
+
+### 4.3 Historia zmian (opcjonalne)
+- [ ] Prosty log zmian w PageContent:
+  - previousValue przed każdą zmianą
+  - Możliwość podglądu "co się zmieniło"
+
+### 4.4 Walidacja i limity
+- [ ] Maksymalna długość tekstu per pole
+- [ ] Walidacja URL dla obrazków
+- [ ] Sanityzacja HTML dla richtext (DOMPurify)
+
+---
+
+## Faza 5: Testy i Dokumentacja
+
+### 5.1 Testy manualne
+- [ ] Test edycji tekstu na każdej stronie
+- [ ] Test zmiany obrazków
+- [ ] Test zapisywania zmian (bulk save)
+- [ ] Test anulowania zmian
+- [ ] Test na mobile (responsywność toolbara)
+
+### 5.2 Dokumentacja dla admina
+- [ ] Krótki przewodnik w admin panelu:
+  - Jak włączyć tryb edycji
+  - Jak edytować teksty
+  - Jak zmieniać obrazki
+  - Jak zapisać/anulować zmiany
+
+---
+
+## Estymacja czasowa
+
+| Faza | Zadania | Czas |
+|------|---------|------|
+| Faza 1 | Model + API | 3-4h |
+| Faza 2 | Komponenty edycji | 4-6h |
+| Faza 3 | Integracja ze stronami | 4-5h |
+| Faza 4 | Polish i UX | 2-3h |
+| Faza 5 | Testy i dokumentacja | 1-2h |
+| **Suma** | | **14-20h (2-3 dni)** |
+
+---
+
+## Przygotowanie na GrapesJS (przyszłość)
+
+Architektura jest gotowa na dodanie GrapesJS:
+
+1. **Osobny model `CustomPage`** - nie koliduje z `PageContent`
+2. **Komponenty `Editable*`** - można zarejestrować jako bloki GrapesJS
+3. **MediaPicker** - reużywalny w obu systemach
+4. **API pattern** - `/api/admin/content/` vs `/api/admin/pages/`
+
+**Gdy będzie potrzeba GrapesJS:**
+- Dodać model `CustomPage`
+- Zintegrować GrapesJS editor w `/admin/pages/builder`
+- Renderować custom pages przez `pages/p/[slug].vue`
+- Zarejestrować Editable* jako custom blocks
+
+---
+
+## Notatki techniczne
+
+### Klucze treści (page/section/key)
+
+```
+home/hero/title          → "Witamy w Czaplisku Siedlisku"
+home/hero/subtitle       → "Dog Friendly & Eco Guesthouse"
+home/hero/image_1        → "https://r2.../hero1.webp"
+home/hero/image_2        → "https://r2.../hero2.webp"
+home/about/title         → "O nas"
+home/about/description   → "Lorem ipsum..."
+home/about/image         → "https://r2.../about.webp"
+
+contact/header/title     → "Kontakt"
+contact/info/address     → "Skitlawki 2A, 14-230 Zalewo"
+contact/info/phone       → "+48 123 456 789"
+contact/info/email       → "kontakt@czaplisko.pl"
+
+footer/social/facebook   → "https://facebook.com/czaplisko"
+footer/social/instagram  → "https://instagram.com/czaplisko"
+footer/address/line1     → "Czaplisko Siedlisko"
+footer/address/line2     → "Skitlawki 2A"
+```
+
+### Fallback strategy
+
+1. Sprawdź `PageContent` w bazie
+2. Jeśli brak → użyj hardcoded fallback w komponencie
+3. Fallback = obecne statyczne wartości (migracja stopniowa)
+
+---
+
+## Decyzje (zatwierdzone)
+
+1. **FAQ:** Tylko intro text inline, pytania przez admin panel ✅
+2. **Apartamenty:** Opisy przez istniejący admin panel ✅
+3. **Rich text:** Prosty contenteditable (bold/italic/links) ✅
+4. **Toolbar:** Pasek admina zawsze widoczny na dole gdy zalogowany ✅
+
+---
+
+**Status:** ✅ FAZA 1-3 UKOŃCZONE
+
+### Postęp implementacji (2026-02-02):
+- ✅ Model PageContent + API (Faza 1)
+- ✅ Wszystkie komponenty edycji (Faza 2)
+- ✅ Strona główna z inline editing - KOMPLETNA (Faza 3.1-3.2)
+  - Hero: label, title, description, button
+  - Hero cards: 3 karty z tytułami i opisami
+  - Intro: label, title, description
+  - Features: title, 2 karty (Taras/Pomost), 4 opisy funkcji
+  - Location: label, title, 2 opisy
+- ✅ Wszystkie pozostałe strony - KOMPLETNE (Faza 3.3-3.8)
+  - Apartamenty: hero title, subtitle
+  - FAQ: header, CTA section
+  - Kontakt: hero, form section, contact info
+  - Galeria: hero, intro, CTA
+  - Cennik: header, season descriptions, CTA
+  - Footer: section titles, address
+- 🔄 Polish i UX (Faza 4)

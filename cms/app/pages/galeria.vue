@@ -8,6 +8,8 @@ useSeoMeta({
   description: 'Zobacz zdjecia naszego ekologicznego pensjonatu, apartamentow, otaczajacej natury i udogodnien na Mazurach Zachodnich.',
 })
 
+const { get } = usePageContent('gallery')
+
 // Fetch gallery images from API
 const { data: galleryData } = await useFetch('/api/public/gallery')
 
@@ -72,30 +74,45 @@ onMounted(() => {
 <template>
   <main class="flex-grow bg-white overflow-hidden font-['Montserrat']">
     <!-- Gallery Hero -->
-    <section class="relative h-[300px] md:h-[500px] w-full overflow-hidden">
-      <div
-        class="absolute inset-0 bg-cover bg-center"
-        style="background-image: url('https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=80&w=1920');"
-      >
-        <div class="absolute inset-0 bg-black/20"></div>
-      </div>
+    <EditableBackground
+      page="gallery"
+      section="hero"
+      content-key="background"
+      fallback="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=80&w=1920"
+      class="relative h-[300px] md:h-[500px] w-full overflow-hidden bg-cover bg-center"
+    >
+      <div class="absolute inset-0 bg-black/20 pointer-events-none"></div>
       <div class="relative z-10 h-full flex items-center justify-center">
-        <h1 class="text-5xl md:text-8xl font-light text-white tracking-[0.1em] md:tracking-[0.2em] uppercase opacity-90">
-          Galeria
-        </h1>
+        <EditableText
+          page="gallery"
+          section="hero"
+          content-key="title"
+          tag="h1"
+          class="text-5xl md:text-8xl font-light text-white tracking-[0.1em] md:tracking-[0.2em] uppercase opacity-90"
+          fallback="Galeria"
+        />
       </div>
-    </section>
+    </EditableBackground>
 
     <!-- Intro Section -->
     <section class="py-16 md:py-24 px-6 max-w-7xl mx-auto">
       <div class="text-center">
-        <h2 class="text-3xl md:text-4xl lg:text-5xl font-light text-gray-500 leading-tight tracking-tight mb-6">
-          Odkryj piekno Czaplisko Siedlisko
-        </h2>
-        <p class="text-gray-400 text-sm md:text-base font-light max-w-2xl mx-auto">
-          Przegladaj zdjecia naszych apartamentow, otaczajacej natury i udogodnien.
-          Pozwol, ze zabierzemy Cie w wirtualna podroz po naszym ekologicznym pensjonacie.
-        </p>
+        <EditableText
+          page="gallery"
+          section="intro"
+          content-key="title"
+          tag="h2"
+          class="text-3xl md:text-4xl lg:text-5xl font-light text-gray-500 leading-tight tracking-tight mb-6"
+          fallback="Odkryj piekno Czaplisko Siedlisko"
+        />
+        <EditableText
+          page="gallery"
+          section="intro"
+          content-key="description"
+          tag="p"
+          class="text-gray-400 text-sm md:text-base font-light max-w-2xl mx-auto"
+          fallback="Przegladaj zdjecia naszych apartamentow, otaczajacej natury i udogodnien. Pozwol, ze zabierzemy Cie w wirtualna podroz po naszym ekologicznym pensjonacie."
+        />
         <div class="w-16 h-[1px] bg-[#78b3ce] mx-auto mt-8"></div>
       </div>
     </section>
@@ -123,15 +140,33 @@ onMounted(() => {
 
     <!-- CTA Section -->
     <section class="py-20 md:py-32 bg-[#1a2b3c] text-center">
-      <h3 class="text-3xl md:text-4xl font-light text-white mb-6">Zarezerwuj swoj pobyt</h3>
-      <p class="text-gray-400 text-sm font-light max-w-xl mx-auto mb-10 px-6">
-        Przekonaj sie sam o uroku naszego pensjonatu. Skontaktuj sie z nami, aby zarezerwowac apartament.
-      </p>
+      <EditableText
+        page="gallery"
+        section="cta"
+        content-key="title"
+        tag="h3"
+        class="text-3xl md:text-4xl font-light text-white mb-6"
+        fallback="Zarezerwuj swoj pobyt"
+      />
+      <EditableText
+        page="gallery"
+        section="cta"
+        content-key="description"
+        tag="p"
+        class="text-gray-400 text-sm font-light max-w-xl mx-auto mb-10 px-6"
+        fallback="Przekonaj sie sam o uroku naszego pensjonatu. Skontaktuj sie z nami, aby zarezerwowac apartament."
+      />
       <NuxtLink
         to="/kontakt"
         class="inline-block bg-[#78b3ce] text-white px-12 py-5 text-[11px] tracking-[0.4em] font-bold uppercase hover:bg-white hover:text-[#1a2b3c] transition-all duration-500 shadow-xl"
       >
-        Kontakt
+        <EditableText
+          page="gallery"
+          section="cta"
+          content-key="button_text"
+          tag="span"
+          fallback="Kontakt"
+        />
       </NuxtLink>
     </section>
 

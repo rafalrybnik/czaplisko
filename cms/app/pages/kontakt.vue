@@ -8,6 +8,8 @@ useSeoMeta({
   description: 'Skontaktuj sie z pensjonatem Czaplisko Siedlisko. Wyslij wiadomosc, znajdz nasza lokalizacje na Mazurach Zachodnich.',
 })
 
+const { get } = usePageContent('contact')
+
 // Form state
 const form = reactive({
   name: '',
@@ -44,35 +46,55 @@ async function handleSubmit() {
 <template>
   <main class="flex-grow bg-white font-['Montserrat'] overflow-hidden">
     <!-- Contact Hero Section -->
-    <section class="relative h-[300px] md:h-[550px] w-full flex items-center justify-center overflow-hidden">
-      <div
-        class="absolute inset-0 bg-cover bg-center"
-        style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=1920');"
-      >
-        <div class="absolute inset-0 bg-black/30 md:bg-black/20"></div>
-      </div>
+    <EditableBackground
+      page="contact"
+      section="hero"
+      content-key="background"
+      fallback="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=1920"
+      class="relative h-[300px] md:h-[550px] w-full flex items-center justify-center overflow-hidden bg-cover bg-center"
+    >
+      <div class="absolute inset-0 bg-black/30 md:bg-black/20 pointer-events-none"></div>
       <div class="relative z-10 text-center px-4">
-        <h1 class="text-4xl sm:text-6xl md:text-[85px] font-light text-white tracking-[0.1em] md:tracking-[0.2em] uppercase opacity-95">
-          Kontakt
-        </h1>
+        <EditableText
+          page="contact"
+          section="hero"
+          content-key="title"
+          tag="h1"
+          class="text-4xl sm:text-6xl md:text-[85px] font-light text-white tracking-[0.1em] md:tracking-[0.2em] uppercase opacity-95"
+          fallback="Kontakt"
+        />
       </div>
-    </section>
+    </EditableBackground>
 
     <!-- Main Content Section -->
     <section class="py-16 md:py-24 px-6 md:px-24 max-w-7xl mx-auto">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20">
         <!-- Left Column: Form -->
         <div class="flex flex-col">
-          <p class="text-[10px] md:text-[11px] tracking-[0.4em] font-bold text-gray-400 uppercase mb-4">
-            Napisz do nas
-          </p>
-          <h2 class="text-4xl md:text-[54px] font-light text-gray-600 mb-6 md:mb-8 tracking-tight">
-            Skontaktuj sie
-          </h2>
-          <p class="text-[13px] md:text-[14px] text-gray-400 font-light leading-relaxed mb-10 md:mb-12">
-            Masz pytania dotyczace rezerwacji lub pobytu? Chcesz dowiedziec sie wiecej o naszym pensjonacie?
-            Napisz do nas, a odpowiemy najszybciej jak to mozliwe.
-          </p>
+          <EditableText
+            page="contact"
+            section="form"
+            content-key="label"
+            tag="p"
+            class="text-[10px] md:text-[11px] tracking-[0.4em] font-bold text-gray-400 uppercase mb-4"
+            fallback="Napisz do nas"
+          />
+          <EditableText
+            page="contact"
+            section="form"
+            content-key="title"
+            tag="h2"
+            class="text-4xl md:text-[54px] font-light text-gray-600 mb-6 md:mb-8 tracking-tight"
+            fallback="Skontaktuj sie"
+          />
+          <EditableText
+            page="contact"
+            section="form"
+            content-key="description"
+            tag="p"
+            class="text-[13px] md:text-[14px] text-gray-400 font-light leading-relaxed mb-10 md:mb-12"
+            fallback="Masz pytania dotyczace rezerwacji lub pobytu? Chcesz dowiedziec sie wiecej o naszym pensjonacie? Napisz do nas, a odpowiemy najszybciej jak to mozliwe."
+          />
 
           <!-- Success Message -->
           <div v-if="submitSuccess" class="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 text-sm">
@@ -144,38 +166,87 @@ async function handleSubmit() {
               <p class="text-[9px] md:text-[10px] font-bold tracking-[0.2em] text-gray-300 uppercase mb-2">
                 Adres:
               </p>
-              <p class="text-[13px] md:text-[14px] text-gray-400 font-light">Skitlawki 2A</p>
-              <p class="text-[13px] md:text-[14px] text-gray-400 font-light">14-230 Zalewo</p>
+              <EditableText
+                page="contact"
+                section="info"
+                content-key="address_street"
+                tag="p"
+                class="text-[13px] md:text-[14px] text-gray-400 font-light"
+                fallback="Skitlawki 2A"
+              />
+              <EditableText
+                page="contact"
+                section="info"
+                content-key="address_city"
+                tag="p"
+                class="text-[13px] md:text-[14px] text-gray-400 font-light"
+                fallback="14-230 Zalewo"
+              />
             </div>
             <div>
               <p class="text-[9px] md:text-[10px] font-bold tracking-[0.2em] text-gray-300 uppercase mb-2">
                 Telefon:
               </p>
-              <p class="text-[13px] md:text-[14px] text-gray-400 font-light">+48 123 456 789</p>
+              <EditableText
+                page="contact"
+                section="info"
+                content-key="phone"
+                tag="p"
+                class="text-[13px] md:text-[14px] text-gray-400 font-light"
+                fallback="+48 123 456 789"
+              />
             </div>
             <div>
               <p class="text-[9px] md:text-[10px] font-bold tracking-[0.2em] text-gray-300 uppercase mb-2">
                 Region:
               </p>
-              <p class="text-[13px] md:text-[14px] text-gray-400 font-light">Mazury Zachodnie</p>
+              <EditableText
+                page="contact"
+                section="info"
+                content-key="region"
+                tag="p"
+                class="text-[13px] md:text-[14px] text-gray-400 font-light"
+                fallback="Mazury Zachodnie"
+              />
             </div>
             <div>
               <p class="text-[9px] md:text-[10px] font-bold tracking-[0.2em] text-gray-300 uppercase mb-2">
                 Email:
               </p>
-              <p class="text-[13px] md:text-[14px] text-gray-400 font-light">kontakt@czaplisko.pl</p>
+              <EditableText
+                page="contact"
+                section="info"
+                content-key="email"
+                tag="p"
+                class="text-[13px] md:text-[14px] text-gray-400 font-light"
+                fallback="kontakt@czaplisko.pl"
+              />
             </div>
             <div>
               <p class="text-[9px] md:text-[10px] font-bold tracking-[0.2em] text-gray-300 uppercase mb-2">
                 Zameldowanie:
               </p>
-              <p class="text-[13px] md:text-[14px] text-gray-400 font-light">15:00 - 20:00</p>
+              <EditableText
+                page="contact"
+                section="info"
+                content-key="checkin"
+                tag="p"
+                class="text-[13px] md:text-[14px] text-gray-400 font-light"
+                fallback="15:00 - 20:00"
+              />
             </div>
             <div>
               <p class="text-[9px] md:text-[10px] font-bold tracking-[0.2em] text-gray-300 uppercase mb-2">
                 Wymeldowanie:
               </p>
-              <p class="text-[13px] md:text-[14px] text-gray-400 font-light">do 11:00</p>
+              <EditableText
+                page="contact"
+                section="info"
+                content-key="checkout"
+                tag="p"
+                class="text-[13px] md:text-[14px] text-gray-400 font-light"
+                fallback="do 11:00"
+              />
             </div>
           </div>
 

@@ -9,6 +9,7 @@ useSeoMeta({
 })
 
 const { data: apartments } = await useFetch('/api/public/apartments')
+const { get } = usePageContent('apartments')
 
 // Placeholder images for apartments without media
 const placeholderImages = [
@@ -26,27 +27,40 @@ function getApartmentImage(apartment: any, index: number): string {
 
 <template>
   <!-- Hero Banner -->
-  <section class="relative h-[450px] w-full overflow-hidden">
-    <div
-      class="absolute inset-0 bg-cover bg-center"
-      style="background-image: url('https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&q=80&w=1920');"
-    >
-      <div class="absolute inset-0 bg-black/20"></div>
-    </div>
+  <EditableBackground
+    page="apartments"
+    section="hero"
+    content-key="background"
+    fallback="https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&q=80&w=1920"
+    class="relative h-[450px] w-full overflow-hidden bg-cover bg-center"
+  >
+    <div class="absolute inset-0 bg-black/20 pointer-events-none"></div>
 
     <div class="relative z-10 h-full flex items-center justify-center">
-      <h1 class="text-6xl md:text-7xl font-light text-white tracking-[0.15em] uppercase">
-        Apartamenty
-      </h1>
+      <EditableText
+        page="apartments"
+        section="hero"
+        content-key="title"
+        tag="h1"
+        class="text-6xl md:text-7xl font-light text-white tracking-[0.15em] uppercase"
+        fallback="Apartamenty"
+      />
     </div>
 
-    <div class="absolute bottom-0 w-full h-[1px] bg-white/20"></div>
-  </section>
+    <div class="absolute bottom-0 w-full h-[1px] bg-white/20 pointer-events-none"></div>
+  </EditableBackground>
 
   <!-- Content Section -->
   <section class="py-32 px-6 max-w-7xl mx-auto">
     <div class="text-center mb-20">
-      <h2 class="text-4xl font-light text-gray-500 mb-4">Wybierz swoj apartament</h2>
+      <EditableText
+        page="apartments"
+        section="content"
+        content-key="subtitle"
+        tag="h2"
+        class="text-4xl font-light text-gray-500 mb-4"
+        fallback="Wybierz swoj apartament"
+      />
       <div class="w-20 h-[1px] bg-[#78b3ce] mx-auto"></div>
     </div>
 

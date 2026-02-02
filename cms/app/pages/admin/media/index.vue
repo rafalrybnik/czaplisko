@@ -49,6 +49,12 @@
       <p class="text-blue-700">Przesyłanie {{ uploadProgress }} plików...</p>
     </div>
 
+    <!-- Upload Error -->
+    <div v-if="uploadError" class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+      <p class="text-red-700">{{ uploadError }}</p>
+      <button @click="uploadError = ''" class="text-sm text-red-500 underline mt-2">Zamknij</button>
+    </div>
+
     <!-- Media Grid -->
     <div v-if="filteredMedia.length === 0" class="bg-white rounded-xl p-12 text-center text-gray-500 shadow-sm">
       <IconPhoto class="w-16 h-16 mx-auto mb-4 text-gray-300" />
@@ -136,6 +142,7 @@ const { data: apartments } = await useFetch('/api/admin/apartments')
 const fileInput = ref<HTMLInputElement>()
 const uploading = ref(false)
 const uploadProgress = ref(0)
+const uploadError = ref('')
 const lightboxImage = ref<any>(null)
 
 const categories = [
@@ -173,6 +180,7 @@ async function handleFileUpload(event: Event) {
 
   uploading.value = true
   uploadProgress.value = files.length
+  uploadError.value = ''
 
   for (const file of files) {
     try {
@@ -187,8 +195,9 @@ async function handleFileUpload(event: Event) {
         method: 'POST',
         body: formData,
       })
-    } catch (e) {
+    } catch (e: any) {
       console.error('Upload failed:', e)
+      uploadError.value = e.data?.message || e.message || 'Błąd podczas przesyłania pliku'
     }
   }
 

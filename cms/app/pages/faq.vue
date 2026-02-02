@@ -8,6 +8,8 @@ useSeoMeta({
   description: 'Najczesciej zadawane pytania o pensjonacie Czaplisko Siedlisko. Dowiedz sie o polityce dla zwierzat, godzinach zameldowania, parkingu i sniadaniach.',
 })
 
+const { get } = usePageContent('faq')
+
 // FAQ items - could be fetched from API in the future
 const faqItems = ref([
   {
@@ -56,8 +58,22 @@ function toggleFaq(index: number) {
   <main class="flex-grow bg-white font-['Montserrat']">
     <div class="bg-white py-24 px-6 max-w-3xl mx-auto">
       <div class="text-center mb-16">
-        <p class="text-[10px] tracking-[0.6em] font-bold text-[#78b3ce] uppercase mb-4">Pytania i odpowiedzi</p>
-        <h1 class="text-5xl font-light text-gray-700 tracking-tight">FAQ</h1>
+        <EditableText
+          page="faq"
+          section="header"
+          content-key="label"
+          tag="p"
+          class="text-[10px] tracking-[0.6em] font-bold text-[#78b3ce] uppercase mb-4"
+          fallback="Pytania i odpowiedzi"
+        />
+        <EditableText
+          page="faq"
+          section="header"
+          content-key="title"
+          tag="h1"
+          class="text-5xl font-light text-gray-700 tracking-tight"
+          fallback="FAQ"
+        />
         <div class="w-16 h-[1px] bg-gray-200 mx-auto mt-8"></div>
       </div>
 
@@ -94,13 +110,33 @@ function toggleFaq(index: number) {
       </div>
 
       <div class="mt-20 bg-gray-50 p-12 text-center">
-        <h3 class="text-xl font-light text-gray-600 mb-4">Masz wiecej pytan?</h3>
-        <p class="text-sm text-gray-400 mb-8">Nasz zespol jest gotowy, aby pomoc Ci zaplanowac idealny pobyt.</p>
+        <EditableText
+          page="faq"
+          section="cta"
+          content-key="title"
+          tag="h3"
+          class="text-xl font-light text-gray-600 mb-4"
+          fallback="Masz wiecej pytan?"
+        />
+        <EditableText
+          page="faq"
+          section="cta"
+          content-key="description"
+          tag="p"
+          class="text-sm text-gray-400 mb-8"
+          fallback="Nasz zespol jest gotowy, aby pomoc Ci zaplanowac idealny pobyt."
+        />
         <NuxtLink
           to="/kontakt"
           class="inline-block bg-[#1a2b3c] text-white px-10 py-4 text-[10px] tracking-[0.3em] font-bold uppercase hover:bg-[#78b3ce] transition-all"
         >
-          Skontaktuj sie
+          <EditableText
+            page="faq"
+            section="cta"
+            content-key="button_text"
+            tag="span"
+            fallback="Skontaktuj sie"
+          />
         </NuxtLink>
       </div>
     </div>
