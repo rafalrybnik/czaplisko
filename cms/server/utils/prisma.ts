@@ -13,12 +13,16 @@ function createPrismaClient(): PrismaClient {
     throw new Error('DATABASE_URL environment variable is not set')
   }
 
+  // Railway internal connections (*.railway.internal) don't support SSL
+  // External connections via proxy (*.proxy.rlwy.net) require SSL
+  const isInternalConnection = connectionString.includes('.railway.internal')
+
   const pool = new pg.Pool({
     connectionString,
     max: 5,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 10000,
-    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+    ssl: isInternalConnection ? false : (process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false),
   })
   const adapter = new PrismaPg(pool)
 
