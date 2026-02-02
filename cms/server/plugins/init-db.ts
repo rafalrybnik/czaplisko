@@ -112,6 +112,30 @@ async function initDatabase(attempt = 1, maxAttempts = 5): Promise<void> {
       console.log('[init-db] Created season ranges')
     }
 
+    // Check if navigation exists
+    const navCount = await prisma.navigationItem.count()
+
+    if (navCount === 0) {
+      console.log('[init-db] No navigation items found, creating defaults...')
+
+      const defaultNav = [
+        { label: 'Start', path: '/', order: 0 },
+        { label: 'Apartamenty', path: '/apartamenty', order: 1 },
+        { label: 'Cennik', path: '/cennik', order: 2 },
+        { label: 'Galeria', path: '/galeria', order: 3 },
+        { label: 'FAQ', path: '/faq', order: 4 },
+        { label: 'Kontakt', path: '/kontakt', order: 5 },
+      ]
+
+      for (const nav of defaultNav) {
+        await prisma.navigationItem.create({
+          data: nav,
+        })
+      }
+
+      console.log('[init-db] Created navigation items')
+    }
+
     // Check if page content exists
     const contentCount = await prisma.pageContent.count()
 
@@ -119,6 +143,11 @@ async function initDatabase(attempt = 1, maxAttempts = 5): Promise<void> {
       console.log('[init-db] No page content found, creating defaults...')
 
       const defaultContent = [
+        // Global content (header)
+        { page: 'global', section: 'header', key: 'logo', value: 'https://cdn.czapliskosiedlisko.pl/defaults/logo-czaplisko.png', type: 'image' },
+        { page: 'global', section: 'social', key: 'facebook', value: 'https://facebook.com/czaplisko', type: 'text' },
+        { page: 'global', section: 'social', key: 'instagram', value: 'https://instagram.com/czaplisko', type: 'text' },
+
         // Home page - Intro section
         { page: 'home', section: 'intro', key: 'label', value: 'Witamy w Czaplisku', type: 'text' },
         { page: 'home', section: 'intro', key: 'title', value: 'Twoja oaza spokoju w sercu Mazur Zachodnich', type: 'text' },

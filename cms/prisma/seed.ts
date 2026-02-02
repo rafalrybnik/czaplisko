@@ -128,6 +128,27 @@ async function main() {
 
   console.log('Created global settings')
 
+  // Create navigation items
+  const defaultNav = [
+    { label: 'Start', path: '/', order: 0 },
+    { label: 'Apartamenty', path: '/apartamenty', order: 1 },
+    { label: 'Cennik', path: '/cennik', order: 2 },
+    { label: 'Galeria', path: '/galeria', order: 3 },
+    { label: 'FAQ', path: '/faq', order: 4 },
+    { label: 'Kontakt', path: '/kontakt', order: 5 },
+  ]
+
+  // Delete existing nav and recreate
+  await prisma.navigationItem.deleteMany({})
+
+  for (const nav of defaultNav) {
+    await prisma.navigationItem.create({
+      data: nav,
+    })
+  }
+
+  console.log('Created navigation items')
+
   console.log('Seeding completed!')
 }
 

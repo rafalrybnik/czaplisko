@@ -77,7 +77,7 @@ async function handleLogin() {
 
   try {
     await login(email.value, password.value)
-    await router.push('/admin')
+    await router.push('/')
   } catch (e: any) {
     error.value = e.data?.message || 'Nieprawidłowy email lub hasło'
   } finally {
