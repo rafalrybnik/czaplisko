@@ -9,6 +9,9 @@ export default defineNuxtConfig({
     head: {
       htmlAttrs: { lang: 'pl' },
       link: [
+        { rel: 'icon', href: 'https://cdn.czapliskosiedlisko.pl/defaults/favicon-32.png', sizes: '32x32' },
+        { rel: 'icon', href: 'https://cdn.czapliskosiedlisko.pl/defaults/favicon-192.png', sizes: '192x192' },
+        { rel: 'apple-touch-icon', href: 'https://cdn.czapliskosiedlisko.pl/defaults/favicon-192.png' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap' },
@@ -16,6 +19,7 @@ export default defineNuxtConfig({
       ],
       meta: [
         { name: 'author', content: 'Czaplisko Siedlisko' },
+        { name: 'msapplication-TileImage', content: 'https://cdn.czapliskosiedlisko.pl/defaults/favicon-192.png' },
       ],
     },
   },
